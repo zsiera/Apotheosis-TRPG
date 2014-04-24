@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<map>
+    <fer.util.MapData>
+        <index>0</index>
+        <name>Granite Field</name>
+        <width>15</width>
+        <height>10</height>
+        <numUnits>4</numUnits>
+        <numFactions>2</numFactions>
+        <tiles>
+            <int>3</int> <int>3</int>  <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>2</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int>
+            <int>3</int> <int>4</int>  <int>4</int> <int>4</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int>
+            <int>4</int> <int>4</int>  <int>4</int> <int>4</int> <int>4</int> <int>3</int> <int>2</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int>
+            <int>4</int> <int>4</int>  <int>4</int> <int>4</int> <int>4</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>3</int> <int>3</int>
+            <int>4</int> <int>4</int>  <int>4</int> <int>4</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int> <int>3</int>
+            <int>4</int> <int>4</int>  <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int> <int>3</int>
+            <int>3</int> <int>3</int>  <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>2</int> <int>3</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int>
+            <int>3</int> <int>3</int>  <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>4</int> <int>4</int> <int>3</int>
+            <int>2</int> <int>3</int>  <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>4</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>4</int> <int>3</int> <int>3</int>
+            <int>3</int> <int>3</int>  <int>3</int> <int>3</int> <int>4</int> <int>4</int> <int>4</int> <int>4</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>3</int> <int>2</int> <int>3</int>
+        </tiles>
+    </fer.util.MapData>
+</map>
