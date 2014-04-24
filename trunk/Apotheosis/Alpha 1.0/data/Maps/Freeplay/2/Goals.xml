@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<goals>
+    <fer.util.GoalData>
+        <index>0</index>
+        <type>ROUTE ENEMY</type>
+    </fer.util.GoalData>
+    <fer.util.GoalData>
+        <index>1</index>
+        <type>ROUTE ENEMY</type>
+    </fer.util.GoalData>
+</goals>
