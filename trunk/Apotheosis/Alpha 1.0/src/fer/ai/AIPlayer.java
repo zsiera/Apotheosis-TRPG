@@ -43,6 +43,7 @@ public class AIPlayer implements Runnable {
     private ArrayList<AITask> tasks;
     private Thread aiThread;
     private Tile destination;
+    private ArrayList<Tile> arrowPath;
     private AITask currentTask;
     private Cursor cursor;
     private boolean determinedAttack;
@@ -78,14 +79,15 @@ public class AIPlayer implements Runnable {
                 break;
             case 1: //Select and center a unit
                 if (tasks.get(currentTaskIndex).getAssignedIndex() == -1) {
-                    stage = 6; //TODO: Check
-                } else {
+                    stage = 7; //TODO: Check
+                } else {   
+                    currentTask = tasks.get(currentTaskIndex);
                     aiThread = new Thread(this);
                     aiThread.start();
-                    currentTask = tasks.get(currentTaskIndex);
+                    System.out.println("Starting unit " + currentTask.getAssignedIndex());
                     cursor.setMapLocation(Game.getCurrentMap().getUnit(currentTask.
-                        getAssignedIndex()).getMapx(),Game.getCurrentMap().
-                        getUnit(currentTask.getAssignedIndex()).getMapy());
+                            getAssignedIndex()).getMapx(), Game.getCurrentMap().
+                            getUnit(currentTask.getAssignedIndex()).getMapy());
                     cursor.centerCursor();
                     Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
                             resetAnimation(1);
@@ -99,6 +101,9 @@ public class AIPlayer implements Runnable {
                 if (updates >= Game.getCurrentMap().getUnit(currentTask.
                         getAssignedIndex()).getActiveAnimationFrames() * 2
                         && destination != null) {
+                    System.out.println("Path created for unit "  + currentTask.getAssignedIndex());
+                    cursor.setArrowPath(arrowPath);
+                    cursor.setShowingMoveArrow(true);
                     updates = 0;
                     stage++;
                 }
@@ -109,13 +114,14 @@ public class AIPlayer implements Runnable {
                 Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
                         setMapy(destination.getMapY());
                 cursor.setMapLocation(Game.getCurrentMap().getUnit(currentTask.
-                        getAssignedIndex()).getMapx(),Game.getCurrentMap().
+                        getAssignedIndex()).getMapx(), Game.getCurrentMap().
                         getUnit(currentTask.getAssignedIndex()).getMapy());
                 cursor.centerCursor();
                 Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
                         resetAnimation(3);
                 Game.getCurrentMap().getUnit(currentTask.getAssignedIndex())
                         .setActiveMapAnimation(3);
+                cursor.setShowingMoveArrow(false);
                 updates = 0;
                 stage++;
             case 4: //Determine and take further action
@@ -143,12 +149,14 @@ public class AIPlayer implements Runnable {
                 }
                 break;
             case 7: //Reset values and loop if more tasks
-                Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
-                        resetAnimation(0);
-                Game.getCurrentMap().getUnit(currentTask.getAssignedIndex())
-                        .setActiveMapAnimation(0);
-                Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
-                        setMoved(true);
+                if (currentTask.getAssignedIndex() != -1) {
+                    Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
+                            resetAnimation(0);
+                    Game.getCurrentMap().getUnit(currentTask.getAssignedIndex())
+                            .setActiveMapAnimation(0);
+                    Game.getCurrentMap().getUnit(currentTask.getAssignedIndex()).
+                            setMoved(true);
+                }
                 destination = null;
                 determinedAttack = false;
                 canAttack = false;
@@ -661,6 +669,7 @@ public class AIPlayer implements Runnable {
             System.out.println("Size: " + tasks.size());
             tasksReady = true;
         } else if (stage == 1 || stage == 2) {
+            System.out.println("Starting pathfinding thread.");
             PathFinder pf = new PathFinder();
             Unit unit = Game.getCurrentMap().getUnit(currentTask.getAssignedIndex());
             if (currentTask.getType() == AITask.TaskType.ATTACK_UNIT) {
@@ -717,14 +726,21 @@ public class AIPlayer implements Runnable {
                     }
                     System.out.println("COST: " + cost);
                     System.out.println("TILE: " + tile);
+                    arrowPath = new ArrayList();
+                    for (int i = tile; i < shortestPath.size(); i++) {
+                        arrowPath.add(shortestPath.get(i));
+                    }
                     destination = shortestPath.get(tile);
                 } else {
+                    arrowPath = new ArrayList();
+                    arrowPath.add(Game.getCurrentMap().getTile(unit.getMapx()
+                            + unit.getMapy() * Game.getCurrentMap().getWidth()));
                     destination = Game.getCurrentMap().getTile(unit.getMapx()
                             + unit.getMapy() * Game.getCurrentMap().getWidth());
                 }
             }
         } else if (stage >= 3) {
-            PathFinder pf = new PathFinder(); 
+            PathFinder pf = new PathFinder();
             Unit unit = Game.getCurrentMap().getUnit(currentTask.getAssignedIndex());
             Unit target = Game.getCurrentMap().getUnit(currentTask.getTargetIndex());
             pf.setExcludeCollision(target.getMapx(), target.getMapy());

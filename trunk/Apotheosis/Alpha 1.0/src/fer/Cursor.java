@@ -127,8 +127,8 @@ public class Cursor {
                 selectedUnit = newSelectedUnit;
                 drawTerrainMenu(currentMap.getTile(mapx + mapy * currentMap.getWidth()));
                 if (enter) {
-                    if (selectedUnit != null) {
-                        if (selectedUnit.getFaction() == currentFactionTurn && !selectedUnit.hasMoved()) {
+                    if (selectedUnit != null && !selectedUnit.isDead() && !selectedUnit.hasMoved()) {
+                        if (selectedUnit.getFaction() == currentFactionTurn) {
                             selectedUnit.setActiveMapAnimation(3);
                             moveableTiles = pathFinder.getMovableTiles(selectedUnit, currentMap);
                             movingUnit = true;
@@ -333,6 +333,14 @@ public class Cursor {
 
     public boolean showingMoveArrow() {
         return showingMoveArrow;
+    }
+
+    public void setShowingMoveArrow(boolean showing) {
+        showingMoveArrow = showing;
+    }
+
+    public void setArrowPath(ArrayList<Tile> arrowPath) {
+        this.arrowPath = arrowPath;
     }
 
     public ArrayList<Tile> getArrowPath() {

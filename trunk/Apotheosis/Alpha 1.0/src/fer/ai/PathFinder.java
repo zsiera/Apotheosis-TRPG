@@ -321,7 +321,10 @@ public class PathFinder {
     
     public int getMovementCost(Unit unit, Tile target) {
         if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.getMapY() * Game.getCurrentMap().getWidth()) != null) {
-            if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.getMapY() * Game.getCurrentMap().getWidth()).getFaction() != unit.getFaction() && unitCollision && target.getMapX() != excludeX && target.getMapY() != excludeY) {
+            if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.
+                    getMapY() * Game.getCurrentMap().getWidth()).getFaction() 
+                    != unit.getFaction() && unitCollision && (target.getMapX() 
+                    != excludeX || target.getMapY() != excludeY)) {
                 return Tile.IMPASSIBLE;
             }
         }
