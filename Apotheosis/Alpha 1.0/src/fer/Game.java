@@ -85,6 +85,9 @@ public class Game extends Canvas implements Runnable {
     private int updates = 0;
     private Thread logicThread;
     private Thread graphicsThread;
+    private Thread controlThread;
+    private boolean lastEnter = false;
+    private boolean lastEscape = false;
     private Renderer renderer;
     private JFrame gameWindow;
     private Keyboard keyboard;
@@ -248,10 +251,12 @@ public class Game extends Canvas implements Runnable {
         renderer = new Renderer();
         logicThread = new Thread(this, "Logic Thread");
         graphicsThread = new Thread(renderer, "Graphics Thread");
+        controlThread = new Thread(keyboard, "Control Thread");
         drawTitleMenu();
 
         logicThread.start();
         graphicsThread.start();
+        controlThread.start();
     }
 
     public synchronized void stopSequence() {
@@ -267,7 +272,8 @@ public class Game extends Canvas implements Runnable {
 
     public void update() {
         int xQueue = 0, yQueue = 0;
-        keyboard.update();
+        boolean enter, escape;
+        //keyboard.update();
         if (updates % 5 == 0) {
             if (keyboard.isUp()) {
                 yQueue--;
@@ -281,13 +287,17 @@ public class Game extends Canvas implements Runnable {
             if (keyboard.isRight()) {
                 xQueue++;
             }
+            enter = keyboard.isEnter() && !lastEnter;
+            escape = keyboard.isEscape() && !lastEscape;
             if (cursor.isActive() && currentMap != null) {
-                cursor.update(currentMap, xQueue, yQueue, keyboard.isEnter(),
-                        keyboard.isEscape(), keyboard.isTab());
+                cursor.update(currentMap, xQueue, yQueue, enter,
+                        escape, keyboard.isTab());
             } else if (menuCursor.isActive()) {
-                menuCursor.update(xQueue, yQueue, keyboard.isEnter(),
-                        keyboard.isEscape());
+                menuCursor.update(xQueue, yQueue, enter,
+                        escape);
             }
+            lastEnter = keyboard.isEnter();
+            lastEscape = keyboard.isEscape();
         }
         if (currentMap != null) {
             currentMap.updateUnitAnimations();

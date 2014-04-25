@@ -497,7 +497,7 @@ public class Cursor {
 
     public void drawMapMenu() {
         Menu mapMenu;
-        if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 4) {
+        if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 5) {
             mapMenu = new Menu(54, 38, (mapx - mapScrollx) * 16 - 47,
                     (mapy - mapScrolly) * 16);
         } else if (mapy < 2) {

@@ -2,6 +2,8 @@ package fer;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Evan Stewart
@@ -9,7 +11,7 @@ import java.awt.event.KeyListener;
  * Gets input from the keyboard, identifies the key providing said input, and
  * passes it for use in logic classes.
  */
-public class Keyboard implements KeyListener {
+public class Keyboard implements KeyListener, Runnable {
 
     private boolean[] keys = new boolean[120];
     private boolean up, down, left, right, enter, escape, tab;
@@ -82,5 +84,18 @@ public class Keyboard implements KeyListener {
     
     public boolean isTab() {
         return tab;
+    }
+
+    @Override
+    public void run() {
+        while (Game.getGame().getGameRunning()) {
+            update();
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Renderer.class.getName()).log(Level.SEVERE,
+                        null, ex);
+            }
+        }
     }
 }
