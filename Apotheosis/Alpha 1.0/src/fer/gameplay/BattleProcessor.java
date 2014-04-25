@@ -74,6 +74,7 @@ public class BattleProcessor {
 
     public void startBattle(Unit iAttacker, Unit iDefender) {
         cursor.setActive(false);
+        cursor.setVisible(false);
         inCombat = true;
         attacker = iAttacker;
         defender = iDefender;
@@ -501,6 +502,7 @@ public class BattleProcessor {
             }
         }
         inCombat = false;
+        cursor.setVisible(true);
         cursor.setActive(true);
         cursor.processVictory();
     }

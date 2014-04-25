@@ -101,9 +101,9 @@ public class Renderer implements Runnable {
             drawTiles();
             if (cursor.movingUnit()) {
                 drawMoveTileOverlay();
-                if (cursor.showingMoveArrow()) {
-                    drawMoveArrow();
-                }
+            }
+            if (cursor.showingMoveArrow()) {
+                drawMoveArrow();
             }
             if (cursor.isAttacking() && cursor.getAttackableTiles() != null) {
                 drawAttackTileOverlay();
@@ -180,12 +180,11 @@ public class Renderer implements Runnable {
                             getTile(tileIndex).getSprite().getPixel((x & 15)
                             + (y & 15) * Tile.TILE_WIDTH);
                 }
-                if (((x % Tile.TILE_WIDTH) == 0 || (x % Tile.TILE_WIDTH) == 
-                        (Tile.TILE_WIDTH - 1)) || ((y % Tile.TILE_HEIGHT) == 0 
+                if (((x % Tile.TILE_WIDTH) == 0 || (x % Tile.TILE_WIDTH)
+                        == (Tile.TILE_WIDTH - 1)) || ((y % Tile.TILE_HEIGHT) == 0
                         || (y % Tile.TILE_HEIGHT) == (Tile.TILE_HEIGHT - 1))) {
                     pixels[(x + (y * Game.GAME_WIDTH))] =
-                            blendColors(0x000000, pixels[(x + (y * Game.
-                            GAME_WIDTH))], Game.getGridOpacity());
+                            blendColors(0x000000, pixels[(x + (y * Game.GAME_WIDTH))], Game.getGridOpacity());
                 }
             }
         }
@@ -211,7 +210,7 @@ public class Renderer implements Runnable {
                                         pixels[(x + tileStartingX) + (y
                                                 + tileStartingY) * Game.GAME_WIDTH] = blendColors(blendColors(Map.FACTION_COLORS[unit.getFaction()], Map.FACTION_SHADOW.getPixel(x + y
                                                 * Map.FACTION_SHADOW.getWidth()),
-                                                128), pixels[(x + tileStartingX)
+                                                192), pixels[(x + tileStartingX)
                                                 + (y + tileStartingY) * Game.GAME_WIDTH], 128);
                                     }
                                 }
