@@ -72,14 +72,17 @@ public class SpriteSheet {
         String absPath = null;
         try {
             absPath = URLDecoder.decode(url.toString(), "UTF-8");
+            absPath = url.getPath();
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        absPath = absPath.substring(6); //Cut off the "file:"
+        //absPath = absPath.substring(6); //Cut off the "file:"
         if (absPath.endsWith("/dist/Apotheosis.jar")) {
             absPath = absPath.substring(0, absPath.length() - "/dist/Apotheosis.jar".length());
         } else if (absPath.endsWith("/build/classes/")) {
             absPath = absPath.substring(0, absPath.length() - "/build/classes/".length());
+        } else if (absPath.endsWith("/bin/")){
+        	absPath= absPath.substring(0, absPath.length() - "/bin/".length());
         }
         absPath += path;
         try {
