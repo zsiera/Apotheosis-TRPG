@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -68,6 +69,7 @@ public class SpriteSheet {
     }
     
     private void loadImage() {
+    	String separator = System.getProperty("file.separator");
         URL url = SpriteSheet.class.getProtectionDomain().getCodeSource().getLocation();
         String absPath = null;
         try {
@@ -77,12 +79,12 @@ public class SpriteSheet {
             Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, null, ex);
         }
         //absPath = absPath.substring(6); //Cut off the "file:"
-        if (absPath.endsWith("/dist/Apotheosis.jar")) {
-            absPath = absPath.substring(0, absPath.length() - "/dist/Apotheosis.jar".length());
-        } else if (absPath.endsWith("/build/classes/")) {
-            absPath = absPath.substring(0, absPath.length() - "/build/classes/".length());
-        } else if (absPath.endsWith("/bin/")){
-        	absPath= absPath.substring(0, absPath.length() - "/bin/".length());
+        if (absPath.endsWith(separator + "dist"+ separator + "Apotheosis.jar")) {
+            absPath = absPath.substring(0, absPath.length() - (separator + "dist"+ separator + "Apotheosis.jar").length());
+        } else if (absPath.endsWith(separator + "build" + separator +"classes" + separator)) {
+            absPath = absPath.substring(0, absPath.length() - (separator + "build" + separator +"classes" + separator).length());
+        } else if(absPath.endsWith(separator + "bin" + separator)){ //added for Eclipse compatibility
+        	absPath = absPath.substring(0, absPath.length() -(separator + "bin" + separator).length());
         }
         absPath += path;
         try {
