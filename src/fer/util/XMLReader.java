@@ -39,21 +39,16 @@ public class XMLReader {
     public Document getXMLDocument(String filepath) {
     	String separator = System.getProperty("file.separator");
         Document xmlDoc = null;
-        URL url = SpriteSheet.class.getProtectionDomain().getCodeSource().getLocation();
         String absPath = null;
-        try {
-            absPath = URLDecoder.decode(url.toString(), "UTF-8");
-            absPath = url.getPath();
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //absPath = absPath.substring(6); //Cut off the "file:"
+        absPath = System.getProperty("user.dir");
         if (absPath.endsWith(separator + "dist"+ separator + "Apotheosis.jar")) {
             absPath = absPath.substring(0, absPath.length() - (separator + "dist"+ separator + "Apotheosis.jar").length());
         } else if (absPath.endsWith(separator + "build" + separator +"classes" + separator)) {
             absPath = absPath.substring(0, absPath.length() - (separator + "build" + separator +"classes" + separator).length());
         } else if(absPath.endsWith(separator + "bin" + separator)){ //added for Eclipse compatibility
         	absPath = absPath.substring(0, absPath.length() -(separator + "bin" + separator).length());
+        }else if(absPath.endsWith(separator + "bin")){ //added for Eclipse compatibility
+        	absPath = absPath.substring(0, absPath.length() -(separator + "bin").length());
         }
         absPath += (separator + "data" + separator + filepath);
         try {

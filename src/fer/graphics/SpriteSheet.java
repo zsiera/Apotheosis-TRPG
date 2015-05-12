@@ -70,15 +70,8 @@ public class SpriteSheet {
     
     private void loadImage() {
     	String separator = System.getProperty("file.separator");
-        URL url = SpriteSheet.class.getProtectionDomain().getCodeSource().getLocation();
         String absPath = null;
-        try {
-            absPath = URLDecoder.decode(url.toString(), "UTF-8");
-            absPath = url.getPath();
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(SpriteSheet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //absPath = absPath.substring(6); //Cut off the "file:"
+        absPath = System.getProperty("user.dir");
         if (absPath.endsWith(separator + "dist"+ separator + "Apotheosis.jar")) {
             absPath = absPath.substring(0, absPath.length() - (separator + "dist"+ separator + "Apotheosis.jar").length());
         } else if (absPath.endsWith(separator + "build" + separator +"classes" + separator)) {
