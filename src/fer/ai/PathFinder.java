@@ -110,30 +110,7 @@ public class PathFinder {
                 break;
             }
             
-            if ((nextClosest.getTile().getMapX() + 1) < map.getWidth() && 
-                    !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX() 
-                    + 1) + (nextClosest.getTile().getMapY()) * map.getWidth()))) {
-                frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX() + 1) + 
-                        (nextClosest.getTile().getMapY()) * map.getWidth())), nextClosest));
-            }
-            if ((nextClosest.getTile().getMapX() - 1) >= 0 && 
-                    !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX() 
-                    - 1) + (nextClosest.getTile().getMapY()) * map.getWidth()))) {
-                frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX() - 1) + 
-                        (nextClosest.getTile().getMapY()) * map.getWidth())), nextClosest));
-            }
-            if ((nextClosest.getTile().getMapY() + 1) < map.getHeight() && 
-                    !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX()) 
-                    + (nextClosest.getTile().getMapY() + 1) * map.getWidth()))) {
-                frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX()) + 
-                        (nextClosest.getTile().getMapY() + 1) * map.getWidth())), nextClosest));
-            }
-            if ((nextClosest.getTile().getMapY() - 1) >= 0 && 
-                    !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX()) 
-                    + (nextClosest.getTile().getMapY() - 1) * map.getWidth()))) {
-                frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX()) + 
-                        (nextClosest.getTile().getMapY() - 1) * map.getWidth())), nextClosest));
-            }
+            addFrontier(map, exploredTiles, frontier, nextClosest);
             
             exploredTiles.add(nextClosest.getTile());
             
@@ -149,10 +126,102 @@ public class PathFinder {
         
         return shortestPath;
     }
+
+	private void addFrontier(Map map, ArrayList<Tile> exploredTiles,
+			PriorityQueue<TreeNode> frontier, TreeNode nextClosest) {
+		if ((nextClosest.getTile().getMapX() + 1) < map.getWidth() && 
+		        !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX() 
+		        + 1) + (nextClosest.getTile().getMapY()) * map.getWidth()))) {
+		    frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX() + 1) + 
+		            (nextClosest.getTile().getMapY()) * map.getWidth())), nextClosest));
+		}
+		if ((nextClosest.getTile().getMapX() - 1) >= 0 && 
+		        !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX() 
+		        - 1) + (nextClosest.getTile().getMapY()) * map.getWidth()))) {
+		    frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX() - 1) + 
+		            (nextClosest.getTile().getMapY()) * map.getWidth())), nextClosest));
+		}
+		if ((nextClosest.getTile().getMapY() + 1) < map.getHeight() && 
+		        !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX()) 
+		        + (nextClosest.getTile().getMapY() + 1) * map.getWidth()))) {
+		    frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX()) + 
+		            (nextClosest.getTile().getMapY() + 1) * map.getWidth())), nextClosest));
+		}
+		if ((nextClosest.getTile().getMapY() - 1) >= 0 && 
+		        !exploredTiles.contains(map.getTile((nextClosest.getTile().getMapX()) 
+		        + (nextClosest.getTile().getMapY() - 1) * map.getWidth()))) {
+		    frontier.add(new TreeNode((map.getTile((nextClosest.getTile().getMapX()) + 
+		            (nextClosest.getTile().getMapY() - 1) * map.getWidth())), nextClosest));
+		}
+	}
     
     public ArrayList<Tile> getMovableTiles(Unit unit, Map map) {
         final Unit fUnit = unit;
-        Comparator cComp = new Comparator() {
+        PriorityQueue<TreeNode> frontier = getMovableTilesFrontier(map);
+        ArrayList<TreeNode> pathTree = new ArrayList();
+        ArrayList<Tile> moveableTiles = new ArrayList();
+        ArrayList<Tile> exploredTiles = new ArrayList();
+        
+        frontier.add(new TreeNode(map.getTile(unit.getMapx() + unit.getMapy() * map.getWidth())));
+        
+        TreeNode lastNode = null;
+        while(!frontier.isEmpty()) {
+            TreeNode node = frontier.poll();
+            Tile nextClosest = node.getTile();
+            exploredTiles.add(nextClosest);
+            
+            pathTree.add(node);
+            
+            int pathCost = getPathCost(unit, node);
+            
+            if (pathCost <= unit.getMov()) {
+                //Even if tile is alrady explored, add it if it is reachable
+                //through a different route.
+                if (!moveableTiles.contains(nextClosest)) {
+                    moveableTiles.add(nextClosest);
+                }
+                addFrontier(map, frontier, node, nextClosest);
+                
+                exploredTiles.add(nextClosest);
+                
+                TreeNode tempNode = lastNode;
+                lastNode = new TreeNode(nextClosest, tempNode);
+            } 
+        }
+        
+        return moveableTiles;
+    }
+
+	private void addFrontier(Map map, PriorityQueue<TreeNode> frontier,
+			TreeNode node, Tile nextClosest) {
+		if ((nextClosest.getMapX() + 1) < map.getWidth() /*&& 
+		    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
+		    + 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
+		    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() + 1) + 
+		        (nextClosest.getMapY()) * map.getWidth()), node));
+		}
+		if ((nextClosest.getMapX() - 1) >= 0 /*&& 
+		    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
+		    - 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
+		    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() - 1) + 
+		        (nextClosest.getMapY()) * map.getWidth()), node));
+		}
+		if ((nextClosest.getMapY() + 1) < map.getHeight() /*&& 
+		    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
+		    + (nextClosest.getMapY() + 1) * map.getWidth()))*/) {
+		    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
+		        (nextClosest.getMapY() + 1) * map.getWidth()), node));
+		}
+		if ((nextClosest.getMapY() - 1) >= 0 /*&& 
+		    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
+		    + (nextClosest.getMapY() - 1) * map.getWidth()))*/) {
+		    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
+		        (nextClosest.getMapY() - 1) * map.getWidth()), node));
+		}
+	}
+
+	private PriorityQueue<TreeNode> getMovableTilesFrontier(Map map) {
+		Comparator cComp = new Comparator() {
 
                     @Override
                     public int compare(Object o1, Object o2) {
@@ -170,88 +239,21 @@ public class PathFinder {
                     }
                 };
         PriorityQueue<TreeNode> frontier = new PriorityQueue(map.getNumTiles(), cComp);
-        ArrayList<TreeNode> pathTree = new ArrayList();
-        ArrayList<Tile> moveableTiles = new ArrayList();
-        ArrayList<Tile> exploredTiles = new ArrayList();
-        
-        frontier.add(new TreeNode(map.getTile(unit.getMapx() + unit.getMapy() * map.getWidth())));
-        
-        TreeNode lastNode = null;
-        while(!frontier.isEmpty()) {
-            TreeNode node = frontier.poll();
-            Tile nextClosest = node.getTile();
-            exploredTiles.add(nextClosest);
-            
-            pathTree.add(node);
-            
-            int pathCost = 0;
-            TreeNode currentNode = node;
-            while(currentNode.getParent() != null) {
-                pathCost += getMovementCost(unit, currentNode.getTile());
-                currentNode = currentNode.getParent();
-            }
-            
-            if (pathCost <= unit.getMov()) {
-                //Even if tile is alrady explored, add it if it is reachable
-                //through a different route.
-                if (!moveableTiles.contains(nextClosest)) {
-                    moveableTiles.add(nextClosest);
-                }
-                if ((nextClosest.getMapX() + 1) < map.getWidth() /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
-                    + 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() + 1) + 
-                        (nextClosest.getMapY()) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapX() - 1) >= 0 /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
-                    - 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() - 1) + 
-                        (nextClosest.getMapY()) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapY() + 1) < map.getHeight() /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
-                    + (nextClosest.getMapY() + 1) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
-                        (nextClosest.getMapY() + 1) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapY() - 1) >= 0 /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
-                    + (nextClosest.getMapY() - 1) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
-                        (nextClosest.getMapY() - 1) * map.getWidth()), node));
-                }
-                
-                exploredTiles.add(nextClosest);
-                
-                TreeNode tempNode = lastNode;
-                lastNode = new TreeNode(nextClosest, tempNode);
-            } 
-        }
-        
-        return moveableTiles;
-    }
+		return frontier;
+	}
+
+	private int getPathCost(Unit unit, TreeNode node) {
+		int pathCost = 0;
+		TreeNode currentNode = node;
+		while(currentNode.getParent() != null) {
+		    pathCost += getMovementCost(unit, currentNode.getTile());
+		    currentNode = currentNode.getParent();
+		}
+		return pathCost;
+	}
     
     public ArrayList<Tile> getAttackableTiles(Unit unit, int x, int y, Map map, int weapon) {
-        final Unit fUnit = unit;
-        Comparator cComp = new Comparator() {
-
-                    @Override
-                    public int compare(Object o1, Object o2) {
-                        TreeNode n1 = (TreeNode)o1;
-                        TreeNode n2 = (TreeNode)o2;
-                        Tile t1 = n1.getTile();
-                        Tile t2 = n2.getTile();
-                        if (getMovementCost(fUnit, t1) < getMovementCost(fUnit, t2)) {
-                            return -1;
-                        } else if (getMovementCost(fUnit, t1) == getMovementCost(fUnit, t2)) {
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    }
-                };
-        PriorityQueue<TreeNode> frontier = new PriorityQueue(map.getNumTiles(), cComp);
+        PriorityQueue<TreeNode> frontier = getAttackableTilesFrontier(unit, map);
         ArrayList<TreeNode> pathTree = new ArrayList();
         ArrayList<Tile> attackableTiles = new ArrayList();
         ArrayList<Tile> exploredTiles = new ArrayList();
@@ -279,30 +281,7 @@ public class PathFinder {
                 if (!attackableTiles.contains(nextClosest)) {
                     attackableTiles.add(nextClosest);
                 }
-                if ((nextClosest.getMapX() + 1) < map.getWidth() /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
-                    + 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() + 1) + 
-                        (nextClosest.getMapY()) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapX() - 1) >= 0 /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX() 
-                    - 1) + (nextClosest.getMapY()) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX() - 1) + 
-                        (nextClosest.getMapY()) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapY() + 1) < map.getHeight() /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
-                    + (nextClosest.getMapY() + 1) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
-                        (nextClosest.getMapY() + 1) * map.getWidth()), node));
-                }
-                if ((nextClosest.getMapY() - 1) >= 0 /*&& 
-                    !exploredTiles.contains(map.getTile((nextClosest.getMapX()) 
-                    + (nextClosest.getMapY() - 1) * map.getWidth()))*/) {
-                    frontier.add(new TreeNode(map.getTile((nextClosest.getMapX()) + 
-                        (nextClosest.getMapY() - 1) * map.getWidth()), node));
-                }
+                addFrontier(map, frontier, node, nextClosest);
                 
                 exploredTiles.add(nextClosest);
                 
@@ -313,6 +292,29 @@ public class PathFinder {
         
         return attackableTiles;
     }
+
+	private PriorityQueue<TreeNode> getAttackableTilesFrontier(Unit unit,
+			Map map) {
+		final Unit fUnit = unit;
+        Comparator cComp = new Comparator() {
+
+                    @Override
+                    public int compare(Object o1, Object o2) {
+                        TreeNode n1 = (TreeNode)o1;
+                        TreeNode n2 = (TreeNode)o2;
+                        Tile t1 = n1.getTile();
+                        Tile t2 = n2.getTile();
+                        if (getMovementCost(fUnit, t1) < getMovementCost(fUnit, t2)) {
+                            return -1;
+                        } else if (getMovementCost(fUnit, t1) == getMovementCost(fUnit, t2)) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    }
+                };
+         return new PriorityQueue(map.getNumTiles(), cComp);
+	}
     
     public int getManhattanHeuristic(Tile location, Tile target) {
         return (Math.abs(location.getMapX() - target.getMapX()) + 

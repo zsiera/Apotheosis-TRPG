@@ -152,14 +152,25 @@ public class Weapon {
 
     public void drawInfoMenu(int x, int y, Menu callingMenu, boolean active) {
         infoMenu = new Menu(200, 56, x, y);
+        MenuAction nil = getNilAction();      
+        addElements(nil);        
+        if (active) {
+            MenuCursor.getMenuCursor().setElementIndex(0);
+            MenuCursor.setActiveMenu(infoMenu);
+        }
+    }
 
-        MenuAction nil = new MenuAction() {
+	private MenuAction getNilAction() {
+		MenuAction nil = new MenuAction() {
             @Override
             public void execute(MenuElement caller) { //Do nothing
             }
         };
-        
-        infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
+		return nil;
+	}
+
+	private void addElements(MenuAction nil) {
+		infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(name, Font.BASICFONT).getSprite(), false, 23, 7)); 
         String[] lines = Menu.wrapText(description, 34);
         for (int i = 0; i < Math.min(3, lines.length); i++) {
@@ -173,13 +184,7 @@ public class Weapon {
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("WGT: " + weight, Font.BASICFONT).getSprite(), false, 47, 37));
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("VALUE: " + price, Font.BASICFONT).getSprite(), false, 87, 37));
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("USES: " + uses + "/" + maxUses, Font.BASICFONT).getSprite(), false, 7, 43));
-        
-        
-        if (active) {
-            MenuCursor.getMenuCursor().setElementIndex(0);
-            MenuCursor.setActiveMenu(infoMenu);
-        }
-    }
+	}
     
     public boolean infoMenuDrawn() {
         return infoMenu != null;

@@ -73,18 +73,7 @@ public class BattleProcessor {
     private int directionDefender;
 
     public void startBattle(Unit iAttacker, Unit iDefender) {
-        cursor.setActive(false);
-        cursor.setVisible(false);
-        inCombat = true;
-        attacker = iAttacker;
-        defender = iDefender;
-        attacker.resetAnimation(22);
-        defender.resetAnimation(22);
-        attackerDamageDealt = 0;
-        defenderDamageDealt = 0;
-        updates = 0;
-        stage = 0;
-        currentAttack = 0;
+        initializeBattle(iAttacker, iDefender);
 
         //Determine direction of attack
         //If x difference is greater than y difference, face left or right accordingly.
@@ -183,6 +172,29 @@ public class BattleProcessor {
         drawAttackerMenus();
         drawDefenderMenus();
     }
+
+	private void initializeBattle(Unit iAttacker, Unit iDefender) {
+		initializeCursor();
+        inCombat = true;
+        initializeUnits(iAttacker, iDefender);
+        updates = 0;
+        stage = 0;
+        currentAttack = 0;
+	}
+
+	private void initializeUnits(Unit iAttacker, Unit iDefender) {
+		attacker = iAttacker;
+        defender = iDefender;
+        attacker.resetAnimation(22);
+        defender.resetAnimation(22);
+        attackerDamageDealt = 0;
+        defenderDamageDealt = 0;
+	}
+
+	private void initializeCursor() {
+		cursor.setActive(false);
+        cursor.setVisible(false);
+	}
 
     public void update() {
         switch (stage) {
@@ -502,26 +514,36 @@ public class BattleProcessor {
             }
         }
         inCombat = false;
-        cursor.setVisible(true);
-        cursor.setActive(true);
-        cursor.processVictory();
+        setCursorForVictory();
     }
 
-    public void drawAttackerMenus() {
-        if (attackerMenu != null) {  //Clear the menus if they already exist
-            Game.getMenuList().remove(attackerMenu);
-            Game.getMenuList().remove(attackerWeaponMenu);
-            Game.getMenuList().remove(attackerStatusMenu);
-            Game.getMenuList().remove(attackerBattleMenu);
-        }
-        MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
+	private void setCursorForVictory() {
+		cursor.setVisible(true);
+        cursor.setActive(true);
+        cursor.processVictory();
+	}
 
-        if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
+    public void drawAttackerMenus() {
+        clearAttackerMenus();
+        MenuAction sa = getSAAction();
+        initializeAttackerMenus();
+
+        attackerMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(attacker.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
+        if (attacker.getMapFaceSprite() != null) {
+            attackerMenu.addElement(new MenuElement(sa, sa, attacker.getMapFaceSprite(), false, 7, 13));
+        }
+        if (attacker.getWeapon(0) != null) {
+            addWeaponMenuOptions(attackerStatusMenu, attacker, sa);
+        }
+        if (attacker.getArmor() != null) {
+            addArmorMenuOptions(attackerStatusMenu, attacker, sa);
+        }
+        addDefaultMenuOptions(attackerStatusMenu, attacker, sa);
+        addAttackerBattleMenuOptions(sa);
+    }
+
+	private void initializeAttackerMenus() {
+		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
             attackerMenu = new Menu(46, 52, 0, 0);
             attackerWeaponMenu = new Menu(30, 76, 0, 52);
             attackerStatusMenu = new Menu(131, 16, 46, 0);
@@ -532,48 +554,64 @@ public class BattleProcessor {
             attackerStatusMenu = new Menu(131, 16, 63, 0);
             attackerBattleMenu = new Menu(131, 16, 63, 16);
         }
+	}
 
-        attackerMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(attacker.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
-        if (attacker.getMapFaceSprite() != null) {
-            attackerMenu.addElement(new MenuElement(sa, sa, attacker.getMapFaceSprite(), false, 7, 13));
+	private void clearAttackerMenus() {
+		if (attackerMenu != null) {  //Clear the menus if they already exist
+            Game.getMenuList().remove(attackerMenu);
+            Game.getMenuList().remove(attackerWeaponMenu);
+            Game.getMenuList().remove(attackerStatusMenu);
+            Game.getMenuList().remove(attackerBattleMenu);
         }
-        if (attacker.getWeapon(0) != null) {
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, attacker.getWeapon(0).getIcon(), false, 7, 7));
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("D:" + attacker.getWeapon(0).getDamage(), Font.BASICFONT)).getSprite(), false, 5, 24));
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("P:" + attacker.getWeapon(0).getPierce(), Font.BASICFONT)).getSprite(), false, 5, 30));
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("A:" + attacker.getWeapon(0).getAccuracy(), Font.BASICFONT)).getSprite(), false, 5, 36));
-        }
-        if (attacker.getArmor() != null) {
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, attacker.getArmor().getIcon(), false, 7, 42));
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("R:" + attacker.getArmor().getResilience(), Font.BASICFONT)).getSprite(), false, 5, 58));
-            attackerWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("E:" + attacker.getArmor().getEncumberance(), Font.BASICFONT)).getSprite(), false, 5, 64));
-        }
-        attackerStatusMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:" + attacker.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7, 5));
-        attackerStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 12, SpriteSheet.HEALTHBAR)), false, 32, 5));
-        attackerStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite((int) ((92 * attacker.getCurrentHp()) / attacker.getHp()), 5, 1, 18, SpriteSheet.HEALTHBAR)), false, 32, 5));
-        attackerStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 24, SpriteSheet.HEALTHBAR)), false, 32, 5));
+	}
 
-        attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + attackerDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
+	private void addAttackerBattleMenuOptions(MenuAction sa) {
+		attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + attackerDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
         attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("AC: " + Math.round(accAttacker), Font.BASICFONT)).getSprite(), false, 47, 5));
         attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("CR: " + Math.round(critAttacker), Font.BASICFONT)).getSprite(), false, 87, 5));
+	}
 
-    }
+	private void addDefaultMenuOptions(Menu menu, Unit unit, MenuAction sa) {
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:" + unit.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7, 5));
+		menu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 12, SpriteSheet.HEALTHBAR)), false, 32, 5));
+		menu.addElement(new MenuElement(sa, sa, (new Sprite((int) ((92 * unit.getCurrentHp()) / unit.getHp()), 5, 1, 18, SpriteSheet.HEALTHBAR)), false, 32, 5));
+		menu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 24, SpriteSheet.HEALTHBAR)), false, 32, 5));
+	}
+
+	private void addWeaponMenuOptions(Menu menu, Unit unit, MenuAction sa) {
+		menu.addElement(new MenuElement(sa, sa, unit.getWeapon(0).getIcon(), false, 7, 7));
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("D:" + unit.getWeapon(0).getDamage(), Font.BASICFONT)).getSprite(), false, 5, 24));
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("P:" + unit.getWeapon(0).getPierce(), Font.BASICFONT)).getSprite(), false, 5, 30));
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("A:" + unit.getWeapon(0).getAccuracy(), Font.BASICFONT)).getSprite(), false, 5, 36));
+	}
+
+	private void addArmorMenuOptions(Menu menu, Unit unit, MenuAction sa) {
+		menu.addElement(new MenuElement(sa, sa, unit.getArmor().getIcon(), false, 7, 42));
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("R:" + unit.getArmor().getResilience(), Font.BASICFONT)).getSprite(), false, 5, 58));
+		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("E:" + unit.getArmor().getEncumberance(), Font.BASICFONT)).getSprite(), false, 5, 64));
+	}
 
     public void drawDefenderMenus() {
-        if (defenderMenu != null) {  //Clear the menus if they already exist
-            Game.getMenuList().remove(defenderMenu);
-            Game.getMenuList().remove(defenderWeaponMenu);
-            Game.getMenuList().remove(defenderStatusMenu);
-            Game.getMenuList().remove(defenderBattleMenu);
-        }
-        MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
+        clearDefenderMenus();
+        MenuAction sa = getSAAction();
+        initializeDefenderMenus();
 
-        if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
+        defenderMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(defender.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
+        if (defender.getMapFaceSprite() != null) {
+            defenderMenu.addElement(new MenuElement(sa, sa, defender.getMapFaceSprite(), false, 7, 13));
+        }
+        if (defender.getWeapon(0) != null) {
+           addWeaponMenuOptions(defenderWeaponMenu, defender, sa);
+        }
+        if (defender.getArmor() != null) {
+        	addArmorMenuOptions(defenderStatusMenu, defender, sa);
+        }
+        addDefaultMenuOptions(defenderStatusMenu, defender, sa);
+        addDefenderBattleMenuOptions(sa);
+    }
+
+	private void initializeDefenderMenus() {
+		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
             defenderMenu = new Menu(46, 52, 194, 108);
             defenderWeaponMenu = new Menu(30, 76, 210, 32);
             defenderStatusMenu = new Menu(131, 16, 63, 144);
@@ -584,99 +622,93 @@ public class BattleProcessor {
             defenderStatusMenu = new Menu(131, 16, 46, 144);
             defenderBattleMenu = new Menu(131, 16, 46, 128);
         }
+	}
 
-        defenderMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(defender.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
-        if (defender.getMapFaceSprite() != null) {
-            defenderMenu.addElement(new MenuElement(sa, sa, defender.getMapFaceSprite(), false, 7, 13));
+	private void clearDefenderMenus() {
+		if (defenderMenu != null) {  //Clear the menus if they already exist
+            Game.getMenuList().remove(defenderMenu);
+            Game.getMenuList().remove(defenderWeaponMenu);
+            Game.getMenuList().remove(defenderStatusMenu);
+            Game.getMenuList().remove(defenderBattleMenu);
         }
-        if (defender.getWeapon(0) != null) {
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, defender.getWeapon(0).getIcon(), false, 7, 7));
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("D:" + defender.getWeapon(0).getDamage(), Font.BASICFONT)).getSprite(), false, 5, 24));
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("P:" + defender.getWeapon(0).getPierce(), Font.BASICFONT)).getSprite(), false, 5, 30));
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("A:" + defender.getWeapon(0).getAccuracy(), Font.BASICFONT)).getSprite(), false, 5, 36));
-        }
-        if (defender.getArmor() != null) {
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, defender.getArmor().getIcon(), false, 7, 42));
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("R:" + defender.getArmor().getResilience(), Font.BASICFONT)).getSprite(), false, 5, 58));
-            defenderWeaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("E:" + defender.getArmor().getEncumberance(), Font.BASICFONT)).getSprite(), false, 5, 64));
-        }
-        defenderStatusMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:" + defender.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7, 5));
-        defenderStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 12, SpriteSheet.HEALTHBAR)), false, 32, 5));
-        defenderStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite((int) ((92 * defender.getCurrentHp()) / defender.getHp()), 5, 1, 18, SpriteSheet.HEALTHBAR)), false, 32, 5));
-        defenderStatusMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 24, SpriteSheet.HEALTHBAR)), false, 32, 5));
+	}
 
-        defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + defenderDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
+	private void addDefenderBattleMenuOptions(MenuAction sa) {
+		defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + defenderDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
         defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("AC: " + Math.round(accDefender), Font.BASICFONT)).getSprite(), false, 47, 5));
         defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("CR: " + Math.round(critDefender), Font.BASICFONT)).getSprite(), false, 87, 5));
-    }
+	}
 
     public void drawAttackerExpMenu(int gain) {
         attackerExpOpen = true;
         if (attackerExpMenu != null) {
             attackerExpMenu.removeMenu();
         }
-        attackerExpMenu = new Menu(114, 50, 63, 30);
+        createAttackerMenu(gain);
 
-        MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
+        MenuCursor.getMenuCursor().setElementIndex(0);
+        MenuCursor.setActiveMenu(attackerExpMenu);
+    }
 
-        MenuAction close = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                attackerExpMenu.removeMenu();
-                attackerExpOpen = false;
-                if (defenderExpMenu != null) {
-                    defenderExpMenu.removeMenu();
-                }
-                defenderExpOpen = false;
-            }
-        };
+	private void createAttackerMenu(int gain) {
+		attackerExpMenu = new Menu(114, 50, 63, 30);
+
+        MenuAction sa = getSAAction();
+
+        MenuAction close = getCloseAction();
 
         attackerExpMenu.setEscapeAction(close);
 
         int newExp = (attacker.getExp() + gain) % Unit.EXP_CAP;
         int levelGain = (int) (attacker.getExp() + gain) / Unit.EXP_CAP;
 
-        attackerExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(attacker.getName(), Font.BASICFONT).getSprite(), true, 7, 7));
+        addElementsToAttackerMenu(gain, sa, close, newExp, levelGain);
+	}
+
+	private void addElementsToAttackerMenu(int gain, MenuAction sa,
+			MenuAction close, int newExp, int levelGain) {
+		attackerExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(attacker.getName(), Font.BASICFONT).getSprite(), true, 7, 7));
         attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("OLD EXP: " + attacker.getExp(), Font.BASICFONT).getSprite(), false, 7, 13));
         attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("        +" + gain, Font.BASICFONT).getSprite(), false, 7, 19));
         attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
         attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + attacker.getLevel() + " -> " + (attacker.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));
         attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false, 7, 37));
+	}
 
-        MenuCursor.getMenuCursor().setElementIndex(0);
-        MenuCursor.setActiveMenu(attackerExpMenu);
-    }
+	private MenuAction getCloseAction() {
+		MenuAction close = new MenuAction() {
+            @Override
+            public void execute(MenuElement caller) {
+            	if (attackerExpMenu != null) {
+            		attackerExpMenu.removeMenu();
+            	}
+                if (defenderExpMenu != null) {
+                    defenderExpMenu.removeMenu();
+                }
+                attackerExpOpen = false;
+                defenderExpOpen = false;
+            }
+        };
+		return close;
+	}
 
     public void drawDefenderExpMenu(int gain) {
         defenderExpOpen = true;
         if (defenderExpMenu != null) {
             defenderExpMenu.removeMenu();
         }
-        defenderExpMenu = new Menu(114, 50, 63, 80);
+        getDefenderMenu(gain);
 
-        MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
+        MenuCursor.getMenuCursor().setElementIndex(0);
+        MenuCursor.setActiveMenu(defenderExpMenu);
+    }
 
-        MenuAction close = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                defenderExpMenu.removeMenu();
-                defenderExpOpen = false;
-                if (attackerExpMenu != null) {
-                    attackerExpMenu.removeMenu();
-                }
-                attackerExpOpen = false;
-            }
-        };
+	private void getDefenderMenu(int gain) {
+		defenderExpMenu = new Menu(114, 50, 63, 80);
+
+        MenuAction sa = getSAAction();
+       
+        MenuAction close = getCloseAction();
 
         defenderExpMenu.setEscapeAction(close);
 
@@ -689,10 +721,17 @@ public class BattleProcessor {
         defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
         defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + defender.getLevel() + " -> " + (defender.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));
         defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false, 7, 37));
+	}
 
-        MenuCursor.getMenuCursor().setElementIndex(0);
-        MenuCursor.setActiveMenu(defenderExpMenu);
-    }
+	private MenuAction getSAAction() {
+		MenuAction sa = new MenuAction() {
+            @Override
+            public void execute(MenuElement caller) {
+                //Do nothing.
+            }
+        };
+		return sa;
+	}
 
     public int calculateAttackDamage(Unit attacker, Unit defender) {
         int wepatk;
@@ -744,33 +783,7 @@ public class BattleProcessor {
         if ((2 * calculateAttackDamage(opponent, unit)) < unit.getCurrentHp()) {
             return 0;
         } else {
-            int numAttacksUnit, numAttacksOpponent;
-            if (unit.getWeapon(0).getRange() >= (Math.abs(unit.getMapx() - opponent.
-                    getMapx()) + Math.abs(unit.getMapy() - opponent.getMapy()))) {
-                if (calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3) {
-                    numAttacksUnit = 2;
-                } else {
-                    numAttacksUnit = 1;
-                }
-                if (numAttacksUnit > unit.getWeapon(0).getUses()) {
-                    numAttacksUnit = unit.getWeapon(0).getUses();
-                }
-            } else {
-                numAttacksUnit = 0;
-            }
-            if (opponent.getWeapon(0).getRange() >= (Math.abs(opponent.getMapx() - unit.
-                    getMapx()) + Math.abs(opponent.getMapy() - unit.getMapy()))) {
-                if (calculateAttackSpeed(opponent) >= calculateAttackSpeed(unit) + 3) {
-                    numAttacksOpponent = 2;
-                } else {
-                    numAttacksOpponent = 1;
-                }
-                if (numAttacksOpponent > opponent.getWeapon(0).getUses()) {
-                    numAttacksOpponent = opponent.getWeapon(0).getUses();
-                }
-            } else {
-                numAttacksOpponent = 0;
-            }
+            int numAttacksUnit = getNumberOfAttacks(unit, opponent);
             double opponentSurvival = 1;
             if (calculateAttackDamage(opponent, unit) >= unit.getCurrentHp()) {
                 //One hit will kill
@@ -800,6 +813,36 @@ public class BattleProcessor {
                     * opponentSurvival;//Unit does not hit twice, opponent does
         }
     }
+
+	private int getNumberOfAttacks(Unit unit, Unit opponent) {
+		int numAttacksUnit, numAttacksOpponent;
+		if (unit.getWeapon(0).getRange() >= (Math.abs(unit.getMapx() - opponent.
+		        getMapx()) + Math.abs(unit.getMapy() - opponent.getMapy()))) {
+		    numAttacksUnit = getAttackUnits(unit, opponent);
+		} else {
+		    numAttacksUnit = 0;
+		}
+		if (opponent.getWeapon(0).getRange() >= (Math.abs(opponent.getMapx() - unit.
+		        getMapx()) + Math.abs(opponent.getMapy() - unit.getMapy()))) {
+		    numAttacksOpponent = getAttackUnits(opponent, unit);
+		} else {
+		    numAttacksOpponent = 0;
+		}
+		return numAttacksUnit;
+	}
+
+	private int getAttackUnits(Unit unit, Unit opponent) {
+		int numAttacksUnit;
+		if (calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3) {
+		    numAttacksUnit = 2;
+		} else {
+		    numAttacksUnit = 1;
+		}
+		if (numAttacksUnit > unit.getWeapon(0).getUses()) {
+		    numAttacksUnit = unit.getWeapon(0).getUses();
+		}
+		return numAttacksUnit;
+	}
 
     public int calculateExpGain(Unit attacker, Unit defender, int damageDealt, boolean defeated) {
         double expCoeff = defender.getLevel() == attacker.getLevel() ? 1 : (Math

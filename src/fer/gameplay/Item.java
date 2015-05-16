@@ -144,28 +144,36 @@ public class Item {
     public void drawInfoMenu(int x, int y, Menu callingMenu, boolean active) {
         infoMenu = new Menu(200, 50, x, y);
 
-        MenuAction nil = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) { //Do nothing
-            }
-        };
+        MenuAction nil = getNilMenu();
         
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(name, Font.BASICFONT).getSprite(), false, 23, 7));
         infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
-        String[] lines = Menu.wrapText(description, 34);
-        for (int i = 0; i < Math.min(4, lines.length); i++) {
-            infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(lines[i], Font.BASICFONT).getSprite(), false, 23, 13 + (6* i)));
-        }
+        addElementsForDescription(nil);
         
-        switch (type) {
-            case ("HEAL"):
-                infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("-Heals for " + magnitude + " points.", Font.BASICFONT).getSprite(), false, 23, 37));
-        }
+        if(type.equalsIgnoreCase("HEAL"))
+            infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("-Heals for " + magnitude + " points.", Font.BASICFONT).getSprite(), false, 23, 37));
+
         if (active) {
             MenuCursor.getMenuCursor().setElementIndex(0);
             MenuCursor.setActiveMenu(infoMenu);
         }
     }
+
+	private void addElementsForDescription(MenuAction nil) {
+		String[] lines = Menu.wrapText(description, 34);
+        for (int i = 0; i < Math.min(4, lines.length); i++) {
+            infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(lines[i], Font.BASICFONT).getSprite(), false, 23, 13 + (6* i)));
+        }
+	}
+
+	private MenuAction getNilMenu() {
+		MenuAction nil = new MenuAction() {
+            @Override
+            public void execute(MenuElement caller) { //Do nothing
+            }
+        };
+		return nil;
+	}
     
     public boolean infoMenuDrawn() {
         return infoMenu != null;
