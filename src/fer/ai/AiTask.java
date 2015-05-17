@@ -114,22 +114,22 @@ public class AiTask {
 				System.out.println("Can attack");
 				suitability += 10;
 				System.out.println("Attack damage attacker: "
-						+ (bp.calculateAttackDamage(unit, Game.getCurrentMap()
-								.getUnit(getTargetIndex()))));
+						+ bp.calculateAttackDamage(unit, Game.getCurrentMap()
+								.getUnit(getTargetIndex())));
 				System.out.println("Attack damage defender: "
-						+ (bp.calculateAttackDamage(Game.getCurrentMap()
-								.getUnit(getTargetIndex()), unit)));
+						+ bp.calculateAttackDamage(Game.getCurrentMap()
+								.getUnit(getTargetIndex()), unit));
 				System.out
 						.println("DAMAGE RATIO: "
 								+ (float) bp.calculateAttackDamage(
 										unit,
 										Game.getCurrentMap().getUnit(
-												getTargetIndex())) / (float) bp
+												getTargetIndex())) / bp
 										.calculateAttackDamage(
 												Game.getCurrentMap().getUnit(
 														getTargetIndex()), unit));
 				if ((float) bp.calculateAttackDamage(unit, Game
-						.getCurrentMap().getUnit(getTargetIndex())) / (float) bp
+						.getCurrentMap().getUnit(getTargetIndex())) / bp
 						.calculateAttackDamage(
 								Game.getCurrentMap().getUnit(getTargetIndex()),
 								unit) >= tolerableDamageRatio) {

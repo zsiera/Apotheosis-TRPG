@@ -28,19 +28,23 @@ public class MapGoal {
 		}
 	}
 
-	// The goal's basic type, used to determine what parameters are checked for
-	// completion
+	/**
+	 * The goal's basic type, used to determine what parameters are checked for
+	 * completion.
+	 */
 	private GoalType type;
-	// The index of the faction holding this goal
+	/** The index of the faction holding this goal. */
 	private int faction;
-	// An array of unit indexes holding either the units to be eliminated, the
-	// units to be defended, or the units that must reach the specified tile
+	/**
+	 * An array of unit indexes holding either the units to be eliminated, the
+	 * units to be defended, or the units that must reach the specified tile.
+	 */
 	private int[] targets;
-	// The number of turns to survive for or the turn limit for the goal
+	/** The number of turns to survive for or the turn limit for the goal. */
 	private int turns;
-	// The x-coordinate of the tile to be reached
+	/** The x-coordinate of the tile to be reached. */
 	private int tileX;
-	// The y-coordinate of the tile to be reached
+	/** The y-coordinate of the tile to be reached. */
 	private int tileY;
 
 	public MapGoal(GoalType type, int faction) {
@@ -50,16 +54,16 @@ public class MapGoal {
 
 	public MapGoal(GoalData data) {
 		switch (data.getType()) {
-		case ("REACH TILE"):
+		case "REACH TILE":
 			type = GoalType.REACH_TILE;
 			tileX = data.getMapx();
 			tileY = data.getMapy();
 			break;
-		case ("KILL TARGET"):
+		case "KILL TARGET":
 			type = GoalType.ELIMINATE_TARGETS;
 			targets = data.getTargets();
 			break;
-		case ("DEFEND TARGET"):
+		case "DEFEND TARGET":
 			type = GoalType.DEFEND_TARGETS;
 			targets = data.getTargets();
 			turns = data.getTurns();
@@ -72,34 +76,28 @@ public class MapGoal {
 	}
 
 	public boolean isMet(Map map) { // TODO: Update to check turns
+		boolean completed = true;
 		if (type == GoalType.ELIMINATE_TARGETS) {
-			boolean completed = true;
 			for (int i = 0; i < targets.length; i++) {
-				completed &= (map.getUnit(targets[i]).isDead());
+				completed &= map.getUnit(targets[i]).isDead();
 			}
-			return completed;
 		} else if (type == GoalType.DEFEND_TARGETS) {
-			boolean completed = true;
 			for (int i = 0; i < targets.length; i++) {
-				completed &= (!map.getUnit(targets[i]).isDead());
+				completed &= !map.getUnit(targets[i]).isDead();
 			}
-			return completed;
 		} else if (type == GoalType.ROUTE_ENEMY) {
-			boolean completed = true;
 			for (int i = 0; i < map.getUnits().length; i++) {
 				if (map.getUnit(i).getFaction() != faction) {
 					completed &= map.getUnit(i).isDead();
 				}
 			}
-			return completed;
 		} else { // GoalType.REACH_TILE
-			boolean completed = true;
 			for (int i = 0; i < targets.length; i++) {
-				completed &= ((map.getUnit(targets[i]).getMapx() == tileX) && (map
-						.getUnit(targets[i]).getMapy() == tileY));
+				completed &= map.getUnit(targets[i]).getMapx() == tileX && map
+						.getUnit(targets[i]).getMapy() == tileY;
 			}
-			return completed;
 		}
+		return completed;
 	}
 
 	public int getFaction() {

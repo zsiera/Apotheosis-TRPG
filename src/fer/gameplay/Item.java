@@ -30,18 +30,18 @@ public class Item {
 		used = iAction;
 	}
 
-	/*
-	 * public Item(int typeindex) { switch (typeindex) { case 0: //Morphine Hypo
-	 * icon = new Sprite(16, 16, 1, 1, SpriteSheet.ITEMICONSET); name =
-	 * "MORPHINE H"; used = new MenuAction() {
-	 * 
-	 * @Override public void execute(MenuElement caller) { if
-	 * (cursor.getSelectedUnit().getCurrentHp() >= 5) {
-	 * cursor.getSelectedUnit().
-	 * setCurrentHp(cursor.getSelectedUnit().getCurrentHp() - 5); } else {
-	 * cursor.getSelectedUnit().setCurrentHp(0); } } }; maxUses = 1; uses =
-	 * maxUses; consumable = true; } }
-	 */
+//	/**
+//	 * Public Item(int typeindex) { switch (typeindex) { case 0: //Morphine Hypo
+//	 * icon = new Sprite(16, 16, 1, 1, SpriteSheet.ITEMICONSET); name =
+//	 * "MORPHINE H"; used = new MenuAction() {
+//	 * 
+//	 * @Override public void execute(MenuElement caller) { if
+//	 * (cursor.getSelectedUnit().getCurrentHp() >= 5) {
+//	 * cursor.getSelectedUnit().
+//	 * setCurrentHp(cursor.getSelectedUnit().getCurrentHp() - 5); } else {
+//	 * cursor.getSelectedUnit().setCurrentHp(0); } } }; maxUses = 1; uses =
+//	 * maxUses; consumable = true; } }
+//	 */
 	public Item(int typeindex) {
 		ItemData data = Game.getItemData(typeindex);
 		name = data.getName();
@@ -51,7 +51,7 @@ public class Item {
 		uses = maxUses;
 		type = data.getActionName();
 		switch (type) {
-		case ("HEAL"):
+		case "HEAL":
 			magnitude = data.getHeal();
 			used = new MenuAction() {
 				@Override
@@ -145,10 +145,11 @@ public class Item {
 		infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
 		infoMenu.addElementsForDescription(nil, description);
 
-		if (type.equalsIgnoreCase("HEAL"))
+		if ("HEAL".equalsIgnoreCase(type)) {
 			infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(
 					"-Heals for " + magnitude + " points.", Font.BASICFONT)
 					.getSprite(), false, 23, 37));
+		}
 
 		if (active) {
 			MenuCursor.getMenuCursor().setElementIndex(0);
@@ -157,12 +158,11 @@ public class Item {
 	}
 
 	private MenuAction getNilMenu() {
-		MenuAction nil = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) { // Do nothing
 			}
 		};
-		return nil;
 	}
 
 	public boolean infoMenuDrawn() {

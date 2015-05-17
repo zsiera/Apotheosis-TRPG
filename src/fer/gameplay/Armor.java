@@ -15,11 +15,11 @@ public class Armor {
 	private int resilience, encumberance, price;
 
 	/*
-	 * public Armor(int typeindex) { switch(typeindex) { case 0: //Leather
-	 * Bodyarmor icon = new Sprite(16, 16, 1, 1, SpriteSheet.ARMORICONSET); name
-	 * = "Leather BA";
-	 * 
-	 * resilience = 5; encumberance = 2; } }
+	 Public Armor(int typeindex) { switch(typeindex) { case 0: //Leather
+	 Bodyarmor icon = new Sprite(16, 16, 1, 1, SpriteSheet.ARMORICONSET); name
+	  = "Leather BA";
+	  
+	  resilience = 5; encumberance = 2; } }
 	 */
 
 	public Armor(int typeindex) {

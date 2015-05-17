@@ -3,8 +3,8 @@ package fer.gameplay;
 import fer.Unit;
 
 public class DamageDealt {
-	private int attackerDamageDealt = 0;
-	private int defenderDamageDealt = 0;
+	private int attackerDamageDealt;
+	private int defenderDamageDealt;
 
 	public int getAttackerDamageDealt() {
 		return attackerDamageDealt;

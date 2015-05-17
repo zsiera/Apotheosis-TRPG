@@ -79,13 +79,13 @@ public abstract class AttackerDefenderMenu {
 		defaultMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:"
 				+ unit.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7,
 				5));
-		defaultMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1,
-				12, SpriteSheet.HEALTHBAR)), false, 32, 5));
-		defaultMenu.addElement(new MenuElement(sa, sa, (new Sprite(
+		defaultMenu.addElement(new MenuElement(sa, sa, new Sprite(92, 5, 1,
+				12, SpriteSheet.HEALTHBAR), false, 32, 5));
+		defaultMenu.addElement(new MenuElement(sa, sa, new Sprite(
 				(int) ((92 * unit.getCurrentHp()) / unit.getHp()), 5, 1, 18,
-				SpriteSheet.HEALTHBAR)), false, 32, 5));
-		defaultMenu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1,
-				24, SpriteSheet.HEALTHBAR)), false, 32, 5));
+				SpriteSheet.HEALTHBAR), false, 32, 5));
+		defaultMenu.addElement(new MenuElement(sa, sa, new Sprite(92, 5, 1,
+				24, SpriteSheet.HEALTHBAR), false, 32, 5));
 	}
 
 	protected void addWeaponMenuOptions(Unit unit, MenuAction sa) {
@@ -114,12 +114,11 @@ public abstract class AttackerDefenderMenu {
 	}
 
 	protected MenuAction getSAAction() {
-		MenuAction sa = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) {
 				// Do nothing.
 			}
 		};
-		return sa;
 	}
 }

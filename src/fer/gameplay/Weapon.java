@@ -20,19 +20,18 @@ public class Weapon {
 	private boolean melee;
 	private int range, damage, pierce, critical, accuracy, weight, uses,
 			maxUses, price;
-	// For ranged weapons, weight is replaced (in the UI) with rate of fire.
+	/** For ranged weapons, weight is replaced (in the UI) with rate of fire. */
 	private Menu infoMenu;
 
-	/*
-	 * public Weapon(int typeindex) { switch (typeindex) { case 0: //ACR M01
-	 * name = "ACR M01"; icon = new Sprite(16, 16, 1, 1,
-	 * SpriteSheet.WEAPONICONSET);
-	 * 
-	 * melee = false; range = 3; damage = 10; pierce = 2; critical = 0; accuracy
-	 * = 90; weight = 3;
-	 * 
-	 * maxUses = 45; uses = maxUses; } }
-	 */
+	// Public Weapon(int typeindex) { switch (typeindex) { case 0: //ACR M01
+	// name = "ACR M01"; icon = new Sprite(16, 16, 1, 1,
+	// SpriteSheet.WEAPONICONSET);
+
+	// melee = false; range = 3; damage = 10; pierce = 2; critical = 0; accuracy
+	// = 90; weight = 3;
+	//
+	// maxUses = 45; uses = maxUses; } }
+	 
 	public Weapon(int typeindex) {
 		WeaponData data = Game.getWeaponData(typeindex);
 		name = data.getName();
@@ -153,12 +152,11 @@ public class Weapon {
 	}
 
 	private MenuAction getNilAction() {
-		MenuAction nil = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) { // Do nothing
 			}
 		};
-		return nil;
 	}
 
 	private void addElements(MenuAction nil) {
@@ -169,7 +167,7 @@ public class Weapon {
 		for (int i = 0; i < Math.min(3, lines.length); i++) {
 			infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(
 					lines[i], Font.BASICFONT).getSprite(), false, 23,
-					13 + (6 * i)));
+					13 + 6 * i));
 		}
 		infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("RNG: "
 				+ range, Font.BASICFONT).getSprite(), false, 7, 31));

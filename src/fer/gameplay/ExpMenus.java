@@ -11,8 +11,8 @@ import fer.ui.Font;
 public class ExpMenus {
 	private Menu attackerExpMenu;
 	private Menu defenderExpMenu;
-	private boolean defenderExpOpen = false;
-	private boolean attackerExpOpen = false;
+	private boolean defenderExpOpen;
+	private boolean attackerExpOpen;
 
 	public Menu getAttackerExpMenu() {
 		return attackerExpMenu;
@@ -89,7 +89,7 @@ public class ExpMenus {
 	}
 
 	private MenuAction getCloseAttackerAction() {
-		MenuAction close = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) {
 				attackerExpMenu.removeMenu();
@@ -100,11 +100,10 @@ public class ExpMenus {
 				defenderExpOpen = false;
 			}
 		};
-		return close;
 	}
 
 	private MenuAction getCloseDefenderAction() {
-		MenuAction close = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) {
 				defenderExpMenu.removeMenu();
@@ -115,16 +114,14 @@ public class ExpMenus {
 				attackerExpOpen = false;
 			}
 		};
-		return close;
 	}
 
 	private MenuAction getSAAction() {
-		MenuAction sa = new MenuAction() {
+		return new MenuAction() {
 			@Override
 			public void execute(MenuElement caller) {
 				// Do nothing.
 			}
 		};
-		return sa;
 	}
 }

@@ -29,33 +29,37 @@ public class BattleProcessor {
 	private Effect damageEffect;
 	private Effect criticalEffect;
 	private boolean inCombat;
-	private int stage = 0;
-	private int currentAttack = 0;
-	private int updates = 0;
+	private int stage;
+	private int currentAttack;
+	private int updates;
 	private boolean[] missAttacker;
 	private boolean[] missDefender;
 	private boolean[] criticalAttacker;
 	private boolean[] criticalDefender;
 	private boolean melee;
-	private int numAttacksAttacker = 0;
-	private int numAttacksDefender = 0;
-	private int attackerDamage = 0;
-	private int defenderDamage = 0;
-	private int attackerLevelsGained = 0;
-	private int defenderLevelsGained = 0;
-	private int levelIterations = 0;
-	private float accAttacker = 0;
-	private float accDefender = 0;
-	private float critAttacker = 0;
-	private float critDefender = 0;
-	// Multipurpose boolean variables to mark when animations are completed.
+	private int numAttacksAttacker;
+	private int numAttacksDefender;
+	private int attackerDamage;
+	private int defenderDamage;
+	private int attackerLevelsGained;
+	private int defenderLevelsGained;
+	private int levelIterations;
+	private float accAttacker;
+	private float accDefender;
+	private float critAttacker;
+	private float critDefender;
+	/** Multipurpose boolean variables to mark when animations are completed. */
 	private boolean attackerComplete;
 	private boolean defenderComplete;
-	// Integer corresponding to the directional relationship of the defender to
-	// the attacker. 0 = Above, 1 = Below, 2 = Left, 3 = Right
+	/**
+	 * Integer corresponding to the directional relationship of the defender to
+	 * the attacker. 0 = Above, 1 = Below, 2 = Left, 3 = Right
+	 */
 	private int directionAttacker;
-	// Integer corresponding to the directional relationship of the attacker to
-	// the defender.
+	/**
+	 * Integer corresponding to the directional relationship of the attacker to
+	 * the defender.
+	 */
 	private int directionDefender;
 
 	public void startBattle(Unit iAttacker, Unit iDefender) {
@@ -73,17 +77,15 @@ public class BattleProcessor {
 				directionAttacker = 3;
 				directionDefender = 2;
 			}
-		} else { // Otherwise, face up or down.
-			if (defender.getMapy() < attacker.getMapy()) {
-				directionAttacker = 0;
-				directionDefender = 1;
-			} else {
-				directionAttacker = 1;
-				directionDefender = 0; // If, by some odd glitch, the attacker
-										// and defender
-				// occupy the same tile, the attacker will face down, and the
-				// defender up.
-			}
+		} else if (defender.getMapy() < attacker.getMapy()) {
+			directionAttacker = 0;
+			directionDefender = 1;
+		} else {
+			directionAttacker = 1;
+			directionDefender = 0; // If, by some odd glitch, the attacker
+									// and defender
+			// occupy the same tile, the attacker will face down, and the
+			// defender up.
 		}
 
 		// Calculate the number of attacks (Based on FE:PR formula at the
@@ -97,9 +99,9 @@ public class BattleProcessor {
 		if (numAttacksAttacker > attacker.getWeapon(0).getUses()) {
 			numAttacksAttacker = attacker.getWeapon(0).getUses();
 		}
-		if (defender.getWeapon(0).getRange() >= (Math.abs(defender.getMapx()
+		if (defender.getWeapon(0).getRange() >= Math.abs(defender.getMapx()
 				- attacker.getMapx()) + Math.abs(defender.getMapy()
-				- attacker.getMapy()))) {
+				- attacker.getMapy())) {
 			if (Attack.calculateAttackSpeed(defender) >= Attack
 					.calculateAttackSpeed(attacker) + 3) {
 				numAttacksDefender = 2;
@@ -119,20 +121,12 @@ public class BattleProcessor {
 		accAttacker = Attack.calculateAttackHitChance(attacker, defender);
 		for (int i = 0; i < missAttacker.length; i++) {
 			float num = random.nextFloat() * 100;
-			if (num <= accAttacker) { // Hit
-				missAttacker[i] = false;
-			} else {
-				missAttacker[i] = true;
-			}
+			missAttacker[i] = num > accAttacker;
 		}
 		accDefender = Attack.calculateAttackHitChance(defender, attacker);
 		for (int i = 0; i < missDefender.length; i++) {
 			float num = random.nextFloat() * 100;
-			if (num <= accDefender) { // Hit
-				missDefender[i] = false;
-			} else {
-				missDefender[i] = true;
-			}
+			missDefender[i] = num > accDefender;
 		}
 
 		// Calculate if attack is critical
@@ -141,20 +135,12 @@ public class BattleProcessor {
 		critAttacker = attacker.calculateCriticalChance(defender);
 		for (int i = 0; i < criticalAttacker.length; i++) {
 			float num = random.nextFloat() * 100;
-			if (num <= critAttacker && !missAttacker[i]) {
-				criticalAttacker[i] = true;
-			} else {
-				criticalAttacker[i] = false;
-			}
+			criticalAttacker[i] = num <= critAttacker && !missAttacker[i];
 		}
 		critDefender = defender.calculateCriticalChance(attacker);
 		for (int i = 0; i < criticalDefender.length; i++) {
 			float num = random.nextFloat() * 100;
-			if (num <= critDefender && !missDefender[i]) {
-				criticalDefender[i] = true;
-			} else {
-				criticalDefender[i] = false;
-			}
+			criticalDefender[i] = num <= critDefender && !missDefender[i];
 		}
 
 		// Calculate attack damage
@@ -195,7 +181,7 @@ public class BattleProcessor {
 					defender.setActiveMapAnimation(18 + directionDefender);
 					damageEffect = new Effect(new Animation(1,
 							new Sprite[] { defender.getMapSprite() }),
-							(new int[] { 128 }), (new int[] { 0xff0000 }),
+							new int[] { 128 }, new int[] { 0xff0000 },
 							(defender.getMapx() - cursor.getMapScrollx())
 									* Tile.TILE_WIDTH - 4,
 							(defender.getMapy() - cursor.getMapScrolly())
@@ -251,7 +237,7 @@ public class BattleProcessor {
 					Game.getEffectList().remove(damageEffect);
 					damageEffect = new Effect(new Animation(1,
 							new Sprite[] { defender.getMapSprite() }),
-							(new int[] { 128 }), (new int[] { 0xff0000 }),
+							new int[] { 128 }, new int[] { 0xff0000 },
 							(defender.getMapx() - cursor.getMapScrollx())
 									* Tile.TILE_WIDTH - 4,
 							(defender.getMapy() - cursor.getMapScrolly())
@@ -272,7 +258,7 @@ public class BattleProcessor {
 			if (!missAttacker[currentAttack]) {
 				if (criticalAttacker[currentAttack]) {
 					defender.setCurrentHp(Math.max(defender.getCurrentHp()
-							- (attackerDamage * 3), 0));
+							- attackerDamage * 3, 0));
 					damageDealt.setAttackerDamageDealt(attackerDamage * 3);
 				} else {
 					defender.setCurrentHp(Math.max(defender.getCurrentHp()
@@ -322,7 +308,7 @@ public class BattleProcessor {
 					attacker.setActiveMapAnimation(18 + directionAttacker);
 					damageEffect = new Effect(new Animation(1,
 							new Sprite[] { attacker.getMapSprite() }),
-							(new int[] { 128 }), (new int[] { 0xff0000 }),
+							new int[] { 128 }, new int[] { 0xff0000 },
 							(attacker.getMapx() - cursor.getMapScrollx())
 									* Tile.TILE_WIDTH - 4,
 							(attacker.getMapy() - cursor.getMapScrolly())
@@ -378,7 +364,7 @@ public class BattleProcessor {
 					Game.getEffectList().remove(damageEffect);
 					damageEffect = new Effect(new Animation(1,
 							new Sprite[] { attacker.getMapSprite() }),
-							(new int[] { 128 }), (new int[] { 0xff0000 }),
+							new int[] { 128 }, new int[] { 0xff0000 },
 							(attacker.getMapx() - cursor.getMapScrollx())
 									* Tile.TILE_WIDTH - 4,
 							(attacker.getMapy() - cursor.getMapScrolly())
@@ -396,7 +382,7 @@ public class BattleProcessor {
 			if (!missDefender[currentAttack]) {
 				if (criticalDefender[currentAttack]) {
 					attacker.setCurrentHp(Math.max(attacker.getCurrentHp()
-							- (defenderDamage * 3), 0));
+							- defenderDamage * 3, 0));
 					damageDealt.setDefenderDamageDealt(defenderDamage * 3);
 				} else {
 					attacker.setCurrentHp(Math.max(attacker.getCurrentHp()
@@ -464,14 +450,14 @@ public class BattleProcessor {
 			}
 			break;
 		case 12:
-			attackerLevelsGained = (int) ((attacker.getExp() + attacker
+			attackerLevelsGained = (attacker.getExp() + attacker
 					.calculateExpGain(defender,
 							damageDealt.getAttackerDamageDealt(),
-							defender.isDead())) / Unit.EXP_CAP);
-			defenderLevelsGained = (int) ((defender.getExp() + defender
+							defender.isDead())) / Unit.EXP_CAP;
+			defenderLevelsGained = (defender.getExp() + defender
 					.calculateExpGain(attacker,
 							damageDealt.getDefenderDamageDealt(),
-							attacker.isDead())) / Unit.EXP_CAP);
+							attacker.isDead())) / Unit.EXP_CAP;
 			attacker.setExp((attacker.getExp() + attacker.calculateExpGain(
 					defender, damageDealt.getAttackerDamageDealt(),
 					defender.isDead()))
