@@ -61,11 +61,11 @@ public class AiPlayer implements Runnable {
 	private boolean canAttack;
 	private Unit attackTarget;
 
-	public AiPlayer(int faction) {
+	public AiPlayer(final int faction) {
 		this.faction = faction;
 	}
 
-	public void startTurn() {
+	public final void startTurn() {
 		cursor = Cursor.getCursor();
 		cursor.setVisible(false);
 		takingTurn = true;
@@ -81,7 +81,7 @@ public class AiPlayer implements Runnable {
 		aiThread.start();
 	}
 
-	public void update() {
+	public final void update() {
 		switch (stage) {
 		case 0: // Wait for the thread to finish task generation
 			if (tasksReady) {
@@ -192,17 +192,21 @@ public class AiPlayer implements Runnable {
 		case 8: // End the turn
 			endTurn();
 			break;
+		default:
+			break;
+		default:
+			break;
 		}
 		updates++;
 	}
 
-	public void endTurn() {
+	public final void endTurn() {
 		takingTurn = false;
 		cursor.setVisible(true);
 		cursor.endTurn();
 	}
 
-	public ArrayList<AiTask> generateAITasks() {
+	public final ArrayList<AiTask> generateAITasks() {
 		ArrayList<AiTask> tasks = new ArrayList<>();
 		// Generate attack unit tasks for every enemy unit on the map
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
@@ -222,7 +226,7 @@ public class AiPlayer implements Runnable {
 		return tasks;
 	}
 
-	public void prioritizeAITasks(ArrayList<AiTask> tasks) {
+	public final void prioritizeAITasks(final ArrayList<AiTask> tasks) {
 		BattleProcessor bp = Game.getBattleProcessor();
 		for (int i = 0; i < tasks.size(); i++) {
 			int priority = addPriority(tasks, bp, i);
@@ -230,7 +234,7 @@ public class AiPlayer implements Runnable {
 		}
 	}
 
-	private int addPriority(ArrayList<AiTask> tasks, BattleProcessor bp, int i) {
+	private int addPriority(final ArrayList<AiTask> tasks, final BattleProcessor bp, final int i) {
 		int priority = 1;
 		if (tasks.get(i).getType() == AiTask.TaskType.ATTACK_UNIT) {
 			ArrayList<Unit> attackableUnits = getAttackableUnits(Game
@@ -303,7 +307,7 @@ priority += 10;
 		return priority;
 	}
 
-	public void assignTasks(ArrayList<AiTask> tasks) {
+	public final void assignTasks(final ArrayList<AiTask> tasks) {
 		// Cycle through each task and find the most suitable unit. End when
 		// all units have been assigned a task or when tasks have been exhausted
 		int numUnits = 0;
@@ -368,7 +372,7 @@ priority += 10;
 		tasksAssigned = 0;
 	}
 
-	private int determineUnits(int numUnits) {
+	private int determineUnits(final int numUnits) {
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
 			if (!Game.getCurrentMap().getUnit(i).isDead()
 					&& Game.getCurrentMap().getUnit(i).getFaction() == faction) {
@@ -378,7 +382,7 @@ priority += 10;
 		return numUnits;
 	}
 
-	public void takeTurn() {
+	public final void takeTurn() {
 		System.out.println("Beginning turn");
 		ArrayList<AiTask> tasks = generateAITasks();
 		System.out.println("Prioritizing tasks");
@@ -387,7 +391,7 @@ priority += 10;
 		System.out.println("Sorting tasks");
 		Comparator comp = new Comparator() {
 			@Override
-			public int compare(Object o1, Object o2) {
+			public int compare(final Object o1, final Object o2) {
 				AiTask t1 = (AiTask) o1;
 				AiTask t2 = (AiTask) o2;
 				if (t1.getPriority() < t2.getPriority()) {
@@ -418,11 +422,11 @@ priority += 10;
 		}
 	}
 
-	public boolean shortestPathGreater(ArrayList<Tile> shortestPath, int range) {
+	public final boolean shortestPathGreater(final ArrayList<Tile> shortestPath, final int range) {
 		return shortestPath.size() >= range;
 	}
 
-	public int determineAverageX(int faction) {
+	public final int determineAverageX(final int faction) {
 		int xSum = 0;
 		int numUnits = 0;
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
@@ -434,7 +438,7 @@ priority += 10;
 		return Math.round(xSum / numUnits);
 	}
 
-	public int determineAverageY(int faction) {
+	public final int determineAverageY(final int faction) {
 		int ySum = 0;
 		int numUnits = 0;
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
@@ -446,11 +450,11 @@ priority += 10;
 		return Math.round(ySum / numUnits);
 	}
 
-	public boolean canAttack(Unit attacker, Unit defender) {
+	public final boolean canAttack(final Unit attacker, final Unit defender) {
 		return attacker.canAttack(defender, this);
 	}
 
-	public int attackerCanTraverse(Unit attacker, ArrayList<Tile> path) {
+	public final int attackerCanTraverse(final Unit attacker, final ArrayList<Tile> path) {
 		int pathCost = 0;
 		for (int i = path.size() - 1; i >= 0; i--) {
 			pathCost += attacker.getUnitClass().getMoveCost(
@@ -459,7 +463,7 @@ priority += 10;
 		return pathCost;
 	}
 
-	public int findLongestRange(Unit attacker) {
+	public final int findLongestRange(final Unit attacker) {
 		return attacker.findLongestRange();
 	}
 
@@ -476,7 +480,7 @@ priority += 10;
 	 * @return An arraylist of all the units the attacker may attack within a
 	 *         single turn
 	 */
-	public ArrayList<Unit> getAttackableUnits(Unit attacker) {
+	public final ArrayList<Unit> getAttackableUnits(final Unit attacker) {
 		PathFinder pf = new PathFinder();
 		ArrayList<Unit> attackableUnits = new ArrayList<>();
 		// Get all tiles that the attacker can reach within a turn
@@ -523,12 +527,12 @@ attackableTiles.get(j).getMapX()
 		return attackableUnits;
 	}
 
-	public boolean isTakingTurn() {
+	public final boolean isTakingTurn() {
 		return takingTurn;
 	}
 
 	@Override
-	public void run() {
+	public final void run() {
 		if (stage == 0) {
 			System.out.println("Beginning turn");
 			tasks = generateAITasks();
@@ -538,7 +542,7 @@ attackableTiles.get(j).getMapX()
 			System.out.println("Sorting tasks");
 			Comparator comp = new Comparator() {
 				@Override
-				public int compare(Object o1, Object o2) {
+				public int compare(final Object o1, final Object o2) {
 					AiTask t1 = (AiTask) o1;
 					AiTask t2 = (AiTask) o2;
 					if (t1.getPriority() < t2.getPriority()) {
@@ -720,7 +724,7 @@ attackableTiles.get(j).getMapX()
 		}
 	}
 
-	private int addTiles(Unit unit, ArrayList<Tile> shortestPath, int tile) {
+	private int addTiles(final Unit unit, final ArrayList<Tile> shortestPath, final int tile) {
 		while (Game.getCurrentMap().getUnitTile(
 				shortestPath.get(tile).getMapX()
 						+ shortestPath.get(tile).getMapY()

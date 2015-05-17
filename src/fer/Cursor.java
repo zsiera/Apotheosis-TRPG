@@ -73,19 +73,19 @@ public class Cursor {
 		return instance;
 	}
 
-	public void initializeCursorForBattle() {
+	public final void initializeCursorForBattle() {
 		setActive(false);
 		setVisible(false);
 	}
 
-	public void setCursorForVictory() {
+	public final void setCursorForVictory() {
 		setVisible(true);
 		setActive(true);
 		processVictory();
 	}
 
-	public void update(Map currentMap, int xQueue, int yQueue, boolean enter,
-			boolean escape, boolean tab) {
+	public final void update(final Map currentMap, final int xQueue, final int yQueue, final boolean enter,
+			final boolean escape, final boolean tab) {
 		if (Game.getCurrentMap().getPlayer(currentFactionTurn) == null) {
 			if (unitMenu != null) {
 				Game.getMenuList().remove(unitMenu);
@@ -259,7 +259,7 @@ public class Cursor {
 		}
 	}
 
-	public void centerCursor() {
+	public final void centerCursor() {
 		int xdif = (mapx - mapScrollx) - 8;
 		int ydif = (mapy - mapScrolly) - 5;
 		if (xdif < 0) {
@@ -280,7 +280,7 @@ public class Cursor {
 	 * Updates the current active faction and resets unit movement. If the
 	 * current faction is the last faction on the map, a new turn is begun.
 	 */
-	public void endTurn() {
+	public final void endTurn() {
 		System.out.println(Game.getCurrentMap().getNumFactions());
 		currentFactionTurn++;
 		if (currentFactionTurn >= Game.getCurrentMap().getNumFactions()) {
@@ -299,7 +299,7 @@ public class Cursor {
 	 * the victory menu and ends map processing. TODO: Add functionality for
 	 * other gamemodes, such as victory dialogue for campaign.
 	 */
-	public void processVictory() {
+	public final void processVictory() {
 		int faction = Game.getCurrentMap().checkVictory();
 		if (faction != -1) {
 			drawVictoryScreen(faction);
@@ -308,45 +308,45 @@ public class Cursor {
 		}
 	}
 
-	public int getMapX() {
+	public final int getMapX() {
 		return mapx;
 	}
 
-	public int getMapY() {
+	public final int getMapY() {
 		return mapy;
 	}
 
-	public void setMapLocation(int x, int y) {
+	public final void setMapLocation(final int x, final int y) {
 		mapx = x;
 		mapy = y;
 	}
 
-	public int getMapScrollx() {
+	public final int getMapScrollx() {
 		return mapScrollx;
 	}
 
-	public int getMapScrolly() {
+	public final int getMapScrolly() {
 		return mapScrolly;
 	}
 
-	public void setMapScroll(int x, int y) {
+	public final void setMapScroll(final int x, final int y) {
 		mapScrollx = x;
 		mapScrolly = y;
 	}
 
-	public Sprite getCursorSprite() {
+	public final Sprite getCursorSprite() {
 		return cursorSprite;
 	}
 
-	public Sprite getMoveOverlaySprite() {
+	public final Sprite getMoveOverlaySprite() {
 		return moveOverlaySprite;
 	}
 
-	public Sprite getAttackOverlaySprite() {
+	public final Sprite getAttackOverlaySprite() {
 		return attackOverlaySprite;
 	}
 
-	public void resetCursor() {
+	public final void resetCursor() {
 		mapx = 0;
 		mapy = 0;
 		mapScrollx = 0;
@@ -354,59 +354,59 @@ public class Cursor {
 		currentFactionTurn = 0;
 	}
 
-	public Unit getSelectedUnit() {
+	public final Unit getSelectedUnit() {
 		return selectedUnit;
 	}
 
-	public boolean movingUnit() {
+	public final boolean movingUnit() {
 		return movingUnit;
 	}
 
-	public boolean isAttacking() {
+	public final boolean isAttacking() {
 		return attacking;
 	}
 
-	public ArrayList<Tile> getMoveableTiles() {
+	public final ArrayList<Tile> getMoveableTiles() {
 		return moveableTiles;
 	}
 
-	public ArrayList<Tile> getAttackableTiles() {
+	public final ArrayList<Tile> getAttackableTiles() {
 		return attackableTiles;
 	}
 
-	public boolean showingMoveArrow() {
+	public final boolean showingMoveArrow() {
 		return showingMoveArrow;
 	}
 
-	public void setShowingMoveArrow(boolean showing) {
+	public final void setShowingMoveArrow(final boolean showing) {
 		showingMoveArrow = showing;
 	}
 
-	public void setArrowPath(ArrayList<Tile> arrowPath) {
+	public final void setArrowPath(final ArrayList<Tile> arrowPath) {
 		this.arrowPath = arrowPath;
 	}
 
-	public ArrayList<Tile> getArrowPath() {
+	public final ArrayList<Tile> getArrowPath() {
 		return arrowPath;
 	}
 
-	public boolean isActive() {
+	public final boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean iActive) {
+	public final void setActive(final boolean iActive) {
 		active = iActive;
 	}
 
-	public boolean isVisible() {
+	public final boolean isVisible() {
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
+	public final void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 
-	public void drawMovementMenu() {
+	public final void drawMovementMenu() {
 		Menu movementMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 4) {
 			movementMenu = new Menu(42, 26, (mapx - mapScrollx) * 16 - 42,
@@ -423,13 +423,13 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 		MenuAction move = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				int oldx = selectedUnit.getMapx();
 				int oldy = selectedUnit.getMapy();
 				selectedUnit.setMapx(mapx);
@@ -445,7 +445,7 @@ public class Cursor {
 		};
 		MenuAction cancel = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				menuCursor.setActive(false);
 				setActive(true);
@@ -462,7 +462,7 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
-	public void drawActionMenu(int oldx, int oldy) {
+	public final void drawActionMenu(final int oldx, final int oldy) {
 		Menu actionMenu;
 		final int fOldx = oldx;
 		final int fOldy = oldy;
@@ -481,13 +481,13 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 		MenuAction attack = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().setVisible(false);
 				menuCursor.setActive(false);
 				setActive(true);
@@ -500,14 +500,14 @@ public class Cursor {
 		};
 		MenuAction items = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				drawItemsMenu(fOldx, fOldy);
 			}
 		};
 		MenuAction wait = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				selectedUnit.setMoved(true);
 				selectedUnit.setActiveMapAnimation(0);
 				MenuCursor.getActiveMenu().removeMenu();
@@ -517,7 +517,7 @@ public class Cursor {
 		};
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				if (selectedUnit.getMapx() != fOldx
 						&& selectedUnit.getMapy() != fOldy) {
 					showingMoveArrow = true;
@@ -546,7 +546,7 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
-	public void drawMapMenu() {
+	public final void drawMapMenu() {
 		Menu mapMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 5) {
 			mapMenu = new Menu(54, 38, (mapx - mapScrollx) * 16 - 47,
@@ -563,20 +563,20 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 		MenuAction goals = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				drawGoalMenu();
 			}
 		};
 		MenuAction endTurn = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				endTurn();
 				MenuCursor.getActiveMenu().removeMenu();
 				menuCursor.setActive(false);
@@ -585,14 +585,14 @@ public class Cursor {
 		};
 		MenuAction options = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				drawOptionsMenu();
 			}
 		};
 		MenuAction cancel = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				menuCursor.setActive(false);
 				setActive(true);
@@ -613,7 +613,7 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
-	public void drawOptionsMenu() {
+	public final void drawOptionsMenu() {
 		final Menu optionsMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 5) {
 			optionsMenu = new Menu(57, 38, (mapx - mapScrollx) * 16 - 57,
@@ -630,20 +630,20 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 		MenuAction settings = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				Game.drawSettingsMenu(optionsMenu,
 						menuCursor.getElementIndex(), "");
 			}
 		};
 		MenuAction toTitle = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				terrainMenu.removeMenu();
 				turnMenu.removeMenu();
@@ -660,13 +660,13 @@ public class Cursor {
 		};
 		MenuAction exitGame = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				Game.getGame().stopSequence();
 			}
 		};
 		MenuAction cancel = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				drawMapMenu();
 			}
@@ -686,7 +686,7 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
-	public void drawUnitMenu(Unit unit) {
+	public final void drawUnitMenu(final Unit unit) {
 		if (mapx - mapScrollx > Map.MIN_MAP_WIDTH / 2) {
 			unitMenu = new Menu(74, 46, 0, 0);
 		} else {
@@ -694,7 +694,7 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
@@ -720,7 +720,7 @@ public class Cursor {
 		}
 	}
 
-	public void drawTerrainMenu(Tile tile) {
+	public final void drawTerrainMenu(final Tile tile) {
 		if (mapx - mapScrollx > Map.MIN_MAP_WIDTH / 2) {
 			terrainMenu = new Menu(62, 42, 0, 118);
 		} else {
@@ -728,7 +728,7 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
@@ -750,7 +750,7 @@ public class Cursor {
 						Font.BASICFONT)).getSprite(), false, 6, 25));
 	}
 
-	public void drawTurnMenu() {
+	public final void drawTurnMenu() {
 		if (mapy - mapScrolly > Map.MIN_MAP_HEIGHT / 2) {
 			turnMenu = new Menu(80, 26, 80, 0);
 		} else {
@@ -758,7 +758,7 @@ public class Cursor {
 		}
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
@@ -774,26 +774,26 @@ public class Cursor {
 				13));
 	}
 
-	public void drawItemsMenu(int oldx, int oldy) {
+	public final void drawItemsMenu(final int oldx, final int oldy) {
 		Menu itemsMenu = new Menu(183, 100, 28, 30);
 		final int fOldx = oldx;
 		final int fOldy = oldy;
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				drawActionMenu(fOldx, fOldy);
 			}
 		};
 		MenuAction equipWeapon = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				Weapon temp = selectedUnit.getWeapon((caller.getY() - 7) / 16);
 				selectedUnit.setWeapon((caller.getY() - 7) / 16,
 						selectedUnit.getWeapon(0));
@@ -804,7 +804,7 @@ public class Cursor {
 		};
 		MenuAction useItem = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				selectedUnit.getItem((caller.getY() - 7) / 16).getUsedAction()
 						.execute(caller);
 				if (selectedUnit.getItem((caller.getY() - 7) / 16)
@@ -947,18 +947,18 @@ public class Cursor {
 		menuCursor.setElementIndex(1);
 	}
 
-	public void drawStatusWindowStats() {
+	public final void drawStatusWindowStats() {
 		Menu statusMenuStats = new Menu(220, 140, 10, 10);
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 		MenuAction exit = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 			}
 		};
@@ -970,18 +970,18 @@ public class Cursor {
 	public void drawStatusWindowInventory() {
 	}
 
-	public void drawGoalMenu() {
+	public final void drawGoalMenu() {
 		Menu goalMenu = new Menu(100, 100, 70, 30);
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 		MenuAction exit = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				goalMenuFaction = 0;
 				MenuCursor.getActiveMenu().removeMenu();
 				menuCursor.setActive(false);
@@ -990,7 +990,7 @@ public class Cursor {
 		};
 		MenuAction left = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				goalMenuFaction--;
 				if (goalMenuFaction < 0) {
 					goalMenuFaction = Game.getCurrentMap().getNumFactions() - 1;
@@ -1001,7 +1001,7 @@ public class Cursor {
 		};
 		MenuAction right = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				goalMenuFaction++;
 				if (goalMenuFaction >= Game.getCurrentMap().getNumFactions()) {
 					goalMenuFaction = 0;
@@ -1132,18 +1132,18 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
-	public void drawVictoryScreen(int faction) {
+	public final void drawVictoryScreen(final int faction) {
 		Menu victoryMenu = new Menu(220, 140, 10, 10);
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 		MenuAction toTitle = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				MenuCursor.getActiveMenu().removeMenu();
 				if (terrainMenu != null) {
 					terrainMenu.removeMenu();

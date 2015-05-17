@@ -6,24 +6,24 @@ public class DamageDealt {
 	private int attackerDamageDealt;
 	private int defenderDamageDealt;
 
-	public int getAttackerDamageDealt() {
+	public final int getAttackerDamageDealt() {
 		return attackerDamageDealt;
 	}
 
-	public void setAttackerDamageDealt(int attackerDamageDealt) {
+	public final void setAttackerDamageDealt(final int attackerDamageDealt) {
 		this.attackerDamageDealt = attackerDamageDealt;
 	}
 
-	public int getDefenderDamageDealt() {
+	public final int getDefenderDamageDealt() {
 		return defenderDamageDealt;
 	}
 
-	public void setDefenderDamageDealt(int defenderDamageDealt) {
+	public final void setDefenderDamageDealt(final int defenderDamageDealt) {
 		this.defenderDamageDealt = defenderDamageDealt;
 	}
 
-	public void initializeUnits(Unit iAttacker, Unit iDefender,
-			BattleProcessor battleProcessor) {
+	public final void initializeUnits(final Unit iAttacker, final Unit iDefender,
+			final BattleProcessor battleProcessor) {
 		battleProcessor.setAttacker(iAttacker);
 		battleProcessor.setDefender(iDefender);
 		battleProcessor.getAttacker().resetAnimation(22);

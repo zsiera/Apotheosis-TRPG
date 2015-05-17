@@ -4,23 +4,23 @@ public class Exclusions {
 	private int excludeX = -1;
 	private int excludeY = -1;
 
-	public int getExcludeX() {
+	public final int getExcludeX() {
 		return excludeX;
 	}
 
-	public void setExcludeX(int excludeX) {
+	public final void setExcludeX(final int excludeX) {
 		this.excludeX = excludeX;
 	}
 
-	public int getExcludeY() {
+	public final int getExcludeY() {
 		return excludeY;
 	}
 
-	public void setExcludeY(int excludeY) {
+	public final void setExcludeY(final int excludeY) {
 		this.excludeY = excludeY;
 	}
 
-	public void setExcludeCollision(int x, int y) {
+	public final void setExcludeCollision(final int x, final int y) {
 		excludeX = x;
 		excludeY = y;
 	}

@@ -19,7 +19,7 @@ public class MapGoal {
 
 		private String name;
 
-		GoalType(String name) {
+		GoalType(final String name) {
 			this.name = name;
 		}
 
@@ -47,12 +47,12 @@ public class MapGoal {
 	/** The y-coordinate of the tile to be reached. */
 	private int tileY;
 
-	public MapGoal(GoalType type, int faction) {
+	public MapGoal(final GoalType type, final int faction) {
 		this.type = type;
 		this.faction = faction;
 	}
 
-	public MapGoal(GoalData data) {
+	public MapGoal(final GoalData data) {
 		switch (data.getType()) {
 		case "REACH TILE":
 			type = GoalType.REACH_TILE;
@@ -75,7 +75,7 @@ public class MapGoal {
 		faction = data.getIndex();
 	}
 
-	public boolean isMet(Map map) { // TODO: Update to check turns
+	public final boolean isMet(final Map map) { // TODO: Update to check turns
 		boolean completed = true;
 		if (type == GoalType.ELIMINATE_TARGETS) {
 			for (int i = 0; i < targets.length; i++) {
@@ -100,51 +100,51 @@ public class MapGoal {
 		return completed;
 	}
 
-	public int getFaction() {
+	public final int getFaction() {
 		return faction;
 	}
 
-	public void setFaction(int faction) {
+	public final void setFaction(final int faction) {
 		this.faction = faction;
 	}
 
-	public int[] getTargets() {
+	public final int[] getTargets() {
 		return targets;
 	}
 
-	public void setTargets(int[] targets) {
+	public final void setTargets(final int[] targets) {
 		this.targets = targets;
 	}
 
-	public int getTurns() {
+	public final int getTurns() {
 		return turns;
 	}
 
-	public void setTurns(int turns) {
+	public final void setTurns(final int turns) {
 		this.turns = turns;
 	}
 
-	public GoalType getType() {
+	public final GoalType getType() {
 		return type;
 	}
 
-	public void setType(GoalType type) {
+	public final void setType(final GoalType type) {
 		this.type = type;
 	}
 
-	public int getTileX() {
+	public final int getTileX() {
 		return tileX;
 	}
 
-	public void setTileX(int tileX) {
+	public final void setTileX(final int tileX) {
 		this.tileX = tileX;
 	}
 
-	public int getTileY() {
+	public final int getTileY() {
 		return tileY;
 	}
 
-	public void setTileY(int tileY) {
+	public final void setTileY(final int tileY) {
 		this.tileY = tileY;
 	}
 }

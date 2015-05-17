@@ -16,53 +16,53 @@ public class Convoy {
 	private Armor[] armors;
 	private int funds;
 
-	public Item getItem(int index) {
+	public final Item getItem(final int index) {
 		return items[index];
 	}
 
-	public void setItem(Item item, int index) {
+	public final void setItem(final Item item, final int index) {
 		items[index] = item;
 	}
 
-	public void swapItems(int index1, int index2) {
+	public final void swapItems(final int index1, final int index2) {
 		Item temp = items[index1];
 		items[index1] = items[index2];
 		items[index2] = temp;
 	}
 
-	public Weapon getWeapon(int index) {
+	public final Weapon getWeapon(final int index) {
 		return weapons[index];
 	}
 
-	public void setWeapon(Weapon weapon, int index) {
+	public final void setWeapon(final Weapon weapon, final int index) {
 		weapons[index] = weapon;
 	}
 
-	public void swapWeapons(int index1, int index2) {
+	public final void swapWeapons(final int index1, final int index2) {
 		Weapon temp = weapons[index1];
 		weapons[index1] = weapons[index2];
 		weapons[index2] = temp;
 	}
 
-	public Armor getArmor(int index) {
+	public final Armor getArmor(final int index) {
 		return armors[index];
 	}
 
-	public void setArmor(Armor armor, int index) {
+	public final void setArmor(final Armor armor, final int index) {
 		armors[index] = armor;
 	}
 
-	public void swapArmors(int index1, int index2) {
+	public final void swapArmors(final int index1, final int index2) {
 		Armor temp = armors[index1];
 		armors[index1] = armors[index2];
 		armors[index2] = temp;
 	}
 
-	public int getFunds() {
+	public final int getFunds() {
 		return funds;
 	}
 
-	public void setFunds(int funds) {
+	public final void setFunds(final int funds) {
 		this.funds = funds;
 	}
 }

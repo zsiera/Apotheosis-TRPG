@@ -24,7 +24,7 @@ public class Item {
 	private boolean consumable;
 	private Menu infoMenu;
 
-	public Item(String iName, Sprite iIcon, MenuAction iAction) {
+	public Item(final String iName, final Sprite iIcon, final MenuAction iAction) {
 		icon = iIcon;
 		name = iName;
 		used = iAction;
@@ -42,7 +42,7 @@ public class Item {
 //	 * cursor.getSelectedUnit().setCurrentHp(0); } } }; maxUses = 1; uses =
 //	 * maxUses; consumable = true; } }
 //	 */
-	public Item(int typeindex) {
+	public Item(final int typeindex) {
 		ItemData data = Game.getItemData(typeindex);
 		name = data.getName();
 		description = data.getDescription();
@@ -55,7 +55,7 @@ public class Item {
 			magnitude = data.getHeal();
 			used = new MenuAction() {
 				@Override
-				public void execute(MenuElement caller) {
+				public void execute(final MenuElement caller) {
 					cursor.getSelectedUnit().setCurrentHp(
 							Math.max(
 									Math.min(0, cursor.getSelectedUnit()
@@ -67,7 +67,7 @@ public class Item {
 		default:
 			used = new MenuAction() {
 				@Override
-				public void execute(MenuElement caller) {
+				public void execute(final MenuElement caller) {
 					// Do nothing
 				}
 			};
@@ -79,63 +79,63 @@ public class Item {
 						.getSheetIndex()));
 	}
 
-	public Sprite getIcon() {
+	public final Sprite getIcon() {
 		return icon;
 	}
 
-	public void setIcon(Sprite icon) {
+	public final void setIcon(final Sprite icon) {
 		this.icon = icon;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public int getUses() {
+	public final int getUses() {
 		return uses;
 	}
 
-	public void setUses(int uses) {
+	public final void setUses(final int uses) {
 		this.uses = uses;
 	}
 
-	public int getMaxUses() {
+	public final int getMaxUses() {
 		return maxUses;
 	}
 
-	public void setMaxUses(int maxUses) {
+	public final void setMaxUses(final int maxUses) {
 		this.maxUses = maxUses;
 	}
 
-	public MenuAction getUsedAction() {
+	public final MenuAction getUsedAction() {
 		return used;
 	}
 
-	public void setUsedAction(MenuAction used) {
+	public final void setUsedAction(final MenuAction used) {
 		this.used = used;
 	}
 
-	public boolean isConsumable() {
+	public final boolean isConsumable() {
 		return consumable;
 	}
 
-	public void setConsumable(boolean consumable) {
+	public final void setConsumable(final boolean consumable) {
 		this.consumable = consumable;
 	}
 
-	public void drawInfoMenu(int x, int y, Menu callingMenu, boolean active) {
+	public final void drawInfoMenu(final int x, final int y, final Menu callingMenu, final boolean active) {
 		infoMenu = new Menu(200, 50, x, y);
 
 		MenuAction nil = getNilMenu();
@@ -160,16 +160,16 @@ public class Item {
 	private MenuAction getNilMenu() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) { // Do nothing
+			public void execute(final MenuElement caller) { // Do nothing
 			}
 		};
 	}
 
-	public boolean infoMenuDrawn() {
+	public final boolean infoMenuDrawn() {
 		return infoMenu != null;
 	}
 
-	public void clearInfoMenu() {
+	public final void clearInfoMenu() {
 		infoMenu.removeMenu();
 		infoMenu = null;
 	}

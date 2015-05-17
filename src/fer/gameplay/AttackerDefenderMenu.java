@@ -17,41 +17,41 @@ public abstract class AttackerDefenderMenu {
 	protected Menu weaponMenu;
 	protected Menu battleMenu;
 
-	public Menu getMenu() {
+	public final Menu getMenu() {
 		return defaultMenu;
 	}
 
-	public void setMenu(Menu menu) {
+	public final void setMenu(final Menu menu) {
 		this.defaultMenu = menu;
 	}
 
-	public Menu getStatusMenu() {
+	public final Menu getStatusMenu() {
 		return statusMenu;
 	}
 
-	public void setStatusMenu(Menu statusMenu) {
+	public final void setStatusMenu(final Menu statusMenu) {
 		this.statusMenu = statusMenu;
 	}
 
-	public Menu getWeaponMenu() {
+	public final Menu getWeaponMenu() {
 		return weaponMenu;
 	}
 
-	public void setWeaponMenu(Menu weaponMenu) {
+	public final void setWeaponMenu(final Menu weaponMenu) {
 		this.weaponMenu = weaponMenu;
 	}
 
-	public Menu getBattleMenu() {
+	public final Menu getBattleMenu() {
 		return battleMenu;
 	}
 
-	public void setBattleMenu(Menu battleMenu) {
+	public final void setBattleMenu(final Menu battleMenu) {
 		this.battleMenu = battleMenu;
 	}
 
 	public abstract void initializeMenus(Cursor cursor);
 
-	public void clearMenus() {
+	public final void clearMenus() {
 		if (defaultMenu != null) {
 			Game.getMenuList().remove(defaultMenu);
 			Game.getMenuList().remove(weaponMenu);
@@ -63,8 +63,8 @@ public abstract class AttackerDefenderMenu {
 	public abstract void drawMenu(Cursor cursor, Unit unit, int damage,
 			float acc, float crit);
 
-	protected void addBattleMenuOptions(MenuAction sa, int damage, float acc,
-			float crit) {
+	protected final void addBattleMenuOptions(final MenuAction sa, final int damage, final float acc,
+			final float crit) {
 		battleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: "
 				+ damage, Font.BASICFONT)).getSprite(), false, 7, 5));
 		battleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("AC: "
@@ -75,7 +75,7 @@ public abstract class AttackerDefenderMenu {
 						false, 87, 5));
 	}
 
-	protected void addDefaultMenuOptions(Unit unit, MenuAction sa) {
+	protected final void addDefaultMenuOptions(final Unit unit, final MenuAction sa) {
 		defaultMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:"
 				+ unit.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7,
 				5));
@@ -88,7 +88,7 @@ public abstract class AttackerDefenderMenu {
 				24, SpriteSheet.HEALTHBAR), false, 32, 5));
 	}
 
-	protected void addWeaponMenuOptions(Unit unit, MenuAction sa) {
+	protected final void addWeaponMenuOptions(final Unit unit, final MenuAction sa) {
 		weaponMenu.addElement(new MenuElement(sa, sa, unit.getWeapon(0)
 				.getIcon(), false, 7, 7));
 		weaponMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("D:"
@@ -102,7 +102,7 @@ public abstract class AttackerDefenderMenu {
 						Font.BASICFONT)).getSprite(), false, 5, 36));
 	}
 
-	protected void addArmorMenuOptions(Unit unit, MenuAction sa) {
+	protected final void addArmorMenuOptions(final Unit unit, final MenuAction sa) {
 		weaponMenu.addElement(new MenuElement(sa, sa,
 				unit.getArmor().getIcon(), false, 7, 42));
 		weaponMenu.addElement(new MenuElement(sa, sa,
@@ -113,10 +113,10 @@ public abstract class AttackerDefenderMenu {
 				.getSprite(), false, 5, 64));
 	}
 
-	protected MenuAction getSAAction() {
+	protected final MenuAction getSAAction() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};

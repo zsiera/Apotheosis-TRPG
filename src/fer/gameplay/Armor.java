@@ -22,7 +22,7 @@ public class Armor {
 	  resilience = 5; encumberance = 2; } }
 	 */
 
-	public Armor(int typeindex) {
+	public Armor(final int typeindex) {
 		ArmorData data = Game.getArmorData(typeindex);
 		name = data.getName();
 		resilience = data.getResilience();
@@ -34,35 +34,35 @@ public class Armor {
 						.getSheetIndex()));
 	}
 
-	public Sprite getIcon() {
+	public final Sprite getIcon() {
 		return icon;
 	}
 
-	public void setIcon(Sprite icon) {
+	public final void setIcon(final Sprite icon) {
 		this.icon = icon;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public int getResilience() {
+	public final int getResilience() {
 		return resilience;
 	}
 
-	public void setResilience(int resilience) {
+	public final void setResilience(final int resilience) {
 		this.resilience = resilience;
 	}
 
-	public int getEncumberance() {
+	public final int getEncumberance() {
 		return encumberance;
 	}
 
-	public void setEncumberance(int encumberance) {
+	public final void setEncumberance(final int encumberance) {
 		this.encumberance = encumberance;
 	}
 }

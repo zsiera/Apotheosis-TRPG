@@ -11,7 +11,7 @@ import fer.Unit;
 
 public class AttackMenus extends AttackerDefenderMenu {
 
-	public void initializeMenus(Cursor cursor) {
+	public final void initializeMenus(final Cursor cursor) {
 		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
 			defaultMenu = new Menu(46, 52, 0, 0);
 			weaponMenu = new Menu(30, 76, 0, 52);
@@ -25,8 +25,8 @@ public class AttackMenus extends AttackerDefenderMenu {
 		}
 	}
 
-	public void drawMenu(Cursor cursor, Unit attacker, int attackerDamage,
-			float accAttacker, float critAttacker) {
+	public final void drawMenu(final Cursor cursor, final Unit attacker, final int attackerDamage,
+			final float accAttacker, final float critAttacker) {
 		clearMenus();
 		MenuAction sa = getSAAction();
 		initializeMenus(cursor);

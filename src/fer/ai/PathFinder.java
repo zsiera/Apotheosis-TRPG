@@ -27,13 +27,13 @@ public class PathFinder {
 		private Tile tile;
 		private ArrayList<TreeNode> children;
 
-		public TreeNode(Tile tile) {
+		public TreeNode(final Tile tile) {
 			this.tile = tile;
 			children = new ArrayList<>();
 			parent = null;
 		}
 
-		public TreeNode(Tile tile, TreeNode parent) {
+		public TreeNode(final Tile tile, final TreeNode parent) {
 			this(tile);
 			this.parent = parent;
 		}
@@ -50,27 +50,27 @@ public class PathFinder {
 			return children;
 		}
 
-		public TreeNode getChild(int index) {
+		public TreeNode getChild(final int index) {
 			return children.get(index);
 		}
 
-		public void addChild(TreeNode child) {
+		public void addChild(final TreeNode child) {
 			children.add(child);
 		}
 
-		public void setParent(TreeNode parent) {
+		public void setParent(final TreeNode parent) {
 			this.parent = parent;
 		}
 	}
 
-	public ArrayList<Tile> getShortestPathAStar(Map map, Unit unit, Tile start,
-			Tile target) {
+	public final ArrayList<Tile> getShortestPathAStar(final Map map, final Unit unit, final Tile start,
+			final Tile target) {
 		final Unit fUnit = unit;
 		final Tile fTarget = target;
 		Comparator fComp = new Comparator() {
 
 			@Override
-			public int compare(Object o1, Object o2) {
+			public int compare(final Object o1, final Object o2) {
 				Tile t1 = ((TreeNode) o1).getTile();
 				Tile t2 = ((TreeNode) o2).getTile();
 				if (t1.getCost(fUnit, fTarget, unitCollision, exclusions) < t2
@@ -124,8 +124,8 @@ public class PathFinder {
 		return shortestPath;
 	}
 
-	private void addFrontier(Map map, ArrayList<Tile> exploredTiles,
-			PriorityQueue<TreeNode> frontier, TreeNode nextClosest) {
+	private void addFrontier(final Map map, final ArrayList<Tile> exploredTiles,
+			final PriorityQueue<TreeNode> frontier, final TreeNode nextClosest) {
 		if (nextClosest.getTile().getMapX() + 1 < map.getWidth()
 				&& !exploredTiles.contains(map.getTile(nextClosest.getTile()
 						.getMapX() + 1
@@ -168,7 +168,7 @@ public class PathFinder {
 		}
 	}
 
-	public ArrayList<Tile> getMovableTiles(Unit unit, Map map) {
+	public final ArrayList<Tile> getMovableTiles(final Unit unit, final Map map) {
 		final Unit fUnit = unit;
 		PriorityQueue<TreeNode> frontier = getMovableTilesFrontier(map);
 		ArrayList<TreeNode> pathTree = new ArrayList<>();
@@ -206,8 +206,8 @@ public class PathFinder {
 		return moveableTiles;
 	}
 
-	private void addFrontier(Map map, PriorityQueue<TreeNode> frontier,
-			TreeNode node, Tile nextClosest) {
+	private void addFrontier(final Map map, final PriorityQueue<TreeNode> frontier,
+			final TreeNode node, final Tile nextClosest) {
 		if (nextClosest.getMapX() + 1 < map.getWidth() /*
 														 * &&
 														 * !exploredTiles.contains
@@ -256,11 +256,11 @@ public class PathFinder {
 		}
 	}
 
-	private PriorityQueue<TreeNode> getMovableTilesFrontier(Map map) {
+	private PriorityQueue<TreeNode> getMovableTilesFrontier(final Map map) {
 		Comparator cComp = new Comparator() {
 
 			@Override
-			public int compare(Object o1, Object o2) {
+			public int compare(final Object o1, final Object o2) {
 				TreeNode n1 = (TreeNode) o1;
 				TreeNode n2 = (TreeNode) o2;
 				Tile t1 = n1.getTile();
@@ -278,7 +278,7 @@ public class PathFinder {
 				cComp);
 	}
 
-	private int getPathCost(Unit unit, TreeNode node) {
+	private int getPathCost(final Unit unit, final TreeNode node) {
 		int pathCost = 0;
 		TreeNode currentNode = node;
 		while (currentNode.getParent() != null) {
@@ -289,8 +289,8 @@ public class PathFinder {
 		return pathCost;
 	}
 
-	public ArrayList<Tile> getAttackableTiles(Unit unit, int x, int y, Map map,
-			int weapon) {
+	public final ArrayList<Tile> getAttackableTiles(final Unit unit, final int x, final int y, final Map map,
+			final int weapon) {
 		PriorityQueue<TreeNode> frontier = getAttackableTilesFrontier(unit, map);
 		ArrayList<TreeNode> pathTree = new ArrayList<>();
 		ArrayList<Tile> attackableTiles = new ArrayList<>();
@@ -331,13 +331,13 @@ public class PathFinder {
 		return attackableTiles;
 	}
 
-	private PriorityQueue<TreeNode> getAttackableTilesFrontier(Unit unit,
-			Map map) {
+	private PriorityQueue<TreeNode> getAttackableTilesFrontier(final Unit unit,
+			final Map map) {
 		final Unit fUnit = unit;
 		Comparator cComp = new Comparator() {
 
 			@Override
-			public int compare(Object o1, Object o2) {
+			public int compare(final Object o1, final Object o2) {
 				TreeNode n1 = (TreeNode) o1;
 				TreeNode n2 = (TreeNode) o2;
 				Tile t1 = n1.getTile();
@@ -356,11 +356,11 @@ public class PathFinder {
 		return new PriorityQueue(map.getNumTiles(), cComp);
 	}
 
-	public void setUnitCollision(boolean unitCollision) {
+	public final void setUnitCollision(final boolean unitCollision) {
 		this.unitCollision = unitCollision;
 	}
 
-	public void setExcludeCollision(int x, int y) {
+	public final void setExcludeCollision(final int x, final int y) {
 		exclusions.setExcludeCollision(x, y);
 	}
 }

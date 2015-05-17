@@ -8,7 +8,7 @@ import fer.Game;
 import fer.ai.PathFinder;
 
 public class Attack {
-	public static int calculateAttackDamage(Unit attacker, Unit defender) {
+	public static int calculateAttackDamage(final Unit attacker, final Unit defender) {
 		int wepatk;
 		wepatk = attacker.getWeapon(0).getDamage() + attacker.getStr();
 		int wepdam;
@@ -31,7 +31,7 @@ public class Attack {
 		return Math.max(0, wepdam);
 	}
 
-	public static float calculateAttackHitChance(Unit attacker, Unit defender) {
+	public static float calculateAttackHitChance(final Unit attacker, final Unit defender) {
 		float hitRate = attacker.getWeapon(0).getAccuracy() + attacker
 				.getSkl() * 2;
 		float evade = calculateAttackSpeed(defender) * 2
@@ -43,7 +43,7 @@ public class Attack {
 		return Math.min(Math.max(hitRate - evade, 0), 100);
 	}
 
-	public static int getNumberOfAttacks(Unit unit, Unit opponent) {
+	public static int getNumberOfAttacks(final Unit unit, final Unit opponent) {
 		int numAttacksUnit, numAttacksOpponent;
 		if (unit.getWeapon(0).getRange() >= Math.abs(unit.getMapx()
 				- opponent.getMapx()) + Math.abs(unit.getMapy()
@@ -62,7 +62,7 @@ public class Attack {
 		return numAttacksUnit;
 	}
 
-	public static int getAttackUnits(Unit unit, Unit opponent) {
+	public static int getAttackUnits(final Unit unit, final Unit opponent) {
 		int numAttacksUnit;
 		if (calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3) {
 			numAttacksUnit = 2;
@@ -75,7 +75,7 @@ public class Attack {
 		return numAttacksUnit;
 	}
 
-	public static int calculateAttackSpeed(Unit unit) {
+	public static int calculateAttackSpeed(final Unit unit) {
 		int speed = unit.getSpd();
 		if (unit.getWeapon(0).getWeight() > unit.getCon()) {
 			speed -= unit.getWeapon(0).getWeight() - unit.getCon();
@@ -86,8 +86,8 @@ public class Attack {
 		return speed;
 	}
 
-	public static double calculateDeathChance(Unit unit, Unit opponent,
-			boolean unitAttacking) {
+	public static double calculateDeathChance(final Unit unit, final Unit opponent,
+			final boolean unitAttacking) {
 		if (2 * calculateAttackDamage(opponent, unit) < unit.getCurrentHp()) {
 			return 0;
 		} else {
@@ -130,8 +130,8 @@ public class Attack {
 		}
 	}
 
-	public static void attackWithWeaponInRange(PathFinder pf,
-			BattleProcessor bp, Unit unit, Unit target) {
+	public static void attackWithWeaponInRange(final PathFinder pf,
+			final BattleProcessor bp, final Unit unit, final Unit target) {
 		for (int i = 0; i < unit.getWeapons().length; i++) {
 			// Test each weapon's range
 			if (unit.getWeapon(i) != null) {
@@ -152,7 +152,7 @@ public class Attack {
 		}
 	}
 
-	private static void equipWeapon(Unit testUnit, int longest) {
+	private static void equipWeapon(final Unit testUnit, final int longest) {
 		Weapon temp = testUnit.getWeapon(0);
 		testUnit.setWeapon(0, testUnit.getWeapon(longest));
 		testUnit.setWeapon(longest, temp);

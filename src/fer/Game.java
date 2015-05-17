@@ -129,7 +129,7 @@ public class Game extends Canvas implements Runnable {
 	 * @param args
 	 *            the command line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		createInstance();
 
 		instance.startSequence();
@@ -153,23 +153,23 @@ public class Game extends Canvas implements Runnable {
 		return instance;
 	}
 
-	public boolean getGameRunning() {
+	public final boolean getGameRunning() {
 		return gameRunning;
 	}
 
-	public void setGameRunning(boolean running) {
+	public final void setGameRunning(final boolean running) {
 		gameRunning = running;
 	}
 
-	public String getGameWindowTitle() {
+	public final String getGameWindowTitle() {
 		return gameWindow.getTitle();
 	}
 
-	public void setGameWindowTitle(String title) {
+	public final void setGameWindowTitle(final String title) {
 		gameWindow.setTitle(title);
 	}
 
-	public void loadData() {
+	public final void loadData() {
 		// Read all data messenger objects from XML
 		XMLReader reader = new XMLReader();
 		weapons = reader.serializeAllWeaponData().toArray(new WeaponData[1]);
@@ -241,7 +241,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
-	public void loadSettings() {
+	public final void loadSettings() {
 		XMLReader reader = new XMLReader();
 		SettingsData data = reader.serializeSettingsData();
 		gameScale = data.getGameScale();
@@ -249,7 +249,7 @@ public class Game extends Canvas implements Runnable {
 		gridOpacity = data.getGridOpacity();
 	}
 
-	public synchronized void startSequence() {
+	public final synchronized void startSequence() {
 		// loadData();
 		gameRunning = true;
 
@@ -264,7 +264,7 @@ public class Game extends Canvas implements Runnable {
 		controlThread.start();
 	}
 
-	public synchronized void stopSequence() {
+	public final synchronized void stopSequence() {
 		gameRunning = false;
 		try {
 			// logicThread.join();
@@ -275,7 +275,7 @@ public class Game extends Canvas implements Runnable {
 		gameWindow.dispose();
 	}
 
-	public void update() {
+	public final void update() {
 		int xQueue = 0, yQueue = 0;
 		boolean enter, escape;
 		// keyboard.update();
@@ -316,7 +316,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
-	public void run() {
+	public final void run() {
 		long previousTime = System.nanoTime();
 		long currentTime;
 		long timer = System.currentTimeMillis();
@@ -354,7 +354,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
-	public static void prepareMap(Map map, int index, boolean[] selectedFactions) {
+	public static void prepareMap(final Map map, final int index, final boolean[] selectedFactions) {
 		// Read corresponding map XML data
 		XMLReader reader = new XMLReader();
 		GoalData[] goals = reader.serializeAllGoalData(0, index).toArray(
@@ -379,7 +379,7 @@ public class Game extends Canvas implements Runnable {
 		return currentMap;
 	}
 
-	public static void setCurrentMap(Map newMap) {
+	public static void setCurrentMap(final Map newMap) {
 		currentMap = newMap;
 	}
 
@@ -391,27 +391,27 @@ public class Game extends Canvas implements Runnable {
 		return effectList;
 	}
 
-	public static WeaponData getWeaponData(int index) {
+	public static WeaponData getWeaponData(final int index) {
 		return weapons[index];
 	}
 
-	public static ItemData getItemData(int index) {
+	public static ItemData getItemData(final int index) {
 		return items[index];
 	}
 
-	public static ArmorData getArmorData(int index) {
+	public static ArmorData getArmorData(final int index) {
 		return armor[index];
 	}
 
-	public static TileData getTileData(int index) {
+	public static TileData getTileData(final int index) {
 		return tiles[index];
 	}
 
-	public static UnitClassData getUnitClassData(int index) {
+	public static UnitClassData getUnitClassData(final int index) {
 		return unitClasses[index];
 	}
 
-	public static SpriteSheet getSpriteSheet(int index) {
+	public static SpriteSheet getSpriteSheet(final int index) {
 		return spriteSheets[index];
 	}
 
@@ -423,7 +423,7 @@ public class Game extends Canvas implements Runnable {
 		return onTitle;
 	}
 
-	public static void setOnTitle(boolean iOnTitle) {
+	public static void setOnTitle(final boolean iOnTitle) {
 		onTitle = iOnTitle;
 	}
 
@@ -431,7 +431,7 @@ public class Game extends Canvas implements Runnable {
 		return onMainMenu;
 	}
 
-	public static void setOnMainMenu(boolean iOnMainMenu) {
+	public static void setOnMainMenu(final boolean iOnMainMenu) {
 		onMainMenu = iOnMainMenu;
 	}
 
@@ -448,14 +448,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 
 		MenuAction start = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				onTitle = false;
 				onMainMenu = true;
 				menuList.remove(titleMenu);
@@ -473,14 +473,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 
 		MenuAction campaign = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				drawNoticeMenu(
 						"This mode is not yet available.  Please wait for a future update.",
 						mainMenu, menuCursor.getElementIndex());
@@ -489,7 +489,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction freePlay = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				prepareFreeplay();
 				drawFreePlayMenu();
 				MenuCursor.getMenuCursor().setElementIndex(0);
@@ -501,7 +501,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction editors = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				drawNoticeMenu(
 						"This mode is not yet available.  Please wait for a future update.",
 						mainMenu, menuCursor.getElementIndex());
@@ -510,14 +510,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction settings = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				drawSettingsMenu(mainMenu, menuCursor.getElementIndex(), "");
 			}
 		};
 
 		MenuAction exit = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				getGame().stopSequence();
 			}
 		};
@@ -540,14 +540,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
 
 		MenuAction singlePlayer = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				hotseat = false;
 				menuList.remove(mainMenu);
 				menuList.remove(freePlayMenu);
@@ -558,7 +558,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction hotSeat = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				hotseat = true;
 				menuList.remove(mainMenu);
 				menuList.remove(freePlayMenu);
@@ -569,7 +569,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				menuList.remove(freePlayMenu);
 				effectList.remove(mainMenuOverlay);
 				MenuCursor.setActiveMenu(mainMenu);
@@ -599,14 +599,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 
 		MenuAction scrollUp = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				if (mapSelectPosition == 0) {
 					mapSelectPosition = ((int) Math
 							.floor(freePlayMaps.length / 16)) * 16;
@@ -621,7 +621,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction select = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				menuList.remove(mapInfoMenu);
 				drawMapInfoMenu(freePlayMaps[(MenuCursor.getMenuCursor()
 						.getElementIndex() - 1) + mapSelectPosition]);
@@ -630,7 +630,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction chooseMap = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				Sprite overlay = new Sprite(220, 140, 0x000000, 0xff0000);
 				numPlayers = 1;
 				currentPlayer = 1;
@@ -677,7 +677,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction scrollDown = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				if (mapSelectPosition >= ((int) Math
 						.floor(freePlayMaps.length / 16))) {
 					mapSelectPosition = 0;
@@ -692,7 +692,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				menuList.remove(mapSelectMenu);
 				drawMainMenu();
 				drawFreePlayMenu();
@@ -724,12 +724,12 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(mapSelectMenu);
 	}
 
-	public static void drawMapInfoMenu(Map map) {
+	public static void drawMapInfoMenu(final Map map) {
 		mapInfoMenu = new Menu(110, 140, 120, 10);
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
@@ -750,7 +750,7 @@ public class Game extends Canvas implements Runnable {
 				false, 7, 93));
 	}
 
-	public static void drawPlayerNumMenu(Map map, int mapIndex) {
+	public static void drawPlayerNumMenu(final Map map, final int mapIndex) {
 		playerNumMenu = new Menu(64, 20, 88, 70);
 
 		final Map inputMap = map;
@@ -759,14 +759,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 
 		MenuAction down = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				numPlayers--;
 				if (numPlayers <= 0) {
 					numPlayers = 1;
@@ -778,7 +778,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction up = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				numPlayers++;
 				if (numPlayers > numFactions) {
 					numPlayers = numFactions;
@@ -790,7 +790,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction ok = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				playerNumMenu.removeMenu();
 				effectList.remove(mainMenuOverlay);
 				drawPlayerFactionMenu(inputMap, index, false);
@@ -812,7 +812,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				playerNumMenu.removeMenu();
 				effectList.remove(mainMenuOverlay);
 				MenuCursor.getMenuCursor().setElementIndex(1);
@@ -832,8 +832,8 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(playerNumMenu);
 	}
 
-	public static void drawPlayerFactionMenu(Map map, int mapIndex,
-			boolean message) {
+	public static void drawPlayerFactionMenu(final Map map, final int mapIndex,
+			final boolean message) {
 		playerFactionMenu = new Menu(114, 26, 68, 67);
 
 		final Map inputMap = map;
@@ -842,14 +842,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 
 		MenuAction down = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				currentFaction--;
 				if (currentFaction < 0) {
 					currentFaction = 0;
@@ -861,7 +861,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction up = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				currentFaction++;
 				if (currentFaction >= numFactions) {
 					currentFaction = numFactions - 1;
@@ -874,7 +874,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction ok = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				if (selectedFactions[currentFaction]) {
 					playerFactionMenu.removeMenu();
 					drawPlayerFactionMenu(inputMap, index, true);
@@ -907,7 +907,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				playerFactionMenu.removeMenu();
 				if (hotseat) {
 					currentPlayer = 1;
@@ -951,8 +951,8 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(playerFactionMenu);
 	}
 
-	public static void drawSettingsMenu(Menu lastMenu, int lastIndex,
-			String message) {
+	public static void drawSettingsMenu(final Menu lastMenu, final int lastIndex,
+			final String message) {
 		if (settingsMenu != null) {
 			settingsMenu.removeMenu();
 		}
@@ -963,14 +963,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 
 		MenuAction left = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				int curIndex = menuCursor.getElementIndex();
 				switch (curIndex) {
 				case 0:
@@ -991,13 +991,15 @@ public class Game extends Canvas implements Runnable {
 					drawSettingsMenu(backMenu, backIndex, "");
 					menuCursor.setElementIndex(curIndex);
 					break;
+				default:
+					break;
 				}
 			}
 		};
 
 		MenuAction right = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				int curIndex = menuCursor.getElementIndex();
 				switch (curIndex) {
 				case 0:
@@ -1018,13 +1020,15 @@ public class Game extends Canvas implements Runnable {
 					drawSettingsMenu(backMenu, backIndex, "");
 					menuCursor.setElementIndex(curIndex);
 					break;
+				default:
+					break;
 				}
 			}
 		};
 
 		MenuAction save = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				XMLReader reader = new XMLReader();
 				reader.writeSettings();
 				int curIndex = menuCursor.getElementIndex();
@@ -1036,7 +1040,7 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				settingsMenu.removeMenu();
 				if (backMenu != null) {
 					menuCursor.setElementIndex(backIndex);
@@ -1084,8 +1088,8 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(settingsMenu);
 	}
 
-	public static void drawNoticeMenu(String message, Menu lastMenu,
-			int lastIndex) {
+	public static void drawNoticeMenu(final String message, final Menu lastMenu,
+			final int lastIndex) {
 		if (noticeMenu != null) {
 			noticeMenu.removeMenu();
 		}
@@ -1099,14 +1103,14 @@ public class Game extends Canvas implements Runnable {
 
 		MenuAction sa = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing
 			}
 		};
 
 		MenuAction back = new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				noticeMenu.removeMenu();
 				if (backMenu != null) {
 					menuCursor.setElementIndex(backIndex);
@@ -1133,7 +1137,7 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(noticeMenu);
 	}
 
-	public Renderer getRenderer() {
+	public final Renderer getRenderer() {
 		return renderer;
 	}
 

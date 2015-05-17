@@ -62,7 +62,7 @@ public class BattleProcessor {
 	 */
 	private int directionDefender;
 
-	public void startBattle(Unit iAttacker, Unit iDefender) {
+	public final void startBattle(final Unit iAttacker, final Unit iDefender) {
 		initializeBattle(iAttacker, iDefender);
 
 		// Determine direction of attack
@@ -153,7 +153,7 @@ public class BattleProcessor {
 				critDefender);
 	}
 
-	private void initializeBattle(Unit iAttacker, Unit iDefender) {
+	private void initializeBattle(final Unit iAttacker, final Unit iDefender) {
 		cursor.initializeCursorForBattle();
 		inCombat = true;
 		damageDealt.initializeUnits(iAttacker, iDefender, this);
@@ -162,7 +162,7 @@ public class BattleProcessor {
 		currentAttack = 0;
 	}
 
-	public void update() {
+	public final void update() {
 		switch (stage) {
 		case 0:
 			attackerComplete = false;
@@ -230,6 +230,8 @@ public class BattleProcessor {
 						break;
 					case 3:
 						defender.setyOffset(defender.getyOffset() - 1);
+						break;
+					default:
 						break;
 					}
 				} else if (!missAttacker[currentAttack]) {
@@ -357,6 +359,8 @@ public class BattleProcessor {
 						break;
 					case 3:
 						attacker.setyOffset(attacker.getyOffset() + 1);
+						break;
+					default:
 						break;
 					}
 				} else if (!missDefender[currentAttack]) {
@@ -502,11 +506,13 @@ public class BattleProcessor {
 		case 17:
 			endBattle();
 			break;
+		default:
+			break;
 		}
 		updates++;
 	}
 
-	public void endBattle() {
+	public final void endBattle() {
 		attackMenus.clearMenus();
 		defendMenus.clearMenus();
 		attacker.resetAnimation(22);
@@ -540,32 +546,32 @@ public class BattleProcessor {
 		cursor.setCursorForVictory();
 	}
 
-	public int calculateAttackDamage(Unit attacker, Unit defender) {
+	public final int calculateAttackDamage(final Unit attacker, final Unit defender) {
 		return Attack.calculateAttackDamage(attacker, defender);
 	}
 
-	public double calculateDeathChance(Unit unit, Unit opponent,
-			boolean unitAttacking) {
+	public final double calculateDeathChance(final Unit unit, final Unit opponent,
+			final boolean unitAttacking) {
 		return Attack.calculateDeathChance(unit, opponent, unitAttacking);
 	}
 
-	public boolean isInCombat() {
+	public final boolean isInCombat() {
 		return inCombat;
 	}
 
-	public void setAttacker(Unit attacker) {
+	public final void setAttacker(final Unit attacker) {
 		this.attacker = attacker;
 	}
 
-	public void setDefender(Unit defender) {
+	public final void setDefender(final Unit defender) {
 		this.defender = defender;
 	}
 
-	public Unit getAttacker() {
+	public final Unit getAttacker() {
 		return attacker;
 	}
 
-	public Unit getDefender() {
+	public final Unit getDefender() {
 		return defender;
 	}
 }

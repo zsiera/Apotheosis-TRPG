@@ -32,7 +32,7 @@ public class Weapon {
 	//
 	// maxUses = 45; uses = maxUses; } }
 	 
-	public Weapon(int typeindex) {
+	public Weapon(final int typeindex) {
 		WeaponData data = Game.getWeaponData(typeindex);
 		name = data.getName();
 		description = data.getDescription();
@@ -53,95 +53,95 @@ public class Weapon {
 
 	}
 
-	public Sprite getIcon() {
+	public final Sprite getIcon() {
 		return icon;
 	}
 
-	public void setIcon(Sprite icon) {
+	public final void setIcon(final Sprite icon) {
 		this.icon = icon;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public boolean isMelee() {
+	public final boolean isMelee() {
 		return melee;
 	}
 
-	public void setMelee(boolean melee) {
+	public final void setMelee(final boolean melee) {
 		this.melee = melee;
 	}
 
-	public int getRange() {
+	public final int getRange() {
 		return range;
 	}
 
-	public void setRange(int range) {
+	public final void setRange(final int range) {
 		this.range = range;
 	}
 
-	public int getDamage() {
+	public final int getDamage() {
 		return damage;
 	}
 
-	public void setDamage(int damage) {
+	public final void setDamage(final int damage) {
 		this.damage = damage;
 	}
 
-	public int getPierce() {
+	public final int getPierce() {
 		return pierce;
 	}
 
-	public void setPierce(int pierce) {
+	public final void setPierce(final int pierce) {
 		this.pierce = pierce;
 	}
 
-	public int getCritical() {
+	public final int getCritical() {
 		return critical;
 	}
 
-	public void setCritical(int critical) {
+	public final void setCritical(final int critical) {
 		this.critical = critical;
 	}
 
-	public int getAccuracy() {
+	public final int getAccuracy() {
 		return accuracy;
 	}
 
-	public void setAccuracy(int accuracy) {
+	public final void setAccuracy(final int accuracy) {
 		this.accuracy = accuracy;
 	}
 
-	public int getWeight() {
+	public final int getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public final void setWeight(final int weight) {
 		this.weight = weight;
 	}
 
-	public int getUses() {
+	public final int getUses() {
 		return uses;
 	}
 
-	public void setUses(int uses) {
+	public final void setUses(final int uses) {
 		this.uses = uses;
 	}
 
-	public int getMaxUses() {
+	public final int getMaxUses() {
 		return maxUses;
 	}
 
-	public void setMaxUses(int maxUses) {
+	public final void setMaxUses(final int maxUses) {
 		this.maxUses = maxUses;
 	}
 
-	public void drawInfoMenu(int x, int y, Menu callingMenu, boolean active) {
+	public final void drawInfoMenu(final int x, final int y, final Menu callingMenu, final boolean active) {
 		infoMenu = new Menu(200, 56, x, y);
 		MenuAction nil = getNilAction();
 		addElements(nil);
@@ -154,12 +154,12 @@ public class Weapon {
 	private MenuAction getNilAction() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) { // Do nothing
+			public void execute(final MenuElement caller) { // Do nothing
 			}
 		};
 	}
 
-	private void addElements(MenuAction nil) {
+	private void addElements(final MenuAction nil) {
 		infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
 		infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(name,
 				Font.BASICFONT).getSprite(), false, 23, 7));
@@ -188,11 +188,11 @@ public class Weapon {
 				43));
 	}
 
-	public boolean infoMenuDrawn() {
+	public final boolean infoMenuDrawn() {
 		return infoMenu != null;
 	}
 
-	public void clearInfoMenu() {
+	public final void clearInfoMenu() {
 		infoMenu.removeMenu();
 		infoMenu = null;
 	}

@@ -31,7 +31,7 @@ public class AiTask {
 	 * @param mapy
 	 *            The y-coordinate of the destination tile
 	 */
-	public AiTask(int mapx, int mapy) {
+	public AiTask(final int mapx, final int mapy) {
 		type = TaskType.GO_TO_TILE;
 		this.mapx = mapx;
 		this.mapy = mapy;
@@ -43,62 +43,62 @@ public class AiTask {
 	 * @param targetIndex
 	 *            The index on the current map of the target unit
 	 */
-	public AiTask(int targetIndex) {
+	public AiTask(final int targetIndex) {
 		type = TaskType.ATTACK_UNIT;
 		this.targetIndex = targetIndex;
 	}
 
-	public TaskType getType() {
+	public final TaskType getType() {
 		return type;
 	}
 
-	public void setType(TaskType type) {
+	public final void setType(final TaskType type) {
 		this.type = type;
 	}
 
-	public int getPriority() {
+	public final int getPriority() {
 		return priority;
 	}
 
-	public void setPriority(int priority) {
+	public final void setPriority(final int priority) {
 		this.priority = priority;
 	}
 
-	public int getMapx() {
+	public final int getMapx() {
 		return mapx;
 	}
 
-	public void setMapx(int mapx) {
+	public final void setMapx(final int mapx) {
 		this.mapx = mapx;
 	}
 
-	public int getMapy() {
+	public final int getMapy() {
 		return mapy;
 	}
 
-	public void setMapy(int mapy) {
+	public final void setMapy(final int mapy) {
 		this.mapy = mapy;
 	}
 
-	public int getAssignedIndex() {
+	public final int getAssignedIndex() {
 		return assignedIndex;
 	}
 
-	public void setAssignedIndex(int assignedIndex) {
+	public final void setAssignedIndex(final int assignedIndex) {
 		this.assignedIndex = assignedIndex;
 	}
 
-	public int getTargetIndex() {
+	public final int getTargetIndex() {
 		return targetIndex;
 	}
 
-	public void setTargetIndex(int targetIndex) {
+	public final void setTargetIndex(final int targetIndex) {
 		this.targetIndex = targetIndex;
 	}
 
-	public int determineUnitSuitability(Unit unit, boolean secondRun,
-			double tolerableDamageRatio, double tolerableDeathChance,
-			AiPlayer aIPlayer) {
+	public final int determineUnitSuitability(final Unit unit, final boolean secondRun,
+			final double tolerableDamageRatio, final double tolerableDeathChance,
+			final AiPlayer aIPlayer) {
 		int suitability = 1;
 		BattleProcessor bp = Game.getBattleProcessor();
 		if (getType() == AiTask.TaskType.ATTACK_UNIT) {
@@ -157,7 +157,7 @@ public class AiTask {
 		return suitability;
 	}
 
-	public void moveUnit(AiPlayer aIPlayer) {
+	public final void moveUnit(final AiPlayer aIPlayer) {
 		System.out.println("Moving unit");
 		PathFinder pf = new PathFinder();
 		pf.setUnitCollision(false);

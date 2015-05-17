@@ -14,39 +14,39 @@ public class ExpMenus {
 	private boolean defenderExpOpen;
 	private boolean attackerExpOpen;
 
-	public Menu getAttackerExpMenu() {
+	public final Menu getAttackerExpMenu() {
 		return attackerExpMenu;
 	}
 
-	public void setAttackerExpMenu(Menu attackerExpMenu) {
+	public final void setAttackerExpMenu(final Menu attackerExpMenu) {
 		this.attackerExpMenu = attackerExpMenu;
 	}
 
-	public Menu getDefenderExpMenu() {
+	public final Menu getDefenderExpMenu() {
 		return defenderExpMenu;
 	}
 
-	public void setDefenderExpMenu(Menu defenderExpMenu) {
+	public final void setDefenderExpMenu(final Menu defenderExpMenu) {
 		this.defenderExpMenu = defenderExpMenu;
 	}
 
-	public boolean getDefenderExpOpen() {
+	public final boolean getDefenderExpOpen() {
 		return defenderExpOpen;
 	}
 
-	public void setDefenderExpOpen(boolean defenderExpOpen) {
+	public final void setDefenderExpOpen(final boolean defenderExpOpen) {
 		this.defenderExpOpen = defenderExpOpen;
 	}
 
-	public boolean getAttackerExpOpen() {
+	public final boolean getAttackerExpOpen() {
 		return attackerExpOpen;
 	}
 
-	public void setAttackerExpOpen(boolean attackerExpOpen) {
+	public final void setAttackerExpOpen(final boolean attackerExpOpen) {
 		this.attackerExpOpen = attackerExpOpen;
 	}
 
-	private void createAttackerMenu(int gain, Unit attacker) {
+	private void createAttackerMenu(final int gain, final Unit attacker) {
 		attackerExpMenu = new Menu(114, 50, 63, 30);
 		MenuAction sa = getSAAction();
 		MenuAction close = getCloseAttackerAction();
@@ -57,7 +57,7 @@ public class ExpMenus {
 				attackerExpMenu);
 	}
 
-	public void drawAttackerExpMenu(int gain, Unit attacker) {
+	public final void drawAttackerExpMenu(final int gain, final Unit attacker) {
 		attackerExpOpen = true;
 		if (attackerExpMenu != null) {
 			attackerExpMenu.removeMenu();
@@ -67,7 +67,7 @@ public class ExpMenus {
 		MenuCursor.setActiveMenu(attackerExpMenu);
 	}
 
-	private void createDefenderMenu(int gain, Unit defender) {
+	private void createDefenderMenu(final int gain, final Unit defender) {
 		defenderExpMenu = new Menu(114, 50, 63, 30);
 		MenuAction sa = getSAAction();
 		MenuAction close = getCloseDefenderAction();
@@ -78,7 +78,7 @@ public class ExpMenus {
 				defender);
 	}
 
-	public void drawDefenderExpMenu(int gain, Unit defender) {
+	public final void drawDefenderExpMenu(final int gain, final Unit defender) {
 		defenderExpOpen = true;
 		if (defenderExpMenu != null) {
 			defenderExpMenu.removeMenu();
@@ -91,7 +91,7 @@ public class ExpMenus {
 	private MenuAction getCloseAttackerAction() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				attackerExpMenu.removeMenu();
 				attackerExpOpen = false;
 				if (defenderExpMenu != null) {
@@ -105,7 +105,7 @@ public class ExpMenus {
 	private MenuAction getCloseDefenderAction() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				defenderExpMenu.removeMenu();
 				defenderExpOpen = false;
 				if (attackerExpMenu != null) {
@@ -119,7 +119,7 @@ public class ExpMenus {
 	private MenuAction getSAAction() {
 		return new MenuAction() {
 			@Override
-			public void execute(MenuElement caller) {
+			public void execute(final MenuElement caller) {
 				// Do nothing.
 			}
 		};
