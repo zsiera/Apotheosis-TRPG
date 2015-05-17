@@ -4,255 +4,255 @@ package fer.util;
  * @author Evan Stewart
  */
 public class UnitData {
-    
-    private int index;
-    private String name;
-    private int unitClass;
-    private int level, exp;
-    private boolean autoLevel;
-    private int hp, str, skl, spd, def, res, mov, con;
-    private int[] weapons;
-    private int[] items;
-    private int armor;
-    
-    private int mapx;
-    private int mapy;
-    private int faction;
-    
-    private boolean hasFaceSprite;
-    private String sheetPath;
-    private int sheetWidth, sheetHeight, sheetTransparentColor;
-    private int x, y, spriteWidth, spriteHeight;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String name;
+	private int unitClass;
+	private int level, exp;
+	private boolean autoLevel;
+	private int hp, str, skl, spd, def, res, mov, con;
+	private int[] weapons;
+	private int[] items;
+	private int armor;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+	private int mapx;
+	private int mapy;
+	private int faction;
 
-    public String getName() {
-        return name;
-    }
+	private boolean hasFaceSprite;
+	private String sheetPath;
+	private int sheetWidth, sheetHeight, sheetTransparentColor;
+	private int x, y, spriteWidth, spriteHeight;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public int getUnitClass() {
-        return unitClass;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public void setUnitClass(int unitClass) {
-        this.unitClass = unitClass;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getLevel() {
-        return level;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+	public int getUnitClass() {
+		return unitClass;
+	}
 
-    public int getExp() {
-        return exp;
-    }
+	public void setUnitClass(int unitClass) {
+		this.unitClass = unitClass;
+	}
 
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    public boolean isAutoLevel() {
-        return autoLevel;
-    }
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
-    public void setAutoLevel(boolean autoLevel) {
-        this.autoLevel = autoLevel;
-    }
+	public int getExp() {
+		return exp;
+	}
 
-    public int getHp() {
-        return hp;
-    }
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
+	public boolean isAutoLevel() {
+		return autoLevel;
+	}
 
-    public int getStr() {
-        return str;
-    }
+	public void setAutoLevel(boolean autoLevel) {
+		this.autoLevel = autoLevel;
+	}
 
-    public void setStr(int str) {
-        this.str = str;
-    }
+	public int getHp() {
+		return hp;
+	}
 
-    public int getSkl() {
-        return skl;
-    }
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
 
-    public void setSkl(int skl) {
-        this.skl = skl;
-    }
+	public int getStr() {
+		return str;
+	}
 
-    public int getSpd() {
-        return spd;
-    }
+	public void setStr(int str) {
+		this.str = str;
+	}
 
-    public void setSpd(int spd) {
-        this.spd = spd;
-    }
+	public int getSkl() {
+		return skl;
+	}
 
-    public int getDef() {
-        return def;
-    }
+	public void setSkl(int skl) {
+		this.skl = skl;
+	}
 
-    public void setDef(int def) {
-        this.def = def;
-    }
+	public int getSpd() {
+		return spd;
+	}
 
-    public int getRes() {
-        return res;
-    }
+	public void setSpd(int spd) {
+		this.spd = spd;
+	}
 
-    public void setRes(int res) {
-        this.res = res;
-    }
+	public int getDef() {
+		return def;
+	}
 
-    public int getMov() {
-        return mov;
-    }
+	public void setDef(int def) {
+		this.def = def;
+	}
 
-    public void setMov(int mov) {
-        this.mov = mov;
-    }
+	public int getRes() {
+		return res;
+	}
 
-    public int getCon() {
-        return con;
-    }
+	public void setRes(int res) {
+		this.res = res;
+	}
 
-    public void setCon(int con) {
-        this.con = con;
-    }
+	public int getMov() {
+		return mov;
+	}
 
-    public int[] getWeapons() {
-        return weapons;
-    }
+	public void setMov(int mov) {
+		this.mov = mov;
+	}
 
-    public void setWeapons(int[] weapons) {
-        this.weapons = weapons;
-    }
+	public int getCon() {
+		return con;
+	}
 
-    public int[] getItems() {
-        return items;
-    }
+	public void setCon(int con) {
+		this.con = con;
+	}
 
-    public void setItems(int[] items) {
-        this.items = items;
-    }
+	public int[] getWeapons() {
+		return weapons;
+	}
 
-    public int getArmor() {
-        return armor;
-    }
+	public void setWeapons(int[] weapons) {
+		this.weapons = weapons;
+	}
 
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
+	public int[] getItems() {
+		return items;
+	}
 
-    public int getMapx() {
-        return mapx;
-    }
+	public void setItems(int[] items) {
+		this.items = items;
+	}
 
-    public void setMapx(int mapx) {
-        this.mapx = mapx;
-    }
+	public int getArmor() {
+		return armor;
+	}
 
-    public int getMapy() {
-        return mapy;
-    }
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
 
-    public void setMapy(int mapy) {
-        this.mapy = mapy;
-    }
+	public int getMapx() {
+		return mapx;
+	}
 
-    public int getFaction() {
-        return faction;
-    }
+	public void setMapx(int mapx) {
+		this.mapx = mapx;
+	}
 
-    public void setFaction(int faction) {
-        this.faction = faction;
-    }
+	public int getMapy() {
+		return mapy;
+	}
 
-    public boolean isHasFaceSprite() {
-        return hasFaceSprite;
-    }
+	public void setMapy(int mapy) {
+		this.mapy = mapy;
+	}
 
-    public void setHasFaceSprite(boolean hasFaceSprite) {
-        this.hasFaceSprite = hasFaceSprite;
-    }
+	public int getFaction() {
+		return faction;
+	}
 
-    public String getSheetPath() {
-        return sheetPath;
-    }
+	public void setFaction(int faction) {
+		this.faction = faction;
+	}
 
-    public void setSheetPath(String sheetPath) {
-        this.sheetPath = sheetPath;
-    }
+	public boolean isHasFaceSprite() {
+		return hasFaceSprite;
+	}
 
-    public int getSheetWidth() {
-        return sheetWidth;
-    }
+	public void setHasFaceSprite(boolean hasFaceSprite) {
+		this.hasFaceSprite = hasFaceSprite;
+	}
 
-    public void setSheetWidth(int sheetWidth) {
-        this.sheetWidth = sheetWidth;
-    }
+	public String getSheetPath() {
+		return sheetPath;
+	}
 
-    public int getSheetHeight() {
-        return sheetHeight;
-    }
+	public void setSheetPath(String sheetPath) {
+		this.sheetPath = sheetPath;
+	}
 
-    public void setSheetHeight(int sheetHeight) {
-        this.sheetHeight = sheetHeight;
-    }
+	public int getSheetWidth() {
+		return sheetWidth;
+	}
 
-    public int getSheetTransparentColor() {
-        return sheetTransparentColor;
-    }
+	public void setSheetWidth(int sheetWidth) {
+		this.sheetWidth = sheetWidth;
+	}
 
-    public void setSheetTransparentColor(int sheetTransparentColor) {
-        this.sheetTransparentColor = sheetTransparentColor;
-    }
+	public int getSheetHeight() {
+		return sheetHeight;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public void setSheetHeight(int sheetHeight) {
+		this.sheetHeight = sheetHeight;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public int getSheetTransparentColor() {
+		return sheetTransparentColor;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public void setSheetTransparentColor(int sheetTransparentColor) {
+		this.sheetTransparentColor = sheetTransparentColor;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public void setSpriteWidth(int spriteWidth) {
-        this.spriteWidth = spriteWidth;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public void setSpriteHeight(int spriteHeight) {
-        this.spriteHeight = spriteHeight;
-    } 
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
+
+	public void setSpriteWidth(int spriteWidth) {
+		this.spriteWidth = spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+
+	public void setSpriteHeight(int spriteHeight) {
+		this.spriteHeight = spriteHeight;
+	}
 }

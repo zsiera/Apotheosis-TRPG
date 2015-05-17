@@ -9,8 +9,8 @@ import fer.Map;
 import fer.Cursor;
 import fer.Unit;
 
-public class DefenderMenus extends AttackerDefenderMenu {	
-	
+public class DefenderMenus extends AttackerDefenderMenu {
+
 	public void initializeMenus(Cursor cursor) {
 		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
 			defaultMenu = new Menu(46, 52, 194, 108);
@@ -25,16 +25,17 @@ public class DefenderMenus extends AttackerDefenderMenu {
 		}
 	}
 
-	public void drawMenu(Cursor cursor, Unit defender, int defenderDamage, float accDefender, float critDefender) {
+	public void drawMenu(Cursor cursor, Unit defender, int defenderDamage,
+			float accDefender, float critDefender) {
 		clearMenus();
 		MenuAction sa = getSAAction();
 		initializeMenus(cursor);
 
-		defaultMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(defender.getName(),
-						Font.BASICFONT)).getSprite(), false, 7, 7));
+		defaultMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(
+				defender.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
 		if (defender.getMapFaceSprite() != null) {
-			defaultMenu.addElement(new MenuElement(sa, sa, defender.getMapFaceSprite(), false,
-							7, 13));
+			defaultMenu.addElement(new MenuElement(sa, sa, defender
+					.getMapFaceSprite(), false, 7, 13));
 		}
 		if (defender.getWeapon(0) != null) {
 			addWeaponMenuOptions(defender, sa);

@@ -9,101 +9,105 @@ import fer.gameplay.BattleProcessor;
 import java.util.ArrayList;
 
 /**
- * @author Evan Stewart
- * A struct class that stores the parameters surrounding a potential action for
- * and AI player to take, the the unit to which it is assigned, and its 
- * priority, which is evaluated based on its type.
+ * @author Evan Stewart A struct class that stores the parameters surrounding a
+ *         potential action for and AI player to take, the the unit to which it
+ *         is assigned, and its priority, which is evaluated based on its type.
  */
-public class AITask {
-    
-    public enum TaskType {
-        ATTACK_UNIT, GO_TO_TILE
-    }
-    
-    private TaskType type;
-    private int priority;
-    private int mapx, mapy, assignedIndex = -1, targetIndex = -1;
-    
-    /**
-     * Creates a new AITask of type AITask.TaskType.GO_TO_TILE
-     * @param mapx The x-coordinate of the destination tile
-     * @param mapy The y-coordinate of the destination tile
-     */
-    public AITask(int mapx, int mapy) {
-        type = TaskType.GO_TO_TILE;
-        this.mapx = mapx;
-        this.mapy = mapy;
-    }
-    
-    /**
-     * Creates a new AITask of type AITask.TaskType.ATTACK_UNIT
-     * @param targetIndex The index on the current map of the target unit
-     */
-    public AITask(int targetIndex) {
-        type = TaskType.ATTACK_UNIT;
-        this.targetIndex = targetIndex;
-    }
+public class AiTask {
 
-    public TaskType getType() {
-        return type;
-    }
+	public enum TaskType {
+		ATTACK_UNIT, GO_TO_TILE
+	}
 
-    public void setType(TaskType type) {
-        this.type = type;
-    }
+	private TaskType type;
+	private int priority;
+	private int mapx, mapy, assignedIndex = -1, targetIndex = -1;
 
-    public int getPriority() {
-        return priority;
-    }
+	/**
+	 * Creates a new AITask of type AITask.TaskType.GO_TO_TILE
+	 * 
+	 * @param mapx
+	 *            The x-coordinate of the destination tile
+	 * @param mapy
+	 *            The y-coordinate of the destination tile
+	 */
+	public AiTask(int mapx, int mapy) {
+		type = TaskType.GO_TO_TILE;
+		this.mapx = mapx;
+		this.mapy = mapy;
+	}
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
+	/**
+	 * Creates a new AITask of type AITask.TaskType.ATTACK_UNIT
+	 * 
+	 * @param targetIndex
+	 *            The index on the current map of the target unit
+	 */
+	public AiTask(int targetIndex) {
+		type = TaskType.ATTACK_UNIT;
+		this.targetIndex = targetIndex;
+	}
 
-    public int getMapx() {
-        return mapx;
-    }
+	public TaskType getType() {
+		return type;
+	}
 
-    public void setMapx(int mapx) {
-        this.mapx = mapx;
-    }
+	public void setType(TaskType type) {
+		this.type = type;
+	}
 
-    public int getMapy() {
-        return mapy;
-    }
+	public int getPriority() {
+		return priority;
+	}
 
-    public void setMapy(int mapy) {
-        this.mapy = mapy;
-    }
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
 
-    public int getAssignedIndex() {
-        return assignedIndex;
-    }
+	public int getMapx() {
+		return mapx;
+	}
 
-    public void setAssignedIndex(int assignedIndex) {
-        this.assignedIndex = assignedIndex;
-    }
+	public void setMapx(int mapx) {
+		this.mapx = mapx;
+	}
 
-    public int getTargetIndex() {
-        return targetIndex;
-    }
+	public int getMapy() {
+		return mapy;
+	}
 
-    public void setTargetIndex(int targetIndex) {
-        this.targetIndex = targetIndex;
-    }
+	public void setMapy(int mapy) {
+		this.mapy = mapy;
+	}
+
+	public int getAssignedIndex() {
+		return assignedIndex;
+	}
+
+	public void setAssignedIndex(int assignedIndex) {
+		this.assignedIndex = assignedIndex;
+	}
+
+	public int getTargetIndex() {
+		return targetIndex;
+	}
+
+	public void setTargetIndex(int targetIndex) {
+		this.targetIndex = targetIndex;
+	}
 
 	public int determineUnitSuitability(Unit unit, boolean secondRun,
 			double tolerableDamageRatio, double tolerableDeathChance,
-			AIPlayer aIPlayer) {
+			AiPlayer aIPlayer) {
 		int suitability = 1;
 		BattleProcessor bp = Game.getBattleProcessor();
-		if (getType() == AITask.TaskType.ATTACK_UNIT) {
-			suitability += (int) ((Math.abs(unit.getMapx()
+		if (getType() == AiTask.TaskType.ATTACK_UNIT) {
+			suitability += (Math.abs(unit.getMapx()
 					- Game.getCurrentMap().getUnit(getTargetIndex()).getMapx()) / Game
-					.getCurrentMap().getWidth()) * 10);
-			suitability += (int) ((Math.abs(unit.getMapy()
+					.getCurrentMap().getWidth()) * 10;
+			suitability += (Math.abs(unit.getMapy()
 					- Game.getCurrentMap().getUnit(getTargetIndex()).getMapy()) / Game
-					.getCurrentMap().getHeight()) * 10);
+					.getCurrentMap().getHeight()) * 10;
 			System.out.println("Dist suit");
 			if (aIPlayer.canAttack(unit,
 					Game.getCurrentMap().getUnit(getTargetIndex()))) {
@@ -117,18 +121,18 @@ public class AITask {
 								.getUnit(getTargetIndex()), unit)));
 				System.out
 						.println("DAMAGE RATIO: "
-								+ (float) ((float) bp.calculateAttackDamage(
+								+ (float) bp.calculateAttackDamage(
 										unit,
 										Game.getCurrentMap().getUnit(
 												getTargetIndex())) / (float) bp
 										.calculateAttackDamage(
 												Game.getCurrentMap().getUnit(
-														getTargetIndex()), unit)));
-				if ((float) ((float) bp.calculateAttackDamage(unit, Game
+														getTargetIndex()), unit));
+				if ((float) bp.calculateAttackDamage(unit, Game
 						.getCurrentMap().getUnit(getTargetIndex())) / (float) bp
 						.calculateAttackDamage(
 								Game.getCurrentMap().getUnit(getTargetIndex()),
-								unit)) >= tolerableDamageRatio) {
+								unit) >= tolerableDamageRatio) {
 					System.out.println("Tolerable damage ratio");
 					suitability += 10;
 				}
@@ -143,23 +147,23 @@ public class AITask {
 					suitability = 0;
 				}
 			}
-		} else if (getType() == AITask.TaskType.GO_TO_TILE) {
-			suitability += (int) ((Math.abs(unit.getMapx() - getMapx()) / Game
-					.getCurrentMap().getWidth()) * 100);
-			suitability += (int) ((Math.abs(unit.getMapy() - getMapy()) / Game
-					.getCurrentMap().getHeight()) * 100);
+		} else if (getType() == AiTask.TaskType.GO_TO_TILE) {
+			suitability += (Math.abs(unit.getMapx() - getMapx()) / Game
+					.getCurrentMap().getWidth()) * 100;
+			suitability += (Math.abs(unit.getMapy() - getMapy()) / Game
+					.getCurrentMap().getHeight()) * 100;
 		}
 		System.out.println("Suitability: " + suitability);
 		return suitability;
 	}
 
-	public void moveUnit(AIPlayer aIPlayer) {
+	public void moveUnit(AiPlayer aIPlayer) {
 		System.out.println("Moving unit");
 		PathFinder pf = new PathFinder();
 		pf.setUnitCollision(false);
 		BattleProcessor bp = Game.getBattleProcessor();
 		Unit unit = Game.getCurrentMap().getUnit(getAssignedIndex());
-		if (getType() == AITask.TaskType.ATTACK_UNIT) {
+		if (getType() == AiTask.TaskType.ATTACK_UNIT) {
 			Unit target = Game.getCurrentMap().getUnit(getTargetIndex());
 			ArrayList<Tile> shortestPath = pf.getShortestPathAStar(
 					Game.getCurrentMap(),
@@ -212,7 +216,7 @@ public class AITask {
 			}
 			Attack.attackWithWeaponInRange(pf, bp, unit, target);
 			unit.setMoved(true);
-		} else if (getType() == AITask.TaskType.GO_TO_TILE) {
+		} else if (getType() == AiTask.TaskType.GO_TO_TILE) {
 		}
 	}
 }

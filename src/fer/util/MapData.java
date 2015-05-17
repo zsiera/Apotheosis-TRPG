@@ -4,65 +4,65 @@ package fer.util;
  * @author Evan Stewart
  */
 public class MapData {
-    
-    private int index;
-    private String name;
-    private int width, height, numUnits, numFactions;
-    private int[] tiles;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String name;
+	private int width, height, numUnits, numFactions;
+	private int[] tiles;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	public int getWidth() {
+		return width;
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
+	public int getHeight() {
+		return height;
+	}
 
-    public int getNumUnits() {
-        return numUnits;
-    }
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
-    public void setNumUnits(int numUnits) {
-        this.numUnits = numUnits;
-    }
+	public int getNumUnits() {
+		return numUnits;
+	}
 
-    public int getNumFactions() {
-        return numFactions;
-    }
+	public void setNumUnits(int numUnits) {
+		this.numUnits = numUnits;
+	}
 
-    public void setNumFactions(int numFactions) {
-        this.numFactions = numFactions;
-    }
+	public int getNumFactions() {
+		return numFactions;
+	}
 
-    public int[] getTiles() {
-        return tiles;
-    }
+	public void setNumFactions(int numFactions) {
+		this.numFactions = numFactions;
+	}
 
-    public void setTiles(int[] tiles) {
-        this.tiles = tiles;
-    }
+	public int[] getTiles() {
+		return tiles;
+	}
+
+	public void setTiles(int[] tiles) {
+		this.tiles = tiles;
+	}
 }

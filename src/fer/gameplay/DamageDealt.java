@@ -1,6 +1,5 @@
 package fer.gameplay;
 
-
 import fer.Unit;
 
 public class DamageDealt {

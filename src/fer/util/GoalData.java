@@ -4,57 +4,57 @@ package fer.util;
  * @author Evan Stewart
  */
 public class GoalData {
-    
-    private int index;
-    private String type;
-    private int[] targets;
-    private int turns, mapx, mapy;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String type;
+	private int[] targets;
+	private int turns, mapx, mapy;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public int[] getTargets() {
-        return targets;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setTargets(int[] targets) {
-        this.targets = targets;
-    }
+	public int[] getTargets() {
+		return targets;
+	}
 
-    public int getTurns() {
-        return turns;
-    }
+	public void setTargets(int[] targets) {
+		this.targets = targets;
+	}
 
-    public void setTurns(int turns) {
-        this.turns = turns;
-    }
+	public int getTurns() {
+		return turns;
+	}
 
-    public int getMapx() {
-        return mapx;
-    }
+	public void setTurns(int turns) {
+		this.turns = turns;
+	}
 
-    public void setMapx(int mapx) {
-        this.mapx = mapx;
-    }
+	public int getMapx() {
+		return mapx;
+	}
 
-    public int getMapy() {
-        return mapy;
-    }
+	public void setMapx(int mapx) {
+		this.mapx = mapx;
+	}
 
-    public void setMapy(int mapy) {
-        this.mapy = mapy;
-    }
+	public int getMapy() {
+		return mapy;
+	}
+
+	public void setMapy(int mapy) {
+		this.mapy = mapy;
+	}
 }

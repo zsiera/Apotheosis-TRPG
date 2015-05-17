@@ -1,9 +1,5 @@
 package fer.ai;
 
-
-import fer.Unit;
-import fer.Tile;
-
 public class Exclusions {
 	private int excludeX = -1;
 	private int excludeY = -1;

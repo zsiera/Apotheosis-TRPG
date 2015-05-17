@@ -4,137 +4,137 @@ package fer.util;
  * @author Evan Stewart
  */
 public class TileData {
-    
-    private int index;
-    private String name;
-    private int terrainType;
-    private boolean attackable;
-    private int def, avo;
-    
-    private String sheetPath;
-    private int sheetWidth, sheetHeight, sheetTransparentColor;
-    private int x, y, spriteWidth, spriteHeight;
-    
-    //To be used during game initialization, not set through XML
-    private int sheetIndex;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String name;
+	private int terrainType;
+	private boolean attackable;
+	private int def, avo;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+	private String sheetPath;
+	private int sheetWidth, sheetHeight, sheetTransparentColor;
+	private int x, y, spriteWidth, spriteHeight;
 
-    public String getName() {
-        return name;
-    }
+	// To be used during game initialization, not set through XML
+	private int sheetIndex;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public int getTerrainType() {
-        return terrainType;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public void setTerrainType(int terrainType) {
-        this.terrainType = terrainType;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public boolean isAttackable() {
-        return attackable;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setAttackable(boolean attackable) {
-        this.attackable = attackable;
-    }
+	public int getTerrainType() {
+		return terrainType;
+	}
 
-    public int getDef() {
-        return def;
-    }
+	public void setTerrainType(int terrainType) {
+		this.terrainType = terrainType;
+	}
 
-    public void setDef(int def) {
-        this.def = def;
-    }
+	public boolean isAttackable() {
+		return attackable;
+	}
 
-    public int getAvo() {
-        return avo;
-    }
+	public void setAttackable(boolean attackable) {
+		this.attackable = attackable;
+	}
 
-    public void setAvo(int avo) {
-        this.avo = avo;
-    }
-    
-    public String getSheetPath() {
-        return sheetPath;
-    }
+	public int getDef() {
+		return def;
+	}
 
-    public void setSheetPath(String sheetPath) {
-        this.sheetPath = sheetPath;
-    }
+	public void setDef(int def) {
+		this.def = def;
+	}
 
-    public int getSheetWidth() {
-        return sheetWidth;
-    }
+	public int getAvo() {
+		return avo;
+	}
 
-    public void setSheetWidth(int sheetWidth) {
-        this.sheetWidth = sheetWidth;
-    }
+	public void setAvo(int avo) {
+		this.avo = avo;
+	}
 
-    public int getSheetHeight() {
-        return sheetHeight;
-    }
+	public String getSheetPath() {
+		return sheetPath;
+	}
 
-    public void setSheetHeight(int sheetHeight) {
-        this.sheetHeight = sheetHeight;
-    }
+	public void setSheetPath(String sheetPath) {
+		this.sheetPath = sheetPath;
+	}
 
-    public int getSheetTransparentColor() {
-        return sheetTransparentColor;
-    }
+	public int getSheetWidth() {
+		return sheetWidth;
+	}
 
-    public void setSheetTransparentColor(int sheetTransparentColor) {
-        this.sheetTransparentColor = sheetTransparentColor;
-    }
+	public void setSheetWidth(int sheetWidth) {
+		this.sheetWidth = sheetWidth;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public int getSheetHeight() {
+		return sheetHeight;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public void setSheetHeight(int sheetHeight) {
+		this.sheetHeight = sheetHeight;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getSheetTransparentColor() {
+		return sheetTransparentColor;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public void setSheetTransparentColor(int sheetTransparentColor) {
+		this.sheetTransparentColor = sheetTransparentColor;
+	}
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public void setSpriteWidth(int spriteWidth) {
-        this.spriteWidth = spriteWidth;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public void setSpriteHeight(int spriteHeight) {
-        this.spriteHeight = spriteHeight;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public int getSheetIndex() {
-        return sheetIndex;
-    }
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
 
-    public void setSheetIndex(int sheetIndex) {
-        this.sheetIndex = sheetIndex;
-    }
+	public void setSpriteWidth(int spriteWidth) {
+		this.spriteWidth = spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+
+	public void setSpriteHeight(int spriteHeight) {
+		this.spriteHeight = spriteHeight;
+	}
+
+	public int getSheetIndex() {
+		return sheetIndex;
+	}
+
+	public void setSheetIndex(int sheetIndex) {
+		this.sheetIndex = sheetIndex;
+	}
 }

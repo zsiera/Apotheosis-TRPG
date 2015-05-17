@@ -4,127 +4,127 @@ package fer.util;
  * @author Evan Stewart
  */
 public class ArmorData {
-    
-    private int index;
-    private String name;
-    private int resilience, encumberance, price;
-    
-    private String sheetPath;
-    private int sheetWidth, sheetHeight, sheetTransparentColor;
-    private int x, y, spriteWidth, spriteHeight;
-    
-    //To be used during game initialization, not set through XML
-    private int sheetIndex;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String name;
+	private int resilience, encumberance, price;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+	private String sheetPath;
+	private int sheetWidth, sheetHeight, sheetTransparentColor;
+	private int x, y, spriteWidth, spriteHeight;
 
-    public String getName() {
-        return name;
-    }
+	// To be used during game initialization, not set through XML
+	private int sheetIndex;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public int getResilience() {
-        return resilience;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public void setResilience(int resilience) {
-        this.resilience = resilience;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getEncumberance() {
-        return encumberance;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setEncumberance(int encumberance) {
-        this.encumberance = encumberance;
-    }
+	public int getResilience() {
+		return resilience;
+	}
 
-    public int getPrice() {
-        return price;
-    }
+	public void setResilience(int resilience) {
+		this.resilience = resilience;
+	}
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+	public int getEncumberance() {
+		return encumberance;
+	}
 
-    public String getSheetPath() {
-        return sheetPath;
-    }
+	public void setEncumberance(int encumberance) {
+		this.encumberance = encumberance;
+	}
 
-    public void setSheetPath(String sheetPath) {
-        this.sheetPath = sheetPath;
-    }
+	public int getPrice() {
+		return price;
+	}
 
-    public int getSheetWidth() {
-        return sheetWidth;
-    }
+	public void setPrice(int price) {
+		this.price = price;
+	}
 
-    public void setSheetWidth(int sheetWidth) {
-        this.sheetWidth = sheetWidth;
-    }
+	public String getSheetPath() {
+		return sheetPath;
+	}
 
-    public int getSheetHeight() {
-        return sheetHeight;
-    }
+	public void setSheetPath(String sheetPath) {
+		this.sheetPath = sheetPath;
+	}
 
-    public void setSheetHeight(int sheetHeight) {
-        this.sheetHeight = sheetHeight;
-    }
+	public int getSheetWidth() {
+		return sheetWidth;
+	}
 
-    public int getSheetTransparentColor() {
-        return sheetTransparentColor;
-    }
+	public void setSheetWidth(int sheetWidth) {
+		this.sheetWidth = sheetWidth;
+	}
 
-    public void setSheetTransparentColor(int sheetTransparentColor) {
-        this.sheetTransparentColor = sheetTransparentColor;
-    }
+	public int getSheetHeight() {
+		return sheetHeight;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public void setSheetHeight(int sheetHeight) {
+		this.sheetHeight = sheetHeight;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public int getSheetTransparentColor() {
+		return sheetTransparentColor;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public void setSheetTransparentColor(int sheetTransparentColor) {
+		this.sheetTransparentColor = sheetTransparentColor;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public void setSpriteWidth(int spriteWidth) {
-        this.spriteWidth = spriteWidth;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public void setSpriteHeight(int spriteHeight) {
-        this.spriteHeight = spriteHeight;
-    }
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
 
-    public int getSheetIndex() {
-        return sheetIndex;
-    }
+	public void setSpriteWidth(int spriteWidth) {
+		this.spriteWidth = spriteWidth;
+	}
 
-    public void setSheetIndex(int sheetIndex) {
-        this.sheetIndex = sheetIndex;
-    }
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+
+	public void setSpriteHeight(int spriteHeight) {
+		this.spriteHeight = spriteHeight;
+	}
+
+	public int getSheetIndex() {
+		return sheetIndex;
+	}
+
+	public void setSheetIndex(int sheetIndex) {
+		this.sheetIndex = sheetIndex;
+	}
 }

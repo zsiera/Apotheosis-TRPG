@@ -5,189 +5,189 @@
 package fer.util;
 
 /**
- * @author Evan Stewart
- * A middleman class that is used to store information from deserialized XML
- * documents that will be used to initialize weapon instances.
+ * @author Evan Stewart A middleman class that is used to store information from
+ *         deserialized XML documents that will be used to initialize weapon
+ *         instances.
  */
 public class WeaponData {
-    
-    private int index;
-    private String name, description;
-    private boolean melee;
-    private int damage, pierce, critical, accuracy, weight, range, uses, price;
-    
-    private String sheetPath;
-    private int sheetWidth, sheetHeight, sheetTransparentColor;
-    private int x, y, spriteWidth, spriteHeight;
-    
-    //To be used during game initialization, not set through XML
-    private int sheetIndex;
 
-    public int getIndex() {
-        return index;
-    }
+	private int index;
+	private String name, description;
+	private boolean melee;
+	private int damage, pierce, critical, accuracy, weight, range, uses, price;
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-    
-    public String getName() {
-        return name;
-    }
+	private String sheetPath;
+	private int sheetWidth, sheetHeight, sheetTransparentColor;
+	private int x, y, spriteWidth, spriteHeight;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	// To be used during game initialization, not set through XML
+	private int sheetIndex;
 
-    public String getDescription() {
-        return description;
-    }
+	public int getIndex() {
+		return index;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    public boolean getMelee() {
-        return melee;
-    }
-    
-    public void setMelee(boolean melee) {
-        this.melee = melee;
-    }
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-    public int getDamage() {
-        return damage;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public int getPierce() {
-        return pierce;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setPierce(int pierce) {
-        this.pierce = pierce;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public int getAccuracy() {
-        return accuracy;
-    }
+	public boolean getMelee() {
+		return melee;
+	}
 
-    public void setAccuracy(int accuracy) {
-        this.accuracy = accuracy;
-    }
+	public void setMelee(boolean melee) {
+		this.melee = melee;
+	}
 
-    public int getWeight() {
-        return weight;
-    }
+	public int getDamage() {
+		return damage;
+	}
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
 
-    public int getRange() {
-        return range;
-    }
+	public int getPierce() {
+		return pierce;
+	}
 
-    public void setRange(int range) {
-        this.range = range;
-    }
+	public void setPierce(int pierce) {
+		this.pierce = pierce;
+	}
 
-    public int getUses() {
-        return uses;
-    }
+	public int getAccuracy() {
+		return accuracy;
+	}
 
-    public void setUses(int uses) {
-        this.uses = uses;
-    }
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
 
-    public int getCritical() {
-        return critical;
-    }
+	public int getWeight() {
+		return weight;
+	}
 
-    public void setCritical(int critical) {
-        this.critical = critical;
-    }
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
-    public int getPrice() {
-        return price;
-    }
+	public int getRange() {
+		return range;
+	}
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+	public void setRange(int range) {
+		this.range = range;
+	}
 
-    public String getSheetPath() {
-        return sheetPath;
-    }
+	public int getUses() {
+		return uses;
+	}
 
-    public void setSheetPath(String sheetPath) {
-        this.sheetPath = sheetPath;
-    }
+	public void setUses(int uses) {
+		this.uses = uses;
+	}
 
-    public int getSheetWidth() {
-        return sheetWidth;
-    }
+	public int getCritical() {
+		return critical;
+	}
 
-    public void setSheetWidth(int sheetWidth) {
-        this.sheetWidth = sheetWidth;
-    }
+	public void setCritical(int critical) {
+		this.critical = critical;
+	}
 
-    public int getSheetHeight() {
-        return sheetHeight;
-    }
+	public int getPrice() {
+		return price;
+	}
 
-    public void setSheetHeight(int sheetHeight) {
-        this.sheetHeight = sheetHeight;
-    }
+	public void setPrice(int price) {
+		this.price = price;
+	}
 
-    public int getSheetTransparentColor() {
-        return sheetTransparentColor;
-    }
+	public String getSheetPath() {
+		return sheetPath;
+	}
 
-    public void setSheetTransparentColor(int sheetTransparentColor) {
-        this.sheetTransparentColor = sheetTransparentColor;
-    }
+	public void setSheetPath(String sheetPath) {
+		this.sheetPath = sheetPath;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public int getSheetWidth() {
+		return sheetWidth;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public void setSheetWidth(int sheetWidth) {
+		this.sheetWidth = sheetWidth;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getSheetHeight() {
+		return sheetHeight;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public void setSheetHeight(int sheetHeight) {
+		this.sheetHeight = sheetHeight;
+	}
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
+	public int getSheetTransparentColor() {
+		return sheetTransparentColor;
+	}
 
-    public void setSpriteWidth(int spriteWidth) {
-        this.spriteWidth = spriteWidth;
-    }
+	public void setSheetTransparentColor(int sheetTransparentColor) {
+		this.sheetTransparentColor = sheetTransparentColor;
+	}
 
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public void setSpriteHeight(int spriteHeight) {
-        this.spriteHeight = spriteHeight;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public int getSheetIndex() {
-        return sheetIndex;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public void setSheetIndex(int sheetIndex) {
-        this.sheetIndex = sheetIndex;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
+
+	public void setSpriteWidth(int spriteWidth) {
+		this.spriteWidth = spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+
+	public void setSpriteHeight(int spriteHeight) {
+		this.spriteHeight = spriteHeight;
+	}
+
+	public int getSheetIndex() {
+		return sheetIndex;
+	}
+
+	public void setSheetIndex(int sheetIndex) {
+		this.sheetIndex = sheetIndex;
+	}
 }

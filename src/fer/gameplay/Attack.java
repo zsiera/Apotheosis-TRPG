@@ -1,6 +1,5 @@
 package fer.gameplay;
 
-
 import java.util.ArrayList;
 
 import fer.Tile;
@@ -86,63 +85,75 @@ public class Attack {
 		}
 		return speed;
 	}
-	
-	public static double calculateDeathChance(Unit unit, Unit opponent, boolean unitAttacking) {
-        if ((2 * calculateAttackDamage(opponent, unit)) < unit.getCurrentHp()) {
-            return 0;
-        } else {
-            int numAttacksUnit = getNumberOfAttacks(unit, opponent);
-            double opponentSurvival = 1;
-            if (calculateAttackDamage(opponent, unit) >= unit.getCurrentHp()) {
-                //One hit will kill
-                if (unitAttacking && (calculateAttackDamage(unit, opponent)
-                        >= opponent.getCurrentHp()) && numAttacksUnit >= 1) {
-                    //If the unit can strike the opponent first and kill,
-                    //survival is the probability they miss
-                    opponentSurvival = 1 - (calculateAttackHitChance(unit, opponent) / 100);
-                }
-                return (calculateAttackHitChance(opponent, unit) / 100)
-                        * opponentSurvival;//Unit misses and opponent hits;
-            } else {
-                //Two hits will kill
-                if (!unitAttacking && (calculateAttackDamage(unit, opponent)
-                        >= opponent.getCurrentHp()) && numAttacksUnit >= 1) {
-                    //If the unit can strike the opponent after its first attack and 
-                    //kill, survival is the probability they miss
-                    opponentSurvival = 1 - (calculateAttackHitChance(unit, opponent) / 100);
-                } else if (unitAttacking && ((2 * calculateAttackDamage(unit,
-                        opponent)) >= opponent.getCurrentHp()) && numAttacksUnit >= 2) {
-                    //If the unit strikes first twice and will kill if they hit both
-                    //times, survival is the probability they do not
-                    opponentSurvival = 1 - Math.pow((calculateAttackHitChance(unit, opponent) / 100), 2);
-                }
-            }
-            return Math.pow((calculateAttackHitChance(opponent, unit) / 100), 2)
-                    * opponentSurvival;//Unit does not hit twice, opponent does
-        }
-    }
-	
-	public static void attackWithWeaponInRange(PathFinder pf, BattleProcessor bp,
-			Unit unit, Unit target) {
-		for (int i = 0; i < unit.getWeapons().length; i++) {
-		    //Test each weapon's range
-		    if (unit.getWeapon(i) != null) {
-		        ArrayList<Tile> attackableTiles = pf.getAttackableTiles(unit, unit.
-		                getMapx(), unit.getMapy(), Game.getCurrentMap(), i);
-		        if (attackableTiles.contains(Game.getCurrentMap().
-		                getTile(target.getMapx() + target.getMapy() * Game.
-		                getCurrentMap().getWidth()))) {
-		            //Target is in firing range, attack
-		            if (i != 0) {
-		                equipWeapon(unit, i);
-		            }
-		            bp.startBattle(unit, target);
-		            break;
-		        }
-		    }
+
+	public static double calculateDeathChance(Unit unit, Unit opponent,
+			boolean unitAttacking) {
+		if ((2 * calculateAttackDamage(opponent, unit)) < unit.getCurrentHp()) {
+			return 0;
+		} else {
+			int numAttacksUnit = getNumberOfAttacks(unit, opponent);
+			double opponentSurvival = 1;
+			if (calculateAttackDamage(opponent, unit) >= unit.getCurrentHp()) {
+				// One hit will kill
+				if (unitAttacking
+						&& (calculateAttackDamage(unit, opponent) >= opponent
+								.getCurrentHp()) && numAttacksUnit >= 1) {
+					// If the unit can strike the opponent first and kill,
+					// survival is the probability they miss
+					opponentSurvival = 1 - (calculateAttackHitChance(unit,
+							opponent) / 100);
+				}
+				return (calculateAttackHitChance(opponent, unit) / 100)
+						* opponentSurvival;// Unit misses and opponent hits;
+			} else {
+				// Two hits will kill
+				if (!unitAttacking
+						&& (calculateAttackDamage(unit, opponent) >= opponent
+								.getCurrentHp()) && numAttacksUnit >= 1) {
+					// If the unit can strike the opponent after its first
+					// attack and
+					// kill, survival is the probability they miss
+					opponentSurvival = 1 - (calculateAttackHitChance(unit,
+							opponent) / 100);
+				} else if (unitAttacking
+						&& ((2 * calculateAttackDamage(unit, opponent)) >= opponent
+								.getCurrentHp()) && numAttacksUnit >= 2) {
+					// If the unit strikes first twice and will kill if they hit
+					// both
+					// times, survival is the probability they do not
+					opponentSurvival = 1 - Math
+							.pow((calculateAttackHitChance(unit, opponent) / 100),
+									2);
+				}
+			}
+			return Math
+					.pow((calculateAttackHitChance(opponent, unit) / 100), 2)
+					* opponentSurvival;// Unit does not hit twice, opponent does
 		}
 	}
-	
+
+	public static void attackWithWeaponInRange(PathFinder pf,
+			BattleProcessor bp, Unit unit, Unit target) {
+		for (int i = 0; i < unit.getWeapons().length; i++) {
+			// Test each weapon's range
+			if (unit.getWeapon(i) != null) {
+				ArrayList<Tile> attackableTiles = pf
+						.getAttackableTiles(unit, unit.getMapx(),
+								unit.getMapy(), Game.getCurrentMap(), i);
+				if (attackableTiles.contains(Game.getCurrentMap().getTile(
+						target.getMapx() + target.getMapy()
+								* Game.getCurrentMap().getWidth()))) {
+					// Target is in firing range, attack
+					if (i != 0) {
+						equipWeapon(unit, i);
+					}
+					bp.startBattle(unit, target);
+					break;
+				}
+			}
+		}
+	}
+
 	private static void equipWeapon(Unit testUnit, int longest) {
 		Weapon temp = testUnit.getWeapon(0);
 		testUnit.setWeapon(0, testUnit.getWeapon(longest));

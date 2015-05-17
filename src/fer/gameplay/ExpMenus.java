@@ -1,6 +1,5 @@
 package fer.gameplay;
 
-
 import fer.ui.Menu;
 import fer.ui.MenuAction;
 import fer.Unit;
@@ -54,10 +53,11 @@ public class ExpMenus {
 		attackerExpMenu.setEscapeAction(close);
 		int newExp = (attacker.getExp() + gain) % Unit.EXP_CAP;
 		int levelGain = (int) (attacker.getExp() + gain) / Unit.EXP_CAP;
-		attacker.addElementsToAttackerMenu(gain, sa, close, newExp, levelGain, attackerExpMenu);
+		attacker.addElementsToAttackerMenu(gain, sa, close, newExp, levelGain,
+				attackerExpMenu);
 	}
 
-	public void drawAttackerExpMenu(int gain, Unit attacker){
+	public void drawAttackerExpMenu(int gain, Unit attacker) {
 		attackerExpOpen = true;
 		if (attackerExpMenu != null) {
 			attackerExpMenu.removeMenu();
@@ -66,17 +66,18 @@ public class ExpMenus {
 		MenuCursor.getMenuCursor().setElementIndex(0);
 		MenuCursor.setActiveMenu(attackerExpMenu);
 	}
-	
-	private void createDefenderMenu(int gain, Unit defender){
+
+	private void createDefenderMenu(int gain, Unit defender) {
 		defenderExpMenu = new Menu(114, 50, 63, 30);
 		MenuAction sa = getSAAction();
 		MenuAction close = getCloseDefenderAction();
 		defenderExpMenu.setEscapeAction(close);
 		int newExp = (defender.getExp() + gain) % Unit.EXP_CAP;
 		int levelGain = (int) (defender.getExp() + gain) / Unit.EXP_CAP;
-		defenderExpMenu.addElementsToDefenderMenu(gain, sa, newExp, levelGain, defender);
+		defenderExpMenu.addElementsToDefenderMenu(gain, sa, newExp, levelGain,
+				defender);
 	}
-	
+
 	public void drawDefenderExpMenu(int gain, Unit defender) {
 		defenderExpOpen = true;
 		if (defenderExpMenu != null) {
@@ -86,7 +87,7 @@ public class ExpMenus {
 		MenuCursor.getMenuCursor().setElementIndex(0);
 		MenuCursor.setActiveMenu(defenderExpMenu);
 	}
-	
+
 	private MenuAction getCloseAttackerAction() {
 		MenuAction close = new MenuAction() {
 			@Override
@@ -101,7 +102,7 @@ public class ExpMenus {
 		};
 		return close;
 	}
-	
+
 	private MenuAction getCloseDefenderAction() {
 		MenuAction close = new MenuAction() {
 			@Override
@@ -116,14 +117,14 @@ public class ExpMenus {
 		};
 		return close;
 	}
-	
-    private MenuAction getSAAction() {
+
+	private MenuAction getSAAction() {
 		MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
+			@Override
+			public void execute(MenuElement caller) {
+				// Do nothing.
+			}
+		};
 		return sa;
 	}
 }
