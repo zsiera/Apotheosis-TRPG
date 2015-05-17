@@ -2,6 +2,7 @@ package fer.ui;
 
 import fer.Game;
 import fer.Renderer;
+import fer.Unit;
 import fer.graphics.Sprite;
 import fer.graphics.SpriteSheet;
 import java.util.ArrayList;
@@ -166,4 +167,31 @@ public class Menu {
         }
         return strings;
     }
+
+	public void addElementsToDefenderMenu(int gain, MenuAction sa, int newExp,
+			int levelGain, Unit defender) {
+		addElement(new MenuElement(sa, sa, new TextGraphic(
+				"NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
+		addElement(new MenuElement(sa, sa, new TextGraphic(
+				"NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
+		addElement(new MenuElement(sa, sa,
+				new TextGraphic("LVL: " + defender.getLevel() + " -> "
+						+ (defender.getLevel() + levelGain), Font.BASICFONT)
+						.getSprite(), false, 7, 31));
+		addElement(new MenuElement(sa, sa,
+				new TextGraphic("LVL: " + defender.getLevel() + " -> "
+						+ (defender.getLevel() + levelGain), Font.BASICFONT)
+						.getSprite(), false, 7, 31));
+		addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: "
+				+ (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false,
+				7, 37));
+	}
+
+	public void addElementsForDescription(MenuAction nil, String description) {
+		String[] lines = Menu.wrapText(description, 34);
+		for (int i = 0; i < Math.min(4, lines.length); i++) {
+			addElement(new MenuElement(nil, nil, new TextGraphic(lines[i],
+					Font.BASICFONT).getSprite(), false, 23, 13 + (6 * i)));
+		}
+	}
 }

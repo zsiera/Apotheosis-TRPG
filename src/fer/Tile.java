@@ -1,5 +1,6 @@
 package fer;
 
+import fer.ai.Exclusions;
 import fer.graphics.Sprite;
 import fer.graphics.SpriteSheet;
 import fer.util.TileData;
@@ -167,4 +168,33 @@ public class Tile {
     public int getTypeIndex() {
         return typeIndex;
     }
+
+	public int getMovementCost(Unit unit, boolean unitCollision,
+			Exclusions exclusions) {
+		if (Game.getCurrentMap().getUnitTile(
+				getMapX() + getMapY() * Game.getCurrentMap().getWidth()) != null) {
+			if (Game.getCurrentMap()
+					.getUnitTile(
+							getMapX() + getMapY()
+									* Game.getCurrentMap().getWidth())
+					.getFaction() != unit.getFaction()
+					&& unitCollision
+					&& (getMapX() != exclusions.getExcludeX() || getMapY() != exclusions
+							.getExcludeY())) {
+				return Tile.IMPASSIBLE;
+			}
+		}
+		return unit.getUnitClass().getMoveCost(getTerrain());
+	}
+
+	public int getManhattanHeuristic(Tile target) {
+		return (Math.abs(getMapX() - target.getMapX()) + Math.abs(getMapY()
+				- target.getMapY()));
+	}
+
+	public int getCost(Unit unit, Tile target, boolean unitCollision,
+			Exclusions exclusions) {
+		return getManhattanHeuristic(target)
+				+ getMovementCost(unit, unitCollision, exclusions);
+	}
 }

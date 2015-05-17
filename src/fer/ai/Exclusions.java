@@ -29,9 +29,4 @@ public class Exclusions {
 		excludeY = y;
 	}
 
-	public int getCost(Unit unit, Tile location, Tile target,
-			PathFinder pathFinder) {
-		return pathFinder.getManhattanHeuristic(location, target)
-				+ pathFinder.getMovementCost(unit, location);
-	}
 }

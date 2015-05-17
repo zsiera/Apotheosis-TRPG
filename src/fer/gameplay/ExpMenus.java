@@ -54,30 +54,9 @@ public class ExpMenus {
 		attackerExpMenu.setEscapeAction(close);
 		int newExp = (attacker.getExp() + gain) % Unit.EXP_CAP;
 		int levelGain = (int) (attacker.getExp() + gain) / Unit.EXP_CAP;
-		addElementsToAttackerMenu(gain, sa, close, newExp, levelGain, attacker);
+		attacker.addElementsToAttackerMenu(gain, sa, close, newExp, levelGain, attackerExpMenu);
 	}
 
-	private void addElementsToAttackerMenu(int gain, MenuAction sa,
-			MenuAction close, int newExp, int levelGain, Unit attacker) {
-		attackerExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(
-				attacker.getName(), Font.BASICFONT).getSprite(), true, 7, 7));
-		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
-				"OLD EXP: " + attacker.getExp(), Font.BASICFONT).getSprite(),
-				false, 7, 13));
-		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
-				"        +" + gain, Font.BASICFONT).getSprite(), false, 7, 19));
-		attackerExpMenu
-				.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: "
-						+ newExp, Font.BASICFONT).getSprite(), false, 7, 25));
-		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
-				"LVL: " + attacker.getLevel() + " -> "
-						+ (attacker.getLevel() + levelGain), Font.BASICFONT)
-				.getSprite(), false, 7, 31));
-		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
-				"TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT)
-				.getSprite(), false, 7, 37));
-	}
-	
 	public void drawAttackerExpMenu(int gain, Unit attacker){
 		attackerExpOpen = true;
 		if (attackerExpMenu != null) {
@@ -95,15 +74,9 @@ public class ExpMenus {
 		defenderExpMenu.setEscapeAction(close);
 		int newExp = (defender.getExp() + gain) % Unit.EXP_CAP;
 		int levelGain = (int) (defender.getExp() + gain) / Unit.EXP_CAP;
-		addElementsToDefenderMenu(gain, sa, newExp, levelGain, defender);
+		defenderExpMenu.addElementsToDefenderMenu(gain, sa, newExp, levelGain, defender);
 	}
 	
-	private void addElementsToDefenderMenu(int gain, MenuAction sa, int newExp, int levelGain, Unit defender) {
-		defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));		         defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + defender.getLevel() + " -> " + (defender.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));		         defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + defender.getLevel() + " -> " + (defender.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false, 7, 37));
-	}
-
 	public void drawDefenderExpMenu(int gain, Unit defender) {
 		defenderExpOpen = true;
 		if (defenderExpMenu != null) {

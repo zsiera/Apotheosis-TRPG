@@ -75,9 +75,9 @@ public class PathFinder {
                     public int compare(Object o1, Object o2) {
                         Tile t1 = ((TreeNode)o1).getTile();
                         Tile t2 = ((TreeNode)o2).getTile();
-                        if (exclusions.getCost(fUnit, t1, fTarget, PathFinder.this) < exclusions.getCost(fUnit, t2, fTarget, PathFinder.this)) {
+                        if (t1.getCost(fUnit, fTarget, unitCollision, exclusions) < t2.getCost(fUnit, fTarget, unitCollision, exclusions)) {
                             return -1;
-                        } else if (exclusions.getCost(fUnit, t1, fTarget, PathFinder.this) == exclusions.getCost(fUnit, t2, fTarget, PathFinder.this)) {
+                        } else if (t1.getCost(fUnit, fTarget, unitCollision, exclusions) == t2.getCost(fUnit, fTarget, unitCollision, exclusions)) {
                             return 0; 
                         } else {
                             return 1;
@@ -244,7 +244,7 @@ public class PathFinder {
 		int pathCost = 0;
 		TreeNode currentNode = node;
 		while(currentNode.getParent() != null) {
-		    pathCost += getMovementCost(unit, currentNode.getTile());
+		    pathCost += currentNode.getTile().getMovementCost(unit, unitCollision, exclusions);
 		    currentNode = currentNode.getParent();
 		}
 		return pathCost;
@@ -302,9 +302,9 @@ public class PathFinder {
                         TreeNode n2 = (TreeNode)o2;
                         Tile t1 = n1.getTile();
                         Tile t2 = n2.getTile();
-                        if (getMovementCost(fUnit, t1) < getMovementCost(fUnit, t2)) {
+                        if (t1.getMovementCost(fUnit, unitCollision, exclusions) < t2.getMovementCost(fUnit, unitCollision, exclusions)) {
                             return -1;
-                        } else if (getMovementCost(fUnit, t1) == getMovementCost(fUnit, t2)) {
+                        } else if (t1.getMovementCost(fUnit, unitCollision, exclusions) == t2.getMovementCost(fUnit, unitCollision, exclusions)) {
                             return 0;
                         } else {
                             return 1;
@@ -313,23 +313,6 @@ public class PathFinder {
                 };
          return new PriorityQueue(map.getNumTiles(), cComp);
 	}
-    
-    public int getManhattanHeuristic(Tile location, Tile target) {
-        return (Math.abs(location.getMapX() - target.getMapX()) + 
-                Math.abs(location.getMapY() - target.getMapY()));
-    }
-    
-    public int getMovementCost(Unit unit, Tile target) {
-        if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.getMapY() * Game.getCurrentMap().getWidth()) != null) {
-            if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.
-                    getMapY() * Game.getCurrentMap().getWidth()).getFaction() 
-                    != unit.getFaction() && unitCollision && (target.getMapX() 
-                    != exclusions.getExcludeX() || target.getMapY() != exclusions.getExcludeY())) {
-                return Tile.IMPASSIBLE;
-            }
-        }
-        return unit.getUnitClass().getMoveCost(target.getTerrain());
-    }
     
     public void setUnitCollision(boolean unitCollision) {
         this.unitCollision = unitCollision;

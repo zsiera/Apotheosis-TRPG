@@ -136,7 +136,7 @@ public class BattleProcessor {
         //Calculate if attack is critical
         criticalAttacker = new boolean[numAttacksAttacker];
         criticalDefender = new boolean[numAttacksDefender];
-        critAttacker = calculateCriticalChance(attacker, defender);
+        critAttacker = attacker.calculateCriticalChance(defender);
         for (int i = 0; i < criticalAttacker.length; i++) {
             float num = random.nextFloat() * 100;
             if (num <= critAttacker && !missAttacker[i]) {
@@ -145,7 +145,7 @@ public class BattleProcessor {
                 criticalAttacker[i] = false;
             }
         }
-        critDefender = calculateCriticalChance(defender, attacker);
+        critDefender = defender.calculateCriticalChance(attacker);
         for (int i = 0; i < criticalDefender.length; i++) {
             float num = random.nextFloat() * 100;
             if (num <= critDefender && !missDefender[i]) {
@@ -398,10 +398,10 @@ public class BattleProcessor {
                 }
                 MenuCursor.getMenuCursor().setActive(true);
                 if (!attacker.isDead()) {
-                    expMenus.drawAttackerExpMenu(calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead()), attacker);
+                    expMenus.drawAttackerExpMenu(attacker.calculateExpGain(defender, damageDealt.getAttackerDamageDealt(), defender.isDead()), attacker);
                 }
                 if (!defender.isDead()) {
-                    expMenus.drawDefenderExpMenu(calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead()), defender);
+                    expMenus.drawDefenderExpMenu(defender.calculateExpGain(attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead()), defender);
                 }
                 stage++;
                 break;
@@ -411,10 +411,10 @@ public class BattleProcessor {
                 }
                 break;
             case 12:
-                attackerLevelsGained = (int) ((attacker.getExp() + calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) / Unit.EXP_CAP);
-                defenderLevelsGained = (int) ((defender.getExp() + calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) / Unit.EXP_CAP);
-                attacker.setExp((attacker.getExp() + calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) % Unit.EXP_CAP);
-                defender.setExp((defender.getExp() + calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) % Unit.EXP_CAP);
+                attackerLevelsGained = (int) ((attacker.getExp() + attacker.calculateExpGain(defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) / Unit.EXP_CAP);
+                defenderLevelsGained = (int) ((defender.getExp() + defender.calculateExpGain(attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) / Unit.EXP_CAP);
+                attacker.setExp((attacker.getExp() + attacker.calculateExpGain(defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) % Unit.EXP_CAP);
+                defender.setExp((defender.getExp() + defender.calculateExpGain(attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) % Unit.EXP_CAP);
                 levelIterations = 0;
                 stage++;
                 break;
@@ -491,26 +491,11 @@ public class BattleProcessor {
         return Attack.calculateAttackDamage(attacker, defender);
     }
 
-    public float calculateCriticalChance(Unit attacker, Unit defender) {
-        return attacker.getWeapon(0).getCritical() + (attacker.getSkl() / 2)
-                - defender.getRes();
-    }
-
     public double calculateDeathChance(Unit unit, Unit opponent, boolean unitAttacking) {
         return Attack.calculateDeathChance(unit, opponent, unitAttacking);
     }
 
-	public int calculateExpGain(Unit attacker, Unit defender, int damageDealt, boolean defeated) {
-        double expCoeff = defender.getLevel() == attacker.getLevel() ? 1 : (Math
-                .min(4, Math.max(0, defender.getLevel() > attacker.getLevel()
-                ? 1 + (((double)((double)defender.getLevel() / (double)attacker.getLevel())) / 10) : 1 - (((double)((double)attacker.
-                getLevel() / (double)defender.getLevel())) / 10))));
-        System.out.println(((double)((double)defender.getLevel() / (double)attacker.getLevel())));
-        int base = defeated ? 30 : (damageDealt / 2);
-        return (int) Math.round(base * expCoeff);
-    }
-
-    public boolean isInCombat() {
+	public boolean isInCombat() {
         return inCombat;
     }
 

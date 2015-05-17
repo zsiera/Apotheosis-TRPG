@@ -269,59 +269,6 @@ public class AIPlayer implements Runnable {
 		return priority;
 	}
 
-    public int determineUnitSuitability(Unit unit, AITask task, boolean secondRun) {
-        int suitability = 1;
-        BattleProcessor bp = Game.getBattleProcessor();
-        if (task.getType() == AITask.TaskType.ATTACK_UNIT) {
-            //Check this unit's manhattan distance from the target
-            suitability += (int) ((Math.abs(unit.getMapx() - Game.getCurrentMap()
-                    .getUnit(task.getTargetIndex()).getMapx()) / Game.
-                    getCurrentMap().getWidth()) * 10);
-            suitability += (int) ((Math.abs(unit.getMapy() - Game.getCurrentMap()
-                    .getUnit(task.getTargetIndex()).getMapy()) / Game.
-                    getCurrentMap().getHeight()) * 10);
-            System.out.println("Dist suit");
-            //Check if this unit can kill the target unit or damage it enough to be worth the risk
-            //TODO: Improve to take speed, hit chance, etc. into account
-            if (canAttack(unit, Game.getCurrentMap().getUnit(task.getTargetIndex()))) {
-                System.out.println("Can attack");
-                suitability += 10;
-                System.out.println("Attack damage attacker: " + (bp.calculateAttackDamage(unit, Game.getCurrentMap().
-                        getUnit(task.getTargetIndex()))));
-                System.out.println("Attack damage defender: " + (bp.
-                        calculateAttackDamage(Game.getCurrentMap().
-                        getUnit(task.getTargetIndex()), unit)));
-                System.out.println("DAMAGE RATIO: " + (float) ((float) bp.calculateAttackDamage(unit, Game.getCurrentMap().
-                        getUnit(task.getTargetIndex())) / (float) bp.
-                        calculateAttackDamage(Game.getCurrentMap().
-                        getUnit(task.getTargetIndex()), unit)));
-                if ((float) ((float) bp.calculateAttackDamage(unit, Game.getCurrentMap().
-                        getUnit(task.getTargetIndex())) / (float) bp.
-                        calculateAttackDamage(Game.getCurrentMap().
-                        getUnit(task.getTargetIndex()), unit))
-                        >= tolerableDamageRatio) {
-                    System.out.println("Tolerable damage ratio");
-                    suitability += 10;
-                }
-                System.out.println("DEATH CHANCE: " + bp.calculateDeathChance(unit, Game.getCurrentMap().getUnit(task.getTargetIndex()), true));
-                if (bp.calculateDeathChance(unit, Game.getCurrentMap().getUnit(task.getTargetIndex()), true) < tolerableDeathChance) {
-                    System.out.println("Tolerable death chance");
-                    suitability += 10;
-                } else if (!secondRun) {
-                    suitability = 0;
-                }
-            }
-        } else if (task.getType() == AITask.TaskType.GO_TO_TILE) {
-            //Check this unit's manhattan distance from the target
-            suitability += (int) ((Math.abs(unit.getMapx() - task.getMapx())
-                    / Game.getCurrentMap().getWidth()) * 100);
-            suitability += (int) ((Math.abs(unit.getMapy() - task.getMapy())
-                    / Game.getCurrentMap().getHeight()) * 100);
-        }
-        System.out.println("Suitability: " + suitability);
-        return suitability;
-    }
-
     public void assignTasks(ArrayList<AITask> tasks) {
         //Cycle through each task and find the most suitable unit.  End when
         //all units have been assigned a task or when tasks have been exhausted   
@@ -342,8 +289,8 @@ public class AIPlayer implements Runnable {
                         if ((!Game.getCurrentMap().getUnit(j).isDead()) && Game.
                                 getCurrentMap().getUnit(j).getFaction() == faction) {
                             System.out.println("Faction: " + Game.getCurrentMap().getUnit(j).getFaction());
-                            int score = determineUnitSuitability(Game.
-                                    getCurrentMap().getUnit(j), tasks.get(i), secondRun);
+                            int score = tasks.get(i).determineUnitSuitability(Game.
+                                    getCurrentMap().getUnit(j), secondRun, tolerableDamageRatio, tolerableDeathChance, this);
                             System.out.println("Done prob");
                             if (score > bestScore && !assignedNumbers.contains(j)) {
                                 bestScore = score;
@@ -424,73 +371,13 @@ public class AIPlayer implements Runnable {
         System.out.println("Moving units");
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).getAssignedIndex() != -1) {
-                moveUnit(tasks.get(i));
+                tasks.get(i).moveUnit(this);
                 System.out.println("Unit moved");
             }
         }
     }
 
-    public void moveUnit(AITask task) {
-        //Determine the best course of action for the unit to take and execute
-        //it
-        System.out.println("Moving unit");
-        PathFinder pf = new PathFinder();
-        pf.setUnitCollision(false);
-        BattleProcessor bp = Game.getBattleProcessor();
-        Unit unit = Game.getCurrentMap().getUnit(task.getAssignedIndex());
-        if (task.getType() == AITask.TaskType.ATTACK_UNIT) {
-            Unit target = Game.getCurrentMap().getUnit(task.getTargetIndex());
-            ArrayList<Tile> shortestPath = pf.getShortestPathAStar(Game.
-                    getCurrentMap(), unit, Game.getCurrentMap().getTile(unit.
-                    getMapx() + unit.getMapy() * Game.getCurrentMap().
-                    getWidth()), Game.getCurrentMap().getTile(target.getMapx()
-                    + target.getMapy() * Game.getCurrentMap().getWidth()));
-            for (Tile t : shortestPath) {
-                System.out.println("X: " + t.getMapX());
-                System.out.println("Y: " + t.getMapY());
-            }
-            int range = findLongestRange(unit);
-            Cursor.getCursor().setMapLocation(unit.getMapx(), unit.getMapy());
-            Cursor.getCursor().centerCursor();
-            long time = System.currentTimeMillis();
-            while (System.currentTimeMillis() - time < 1000) {
-            }
-            if (shortestPathGreater(shortestPath, range)) {
-                System.out.println("Pathsize: " + shortestPath.size());
-                System.out.println("Range: " + range);
-                //Likely outside of range, move the unit
-                int cost = 0;
-                int tile = shortestPath.size() - 1;
-                for (int i = shortestPath.size() - 2; i >= 0; i--) {
-                    if (cost + unit.getUnitClass().getMoveCost(shortestPath.get(i).
-                            getTerrain()) <= unit.getMov()) {
-                        cost += unit.getUnitClass().getMoveCost(shortestPath.get(i).
-                                getTerrain());
-                        if (cost == unit.getMov()) {
-                            tile = i;
-                            break;
-                        }
-                    } else {
-                        tile = i + 1;
-                        break;
-                    }
-                }
-                unit.setMapx(shortestPath.get(tile).getMapX());
-                unit.setMapy(shortestPath.get(tile).getMapY());
-                Cursor.getCursor().setMapLocation(unit.getMapx(), unit.getMapy());
-                Cursor.getCursor().centerCursor();
-                time = System.currentTimeMillis();
-                while (System.currentTimeMillis() - time < 1000) {
-                }
-            }
-            Attack.attackWithWeaponInRange(pf, bp, unit, target);
-            unit.setMoved(true);
-        } else if (task.getType() == AITask.TaskType.GO_TO_TILE) {
-            //TODO: DO
-        }
-    }
-
-	private boolean shortestPathGreater(ArrayList<Tile> shortestPath, int range) {
+    public boolean shortestPathGreater(ArrayList<Tile> shortestPath, int range) {
 		return shortestPath.size() >= range;
 	}
 
@@ -519,25 +406,10 @@ public class AIPlayer implements Runnable {
     }
 
     public boolean canAttack(Unit attacker, Unit defender) {
-        PathFinder pf = new PathFinder();
-        pf.setUnitCollision(false);
-        System.out.println("Getting path...");
-        ArrayList<Tile> path = pf.getShortestPathAStar(Game.getCurrentMap(),
-                attacker, Game.getCurrentMap().getTile(attacker.getMapx()
-                + attacker.getMapy() * Game.getCurrentMap().getWidth()), Game.
-                getCurrentMap().getTile(defender.getMapx() + defender.getMapy()
-                * Game.getCurrentMap().getWidth()));
-        System.out.println("Path got.");
-        //Find the longest possible range for the attacker
-        int range = findLongestRange(attacker);
-        //Remove tiles corresponding to the range of the weapon
-        removeTiles(path, range);
-        //Determine if the path is short enough for the attacker to traverse
-        int pathCost = attackerCanTraverse(attacker, path);
-        return attacker.getMov() <= pathCost;
+        return attacker.canAttack(defender, this);
     }
 
-	private int attackerCanTraverse(Unit attacker, ArrayList<Tile> path) {
+	public int attackerCanTraverse(Unit attacker, ArrayList<Tile> path) {
 		int pathCost = 0;
         for (int i = path.size() - 1; i >= 0; i--) {
             pathCost += attacker.getUnitClass().getMoveCost(path.get(i).getTerrain());
@@ -545,24 +417,8 @@ public class AIPlayer implements Runnable {
 		return pathCost;
 	}
 
-	private void removeTiles(ArrayList<Tile> path, int range) {
-		for (int i = 0; i < range; i++) {
-            if (path.size() > 0) {
-                path.remove(0);
-            }
-        }
-	}
-
-	private int findLongestRange(Unit attacker) {
-		int range = 0;
-        for (int i = 0; i < attacker.getWeapons().length; i++) {
-            if (attacker.getWeapon(i) != null) {
-                if (attacker.getWeapon(i).getRange() > range) {
-                    range = attacker.getWeapon(i).getRange();
-                }
-            }
-        }
-		return range;
+	public int findLongestRange(Unit attacker) {
+		return attacker.findLongestRange();
 	}
 
     /**
@@ -590,10 +446,10 @@ public class AIPlayer implements Runnable {
         for (int i = 0; i < testUnit.getWeapons().length; i++) {
             //Note: The equipped weapon is tested against itself as well to
             //assure it is not null
-            longest = getLongestRange(testUnit, longest, i);
+            longest = testUnit.getLongestRange(longest, i);
         }
         if (longest > 0) { //Equip the weapon
-            equipWeapon(testUnit, longest);
+            testUnit.equipWeapon(longest);
         }
         //Test each tile for units within attack range
         for (int i = 0; i < moveableTiles.size(); i++) {
@@ -619,29 +475,13 @@ public class AIPlayer implements Runnable {
         }
         //Re-equip the original weapon
         if (longest > 0) {
-            equipWeapon(testUnit, longest);
+            testUnit.equipWeapon(longest);
         }
 
         return attackableUnits;
     }
 
-	private void equipWeapon(Unit testUnit, int longest) {
-		Weapon temp = testUnit.getWeapon(0);
-		testUnit.setWeapon(0, testUnit.getWeapon(longest));
-		testUnit.setWeapon(longest, temp);
-	}
-
-	private int getLongestRange(Unit testUnit, int longest, int i) {
-		if (testUnit.getWeapon(i) != null) {
-		    if (testUnit.getWeapon(i).getRange() > testUnit.getWeapon(longest).
-		            getRange()) {
-		        longest = i;
-		    }
-		}
-		return longest;
-	}
-
-    public boolean isTakingTurn() {
+	public boolean isTakingTurn() {
         return takingTurn;
     }
 
@@ -692,7 +532,7 @@ public class AIPlayer implements Runnable {
                         getMapx() + unit.getMapy() * Game.getCurrentMap().
                         getWidth()), Game.getCurrentMap().getTile(target.getMapx()
                         + target.getMapy() * Game.getCurrentMap().getWidth()));
-                int range = findLongestRange(unit);
+                int range = unit.findLongestRange();
                 if (shortestPathGreater(shortestPath, range)) {
                     System.out.println("Pathsize: " + shortestPath.size());
                     System.out.println("Range: " + range);
@@ -751,7 +591,7 @@ public class AIPlayer implements Runnable {
                             getCurrentMap().getWidth())) && !target.isDead()) {
                         //Target is in firing range, attack
                         if (i != 0) {
-                            equipWeapon(unit, i);
+                            unit.equipWeapon(i);
                         }
                         attackTarget = target;
                         canAttack = true;
@@ -779,7 +619,7 @@ public class AIPlayer implements Runnable {
                                     + attackableTiles.get(j).getMapY() * Game.
                                     getCurrentMap().getWidth()).isDead()) {
                                 if (i != 0) {
-                                    equipWeapon(unit, i);
+                                    unit.equipWeapon(i);
                                 }
                                 attackTarget = Game.getCurrentMap().
                                         getUnitTile(attackableTiles.get(j).getMapX()

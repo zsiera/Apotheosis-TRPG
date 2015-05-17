@@ -148,7 +148,7 @@ public class Item {
         
         infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(name, Font.BASICFONT).getSprite(), false, 23, 7));
         infoMenu.addElement(new MenuElement(nil, nil, icon, false, 7, 7));
-        addElementsForDescription(nil);
+        infoMenu.addElementsForDescription(nil, description);
         
         if(type.equalsIgnoreCase("HEAL"))
             infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic("-Heals for " + magnitude + " points.", Font.BASICFONT).getSprite(), false, 23, 37));
@@ -158,13 +158,6 @@ public class Item {
             MenuCursor.setActiveMenu(infoMenu);
         }
     }
-
-	private void addElementsForDescription(MenuAction nil) {
-		String[] lines = Menu.wrapText(description, 34);
-        for (int i = 0; i < Math.min(4, lines.length); i++) {
-            infoMenu.addElement(new MenuElement(nil, nil, new TextGraphic(lines[i], Font.BASICFONT).getSprite(), false, 23, 13 + (6* i)));
-        }
-	}
 
 	private MenuAction getNilMenu() {
 		MenuAction nil = new MenuAction() {

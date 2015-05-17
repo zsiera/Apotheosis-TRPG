@@ -1,5 +1,13 @@
 package fer.ai;
 
+import fer.Cursor;
+import fer.Game;
+import fer.Tile;
+import fer.Unit;
+import fer.gameplay.Attack;
+import fer.gameplay.BattleProcessor;
+import java.util.ArrayList;
+
 /**
  * @author Evan Stewart
  * A struct class that stores the parameters surrounding a potential action for
@@ -83,4 +91,128 @@ public class AITask {
     public void setTargetIndex(int targetIndex) {
         this.targetIndex = targetIndex;
     }
+
+	public int determineUnitSuitability(Unit unit, boolean secondRun,
+			double tolerableDamageRatio, double tolerableDeathChance,
+			AIPlayer aIPlayer) {
+		int suitability = 1;
+		BattleProcessor bp = Game.getBattleProcessor();
+		if (getType() == AITask.TaskType.ATTACK_UNIT) {
+			suitability += (int) ((Math.abs(unit.getMapx()
+					- Game.getCurrentMap().getUnit(getTargetIndex()).getMapx()) / Game
+					.getCurrentMap().getWidth()) * 10);
+			suitability += (int) ((Math.abs(unit.getMapy()
+					- Game.getCurrentMap().getUnit(getTargetIndex()).getMapy()) / Game
+					.getCurrentMap().getHeight()) * 10);
+			System.out.println("Dist suit");
+			if (aIPlayer.canAttack(unit,
+					Game.getCurrentMap().getUnit(getTargetIndex()))) {
+				System.out.println("Can attack");
+				suitability += 10;
+				System.out.println("Attack damage attacker: "
+						+ (bp.calculateAttackDamage(unit, Game.getCurrentMap()
+								.getUnit(getTargetIndex()))));
+				System.out.println("Attack damage defender: "
+						+ (bp.calculateAttackDamage(Game.getCurrentMap()
+								.getUnit(getTargetIndex()), unit)));
+				System.out
+						.println("DAMAGE RATIO: "
+								+ (float) ((float) bp.calculateAttackDamage(
+										unit,
+										Game.getCurrentMap().getUnit(
+												getTargetIndex())) / (float) bp
+										.calculateAttackDamage(
+												Game.getCurrentMap().getUnit(
+														getTargetIndex()), unit)));
+				if ((float) ((float) bp.calculateAttackDamage(unit, Game
+						.getCurrentMap().getUnit(getTargetIndex())) / (float) bp
+						.calculateAttackDamage(
+								Game.getCurrentMap().getUnit(getTargetIndex()),
+								unit)) >= tolerableDamageRatio) {
+					System.out.println("Tolerable damage ratio");
+					suitability += 10;
+				}
+				System.out.println("DEATH CHANCE: "
+						+ bp.calculateDeathChance(unit, Game.getCurrentMap()
+								.getUnit(getTargetIndex()), true));
+				if (bp.calculateDeathChance(unit,
+						Game.getCurrentMap().getUnit(getTargetIndex()), true) < tolerableDeathChance) {
+					System.out.println("Tolerable death chance");
+					suitability += 10;
+				} else if (!secondRun) {
+					suitability = 0;
+				}
+			}
+		} else if (getType() == AITask.TaskType.GO_TO_TILE) {
+			suitability += (int) ((Math.abs(unit.getMapx() - getMapx()) / Game
+					.getCurrentMap().getWidth()) * 100);
+			suitability += (int) ((Math.abs(unit.getMapy() - getMapy()) / Game
+					.getCurrentMap().getHeight()) * 100);
+		}
+		System.out.println("Suitability: " + suitability);
+		return suitability;
+	}
+
+	public void moveUnit(AIPlayer aIPlayer) {
+		System.out.println("Moving unit");
+		PathFinder pf = new PathFinder();
+		pf.setUnitCollision(false);
+		BattleProcessor bp = Game.getBattleProcessor();
+		Unit unit = Game.getCurrentMap().getUnit(getAssignedIndex());
+		if (getType() == AITask.TaskType.ATTACK_UNIT) {
+			Unit target = Game.getCurrentMap().getUnit(getTargetIndex());
+			ArrayList<Tile> shortestPath = pf.getShortestPathAStar(
+					Game.getCurrentMap(),
+					unit,
+					Game.getCurrentMap().getTile(
+							unit.getMapx() + unit.getMapy()
+									* Game.getCurrentMap().getWidth()),
+					Game.getCurrentMap().getTile(
+							target.getMapx() + target.getMapy()
+									* Game.getCurrentMap().getWidth()));
+			for (Tile t : shortestPath) {
+				System.out.println("X: " + t.getMapX());
+				System.out.println("Y: " + t.getMapY());
+			}
+			int range = aIPlayer.findLongestRange(unit);
+			Cursor.getCursor().setMapLocation(unit.getMapx(), unit.getMapy());
+			Cursor.getCursor().centerCursor();
+			long time = System.currentTimeMillis();
+			while (System.currentTimeMillis() - time < 1000) {
+			}
+			if (aIPlayer.shortestPathGreater(shortestPath, range)) {
+				System.out.println("Pathsize: " + shortestPath.size());
+				System.out.println("Range: " + range);
+				int cost = 0;
+				int tile = shortestPath.size() - 1;
+				for (int i = shortestPath.size() - 2; i >= 0; i--) {
+					if (cost
+							+ unit.getUnitClass().getMoveCost(
+									shortestPath.get(i).getTerrain()) <= unit
+								.getMov()) {
+						cost += unit.getUnitClass().getMoveCost(
+								shortestPath.get(i).getTerrain());
+						if (cost == unit.getMov()) {
+							tile = i;
+							break;
+						}
+					} else {
+						tile = i + 1;
+						break;
+					}
+				}
+				unit.setMapx(shortestPath.get(tile).getMapX());
+				unit.setMapy(shortestPath.get(tile).getMapY());
+				Cursor.getCursor().setMapLocation(unit.getMapx(),
+						unit.getMapy());
+				Cursor.getCursor().centerCursor();
+				time = System.currentTimeMillis();
+				while (System.currentTimeMillis() - time < 1000) {
+				}
+			}
+			Attack.attackWithWeaponInRange(pf, bp, unit, target);
+			unit.setMoved(true);
+		} else if (getType() == AITask.TaskType.GO_TO_TILE) {
+		}
+	}
 }

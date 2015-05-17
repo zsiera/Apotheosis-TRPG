@@ -1,5 +1,7 @@
 package fer;
 
+import fer.ai.AIPlayer;
+import fer.ai.PathFinder;
 import fer.gameplay.Armor;
 import fer.gameplay.Item;
 import fer.gameplay.Weapon;
@@ -13,6 +15,7 @@ import fer.ui.MenuCursor;
 import fer.ui.MenuElement;
 import fer.ui.TextGraphic;
 import fer.util.UnitData;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -1210,4 +1213,100 @@ public class Unit {
     public boolean isShowingLevelMenu() {
         return showingLevelMenu;
     }
+
+	public void equipWeapon(int longest) {
+		Weapon temp = getWeapon(0);
+		setWeapon(0, getWeapon(longest));
+		setWeapon(longest, temp);
+	}
+
+	public int getLongestRange(int longest, int i) {
+		if (getWeapon(i) != null) {
+			if (getWeapon(i).getRange() > getWeapon(longest).getRange()) {
+				longest = i;
+			}
+		}
+		return longest;
+	}
+
+	public int findLongestRange() {
+		int range = 0;
+		for (int i = 0; i < getWeapons().length; i++) {
+			if (getWeapon(i) != null) {
+				if (getWeapon(i).getRange() > range) {
+					range = getWeapon(i).getRange();
+				}
+			}
+		}
+		return range;
+	}
+
+	public boolean canAttack(Unit defender, AIPlayer aIPlayer) {
+		PathFinder pf = new PathFinder();
+		pf.setUnitCollision(false);
+		System.out.println("Getting path...");
+		ArrayList<Tile> path = pf.getShortestPathAStar(
+				Game.getCurrentMap(),
+				this,
+				Game.getCurrentMap()
+						.getTile(
+								getMapx() + getMapy()
+										* Game.getCurrentMap().getWidth()),
+				Game.getCurrentMap().getTile(
+						defender.getMapx() + defender.getMapy()
+								* Game.getCurrentMap().getWidth()));
+		System.out.println("Path got.");
+		int range = findLongestRange();
+		removeTiles(path, range);
+		int pathCost = aIPlayer.attackerCanTraverse(this, path);
+		return getMov() <= pathCost;
+	}
+
+	private void removeTiles(ArrayList<Tile> path, int range) {
+		for (int i = 0; i < range; i++) {
+			if (path.size() > 0) {
+				path.remove(0);
+			}
+		}
+	}
+
+	public void addElementsToAttackerMenu(int gain, MenuAction sa,
+			MenuAction close, int newExp, int levelGain, Menu attackerExpMenu) {
+		attackerExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(
+				getName(), Font.BASICFONT).getSprite(), true, 7, 7));
+		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
+				"OLD EXP: " + getExp(), Font.BASICFONT).getSprite(), false, 7,
+				13));
+		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
+				"        +" + gain, Font.BASICFONT).getSprite(), false, 7, 19));
+		attackerExpMenu
+				.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: "
+						+ newExp, Font.BASICFONT).getSprite(), false, 7, 25));
+		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
+				"LVL: " + getLevel() + " -> " + (getLevel() + levelGain),
+				Font.BASICFONT).getSprite(), false, 7, 31));
+		attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic(
+				"TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT)
+				.getSprite(), false, 7, 37));
+	}
+
+	public float calculateCriticalChance(Unit defender) {
+		return getWeapon(0).getCritical() + (getSkl() / 2) - defender.getRes();
+	}
+
+	public int calculateExpGain(Unit defender, int damageDealt, boolean defeated) {
+		double expCoeff = defender.getLevel() == getLevel() ? 1
+				: (Math.min(
+						4,
+						Math.max(
+								0,
+								defender.getLevel() > getLevel() ? 1 + (((double) ((double) defender
+										.getLevel() / (double) getLevel())) / 10)
+										: 1 - (((double) ((double) getLevel() / (double) defender
+												.getLevel())) / 10))));
+		System.out
+				.println(((double) ((double) defender.getLevel() / (double) getLevel())));
+		int base = defeated ? 30 : (damageDealt / 2);
+		return (int) Math.round(base * expCoeff);
+	}
 }
