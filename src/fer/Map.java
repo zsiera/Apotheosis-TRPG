@@ -44,11 +44,8 @@ public class Map {
 			} else {
 				if (u1.getMapx() > u2.getMapx()) {
 					return 1;
-				} else if (u1.getMapx() < u2.getMapx()) {
-					return -1;
-				} else {
-					return 0;
-				}
+				} else
+					return !(u1.getMapx() < u2.getMapx()) ? 0 : -1;
 			}
 		}
 	};
@@ -64,16 +61,8 @@ public class Map {
 			Unit[] units, MapGoal[] goals) {
 		cursor = Cursor.getCursor();
 
-		if (mapWidth < MIN_MAP_WIDTH) {
-			width = MIN_MAP_WIDTH;
-		} else {
-			width = mapWidth;
-		}
-		if (mapHeight < MIN_MAP_HEIGHT) {
-			height = MIN_MAP_HEIGHT;
-		} else {
-			height = mapHeight;
-		}
+		width = mapWidth < MIN_MAP_WIDTH ? MIN_MAP_WIDTH : mapWidth;
+		height = mapHeight < MIN_MAP_HEIGHT ? MIN_MAP_HEIGHT : mapHeight;
 		name = mapName;
 		tiles = new Tile[width * height];
 		for (int i = 0; i < tiles.length; i++) {

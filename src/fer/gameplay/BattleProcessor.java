@@ -88,26 +88,16 @@ public class BattleProcessor {
 			// defender up.
 		}
 
-		// Calculate the number of attacks (Based on FE:PR formula at the
-		// moment)
-		if (Attack.calculateAttackSpeed(attacker) >= Attack
-				.calculateAttackSpeed(defender) + 3) {
-			numAttacksAttacker = 2;
-		} else {
-			numAttacksAttacker = 1;
-		}
+		numAttacksAttacker = Attack.calculateAttackSpeed(attacker) >= Attack
+				.calculateAttackSpeed(defender) + 3 ? 2 : 1;
 		if (numAttacksAttacker > attacker.getWeapon(0).getUses()) {
 			numAttacksAttacker = attacker.getWeapon(0).getUses();
 		}
 		if (defender.getWeapon(0).getRange() >= Math.abs(defender.getMapx()
 				- attacker.getMapx()) + Math.abs(defender.getMapy()
 				- attacker.getMapy())) {
-			if (Attack.calculateAttackSpeed(defender) >= Attack
-					.calculateAttackSpeed(attacker) + 3) {
-				numAttacksDefender = 2;
-			} else {
-				numAttacksDefender = 1;
-			}
+			numAttacksDefender = Attack.calculateAttackSpeed(defender) >= Attack
+					.calculateAttackSpeed(attacker) + 3 ? 2 : 1;
 			if (numAttacksDefender > defender.getWeapon(0).getUses()) {
 				numAttacksDefender = defender.getWeapon(0).getUses();
 			}

@@ -37,7 +37,9 @@ public class WeaponReader {
 				}
 			}
 		}
-		if (xmlFile != null) {
+		if (!(xmlFile != null)) {
+			System.out.println("Has probbum.");
+		} else {
 			try {
 				Document doc = builder.build(xmlFile);
 				System.out.println("===Got document===");
@@ -70,8 +72,6 @@ public class WeaponReader {
 				Logger.getLogger(WeaponReader.class.getName()).log(
 						Level.SEVERE, null, ex);
 			}
-		} else {
-			System.out.println("Has probbum.");
 		}
 		if (weapon != null) {
 			System.out.println("Yayz");

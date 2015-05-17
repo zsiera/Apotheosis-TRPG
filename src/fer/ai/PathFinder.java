@@ -76,13 +76,10 @@ public class PathFinder {
 				if (t1.getCost(fUnit, fTarget, unitCollision, exclusions) < t2
 						.getCost(fUnit, fTarget, unitCollision, exclusions)) {
 					return -1;
-				} else if (t1
-						.getCost(fUnit, fTarget, unitCollision, exclusions) == t2
-						.getCost(fUnit, fTarget, unitCollision, exclusions)) {
-					return 0;
-				} else {
-					return 1;
-				}
+				} else
+					return t1
+							.getCost(fUnit, fTarget, unitCollision, exclusions) == t2
+							.getCost(fUnit, fTarget, unitCollision, exclusions) ? 0 : 1;
 			}
 		};
 		ArrayList<Tile> exploredTiles = new ArrayList<>();
@@ -267,11 +264,8 @@ public class PathFinder {
 				Tile t2 = n2.getTile();
 				if (!t1.isAttackable() && t2.isAttackable()) {
 					return -1;
-				} else if (t1.isAttackable() == t2.isAttackable()) {
-					return 0;
-				} else {
-					return 1;
-				}
+				} else
+					return t1.isAttackable() == t2.isAttackable() ? 0 : 1;
 			}
 		};
 		return new PriorityQueue(map.getNumTiles(),
@@ -345,12 +339,9 @@ public class PathFinder {
 				if (t1.getMovementCost(fUnit, unitCollision, exclusions) < t2
 						.getMovementCost(fUnit, unitCollision, exclusions)) {
 					return -1;
-				} else if (t1.getMovementCost(fUnit, unitCollision, exclusions) == t2
-						.getMovementCost(fUnit, unitCollision, exclusions)) {
-					return 0;
-				} else {
-					return 1;
-				}
+				} else
+					return t1.getMovementCost(fUnit, unitCollision, exclusions) == t2
+							.getMovementCost(fUnit, unitCollision, exclusions) ? 0 : 1;
 			}
 		};
 		return new PriorityQueue(map.getNumTiles(), cComp);

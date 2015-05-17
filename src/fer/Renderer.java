@@ -244,17 +244,7 @@ public class Renderer implements Runnable {
 																.getWidth()) != unit
 												.getMapSprite()
 												.getTransparentColor()) {
-											if (unit.hasMoved()) {
-												pixels[(unitStartingX + x)
-														+ (unitStartingY + y)
-														* Game.GAME_WIDTH] = grayscaleColor(unit
-														.getMapSprite()
-														.getPixel(
-																x
-																		+ y
-																		* (unit.getMapSprite()
-																				.getWidth())));
-											} else {
+											if (!(unit.hasMoved())) {
 												pixels[(unitStartingX + x)
 														+ (unitStartingY + y)
 														* Game.GAME_WIDTH] = unit
@@ -264,6 +254,16 @@ public class Renderer implements Runnable {
 																		+ y
 																		* (unit.getMapSprite()
 																				.getWidth()));
+											} else {
+												pixels[(unitStartingX + x)
+														+ (unitStartingY + y)
+														* Game.GAME_WIDTH] = grayscaleColor(unit
+														.getMapSprite()
+														.getPixel(
+																x
+																		+ y
+																		* (unit.getMapSprite()
+																				.getWidth())));
 											}
 										}
 									} catch (ArrayIndexOutOfBoundsException e) {
@@ -283,17 +283,7 @@ public class Renderer implements Runnable {
 																.getWidth()) != unit
 												.getMapSprite()
 												.getTransparentColor()) {
-											if (unit.hasMoved()) {
-												pixels[(unitStartingX + x)
-														+ (unitStartingY + y)
-														* Game.GAME_WIDTH] = grayscaleColor(unit
-														.getMapSprite()
-														.getPixel(
-																x
-																		+ y
-																		* (unit.getMapSprite()
-																				.getWidth())));
-											} else {
+											if (!(unit.hasMoved())) {
 												pixels[(unitStartingX + x)
 														+ (unitStartingY + y)
 														* Game.GAME_WIDTH] = unit
@@ -303,6 +293,16 @@ public class Renderer implements Runnable {
 																		+ y
 																		* (unit.getMapSprite()
 																				.getWidth()));
+											} else {
+												pixels[(unitStartingX + x)
+														+ (unitStartingY + y)
+														* Game.GAME_WIDTH] = grayscaleColor(unit
+														.getMapSprite()
+														.getPixel(
+																x
+																		+ y
+																		* (unit.getMapSprite()
+																				.getWidth())));
 											}
 										}
 									} catch (ArrayIndexOutOfBoundsException e) {
@@ -909,12 +909,12 @@ public class Renderer implements Runnable {
 			} else if (lastTile.getMapY() > currentTile.getMapY()) {
 				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18, 52,
 						SpriteSheet.MAPARROW);
-			} else if (lastTile.getMapY() < currentTile.getMapY()) {
-				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18, 52,
-						SpriteSheet.MAPARROW, false, true);
-			} else {
+			} else if (!(lastTile.getMapY() < currentTile.getMapY())) {
 				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 52,
 						SpriteSheet.MAPARROW);
+			} else {
+				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18, 52,
+						SpriteSheet.MAPARROW, false, true);
 			}
 		} else {
 			if (lastTile.getMapX() > currentTile.getMapX()) {
@@ -924,12 +924,12 @@ public class Renderer implements Runnable {
 				} else if (nextTile.getMapY() > currentTile.getMapY()) {
 					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18,
 							35, SpriteSheet.MAPARROW, true);
-				} else if (nextTile.getMapY() < currentTile.getMapY()) {
-					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 35,
-							SpriteSheet.MAPARROW, true);
-				} else {
+				} else if (!(nextTile.getMapY() < currentTile.getMapY())) {
 					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 1,
 							SpriteSheet.MAPARROW);
+				} else {
+					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 35,
+							SpriteSheet.MAPARROW, true);
 				}
 			} else if (lastTile.getMapX() < currentTile.getMapX()) {
 				if (nextTile.getMapX() > currentTile.getMapX()) {
@@ -959,7 +959,10 @@ public class Renderer implements Runnable {
 					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18, 1,
 							SpriteSheet.MAPARROW, false, true);
 				}
-			} else if (lastTile.getMapY() < currentTile.getMapY()) {
+			} else if (!(lastTile.getMapY() < currentTile.getMapY())) {
+				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 18,
+						SpriteSheet.MAPARROW);
+			} else {
 				if (nextTile.getMapX() > currentTile.getMapX()) {
 					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 35,
 							SpriteSheet.MAPARROW, true);
@@ -973,9 +976,6 @@ public class Renderer implements Runnable {
 					return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 18, 1,
 							SpriteSheet.MAPARROW);
 				}
-			} else {
-				return new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 18,
-						SpriteSheet.MAPARROW);
 			}
 		}
 	}

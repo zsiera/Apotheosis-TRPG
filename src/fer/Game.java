@@ -607,12 +607,8 @@ public class Game extends Canvas implements Runnable {
 		MenuAction scrollUp = new MenuAction() {
 			@Override
 			public void execute(final MenuElement caller) {
-				if (mapSelectPosition == 0) {
-					mapSelectPosition = ((int) Math
-							.floor(freePlayMaps.length / 16)) * 16;
-				} else {
-					mapSelectPosition -= 16;
-				}
+				mapSelectPosition = !(mapSelectPosition == 0) ? 16 : ((int) Math
+						.floor(freePlayMaps.length / 16)) * 16;
 				menuList.remove(mapSelectMenu);
 				MenuCursor.getMenuCursor().setElementIndex(0);
 				drawMapSelectMenu();
@@ -678,12 +674,8 @@ public class Game extends Canvas implements Runnable {
 		MenuAction scrollDown = new MenuAction() {
 			@Override
 			public void execute(final MenuElement caller) {
-				if (mapSelectPosition >= ((int) Math
-						.floor(freePlayMaps.length / 16))) {
-					mapSelectPosition = 0;
-				} else {
-					mapSelectPosition += 16;
-				}
+				mapSelectPosition = mapSelectPosition >= ((int) Math
+						.floor(freePlayMaps.length / 16)) ? 0 : 16;
 				menuList.remove(mapSelectMenu);
 				MenuCursor.getMenuCursor().setElementIndex(0);
 				drawMapSelectMenu();
@@ -882,7 +874,10 @@ public class Game extends Canvas implements Runnable {
 					selectedFactions[currentFaction] = true;
 					playerFactions[currentFaction] = currentPlayer;
 					currentPlayer++;
-					if (currentPlayer > numPlayers) {
+					if (!(currentPlayer > numPlayers)) {
+						playerFactionMenu.removeMenu();
+						drawPlayerFactionMenu(inputMap, index, false);
+					} else {
 						onMainMenu = false;
 						prepareMap(inputMap, index, selectedFactions);
 						menuCursor.setActive(false);
@@ -897,9 +892,6 @@ public class Game extends Canvas implements Runnable {
 						if (Game.getCurrentMap().getPlayer(0) != null) {
 							Game.getCurrentMap().getPlayer(0).startTurn();
 						}
-					} else {
-						playerFactionMenu.removeMenu();
-						drawPlayerFactionMenu(inputMap, index, false);
 					}
 				}
 			}
@@ -909,7 +901,11 @@ public class Game extends Canvas implements Runnable {
 			@Override
 			public void execute(final MenuElement caller) {
 				playerFactionMenu.removeMenu();
-				if (hotseat) {
+				if (!(hotseat)) {
+					effectList.remove(mainMenuOverlay);
+					MenuCursor.getMenuCursor().setElementIndex(1);
+					MenuCursor.setActiveMenu(mapSelectMenu);
+				} else {
 					currentPlayer = 1;
 					effectList.remove(mainMenuOverlay);
 					drawPlayerNumMenu(inputMap, index);
@@ -926,10 +922,6 @@ public class Game extends Canvas implements Runnable {
 					mainMenuOverlay = new Effect(new Animation(1,
 							new Sprite[] { overlay }), new int[] { 128 }, 10,
 							10);
-				} else {
-					effectList.remove(mainMenuOverlay);
-					MenuCursor.getMenuCursor().setElementIndex(1);
-					MenuCursor.setActiveMenu(mapSelectMenu);
 				}
 			}
 		};

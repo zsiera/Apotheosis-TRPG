@@ -44,34 +44,34 @@ public class Animation {
 
 	public Animation(int iNumFrames, int[] frameDurationsIn) {
 		this(iNumFrames);
-		if (frameDurationsIn.length < numFrames) {
+		if (!(frameDurationsIn.length < numFrames)) {
+			for (int i = 0; i < frameDurations.length; i++) {
+				frameDurations[i] = frameDurations[i];
+			}
+		} else {
 			for (int i = 0; i < frameDurationsIn.length; i++) {
 				frameDurations[i] = frameDurationsIn[i];
 			}
 			// Elements past this point are initialized to zero.
 			for (int i = frameDurationsIn.length; i < frameDurations.length; i++) {
 				frameDurations[i] = 0;
-			}
-		} else {
-			for (int i = 0; i < frameDurations.length; i++) {
-				frameDurations[i] = frameDurations[i];
 			}
 		}
 	}
 
 	public Animation(int iNumFrames, Sprite[] spritesIn, int[] frameDurationsIn) {
 		this(iNumFrames, spritesIn);
-		if (frameDurationsIn.length < numFrames) {
+		if (!(frameDurationsIn.length < numFrames)) {
+			for (int i = 0; i < frameDurations.length; i++) {
+				frameDurations[i] = frameDurationsIn[i];
+			}
+		} else {
 			for (int i = 0; i < frameDurationsIn.length; i++) {
 				frameDurations[i] = frameDurationsIn[i];
 			}
 			// Elements past this point are initialized to zero.
 			for (int i = frameDurationsIn.length; i < frameDurations.length; i++) {
 				frameDurations[i] = 0;
-			}
-		} else {
-			for (int i = 0; i < frameDurations.length; i++) {
-				frameDurations[i] = frameDurationsIn[i];
 			}
 		}
 	}

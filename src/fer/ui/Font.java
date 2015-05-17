@@ -49,11 +49,7 @@ public class Font {
 
 	public Sprite getCharacter(char c) {
 		try {
-			if (characters[(int) c] != null) {
-				return characters[(int) c];
-			} else {
-				return nullCharacter;
-			}
+			return !(characters[(int) c] != null) ? nullCharacter : characters[(int) c];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("The requested character does not exist within "
 					+ "the specified font.");

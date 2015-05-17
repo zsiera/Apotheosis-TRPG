@@ -12,22 +12,18 @@ public class Attack {
 		int wepatk;
 		wepatk = attacker.getWeapon(0).getDamage() + attacker.getStr();
 		int wepdam;
-		if (defender.getArmor() != null) {
-			wepdam = wepatk
-					- (defender.getDef()
-							+ Game.getCurrentMap()
-									.getTile(
-											defender.getMapx()
-													+ defender.getMapy())
-									.getDef() + (defender.getArmor()
-							.getResilience() - attacker.getWeapon(0)
-							.getPierce()));
-		} else {
-			wepdam = wepatk
-					- (defender.getDef() + Game.getCurrentMap()
-							.getTile(defender.getMapx() + defender.getMapy())
-							.getDef());
-		}
+		wepdam = !(defender.getArmor() != null) ? wepatk
+				- (defender.getDef() + Game.getCurrentMap()
+						.getTile(defender.getMapx() + defender.getMapy())
+						.getDef()) : wepatk
+				- (defender.getDef()
+						+ Game.getCurrentMap()
+								.getTile(
+										defender.getMapx()
+												+ defender.getMapy())
+								.getDef() + (defender.getArmor()
+						.getResilience() - attacker.getWeapon(0)
+						.getPierce()));
 		return Math.max(0, wepdam);
 	}
 
@@ -45,30 +41,18 @@ public class Attack {
 
 	public static int getNumberOfAttacks(final Unit unit, final Unit opponent) {
 		int numAttacksUnit, numAttacksOpponent;
-		if (unit.getWeapon(0).getRange() >= Math.abs(unit.getMapx()
+		numAttacksUnit = !(unit.getWeapon(0).getRange() >= Math.abs(unit.getMapx()
 				- opponent.getMapx()) + Math.abs(unit.getMapy()
-				- opponent.getMapy())) {
-			numAttacksUnit = getAttackUnits(unit, opponent);
-		} else {
-			numAttacksUnit = 0;
-		}
-		if (opponent.getWeapon(0).getRange() >= Math.abs(opponent.getMapx()
+				- opponent.getMapy())) ? 0 : getAttackUnits(unit, opponent);
+		numAttacksOpponent = !(opponent.getWeapon(0).getRange() >= Math.abs(opponent.getMapx()
 				- unit.getMapx()) + Math.abs(opponent.getMapy()
-				- unit.getMapy())) {
-			numAttacksOpponent = getAttackUnits(opponent, unit);
-		} else {
-			numAttacksOpponent = 0;
-		}
+				- unit.getMapy())) ? 0 : getAttackUnits(opponent, unit);
 		return numAttacksUnit;
 	}
 
 	public static int getAttackUnits(final Unit unit, final Unit opponent) {
 		int numAttacksUnit;
-		if (calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3) {
-			numAttacksUnit = 2;
-		} else {
-			numAttacksUnit = 1;
-		}
+		numAttacksUnit = calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3 ? 2 : 1;
 		if (numAttacksUnit > unit.getWeapon(0).getUses()) {
 			numAttacksUnit = unit.getWeapon(0).getUses();
 		}

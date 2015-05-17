@@ -345,12 +345,9 @@ priority += 10;
 					}
 					if (secondRun) {
 						AiTask taskCopy;
-						if (tasks.get(i).getType() == AiTask.TaskType.ATTACK_UNIT) {
-							taskCopy = new AiTask(tasks.get(i).getTargetIndex());
-						} else { // GO_TO_TILE
-							taskCopy = new AiTask(tasks.get(i).getMapx(), tasks
-									.get(i).getMapy());
-						}
+						taskCopy = tasks.get(i).getType() == AiTask.TaskType.ATTACK_UNIT ? new AiTask(tasks.get(i).getTargetIndex())
+								: new AiTask(tasks.get(i).getMapx(), tasks
+										.get(i).getMapy());
 						taskCopy.setPriority(tasks.get(i).getPriority());
 						taskCopy.setAssignedIndex(bestScoreIndex);
 						tasks.add(taskCopy);
@@ -394,11 +391,8 @@ priority += 10;
 				AiTask t2 = (AiTask) o2;
 				if (t1.getPriority() < t2.getPriority()) {
 					return -1;
-				} else if (t1.getPriority() == t2.getPriority()) {
-					return 0;
-				} else {
-					return 1;
-				}
+				} else
+					return t1.getPriority() == t2.getPriority() ? 0 : 1;
 			}
 		};
 		PriorityQueue<AiTask> sortedTasks = new PriorityQueue(tasks.size(),
@@ -545,11 +539,8 @@ attackableTiles.get(j).getMapX()
 					AiTask t2 = (AiTask) o2;
 					if (t1.getPriority() < t2.getPriority()) {
 						return -1;
-					} else if (t1.getPriority() == t2.getPriority()) {
-						return 0;
-					} else {
-						return 1;
-					}
+					} else
+						return t1.getPriority() == t2.getPriority() ? 0 : 1;
 				}
 			};
 			PriorityQueue<AiTask> sortedTasks = new PriorityQueue(tasks.size(),
@@ -604,14 +595,10 @@ attackableTiles.get(j).getMapX()
 							break;
 						}
 						if (i == 0 && tile == shortestPath.size() - 1) {
-							if (Game.getCurrentMap().getUnitTile(
+							tile = Game.getCurrentMap().getUnitTile(
 									shortestPath.get(0).getMapX()
 											+ shortestPath.get(0).getMapY()
-											* Game.getCurrentMap().getWidth()) != null) {
-								tile = 1;
-							} else {
-								tile = 0;
-							}
+											* Game.getCurrentMap().getWidth()) != null ? 1 : 0;
 						}
 					}
 					tile = addTiles(unit, shortestPath, tile);

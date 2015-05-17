@@ -80,11 +80,8 @@ public class Unit {
 		unitClass = uClass;
 		if (iLevel < 1) {
 			level = 1;
-		} else if (iLevel > 20) {
-			level = 20;
-		} else {
-			level = iLevel;
-		}
+		} else
+			level = iLevel > 20 ? 20 : iLevel;
 
 		factionNum = iFaction;
 
@@ -153,7 +150,16 @@ public class Unit {
 			exp = 19;
 		}
 		unitClass = new UnitClass(data.getUnitClass());
-		if (data.isAutoLevel()) {
+		if (!(data.isAutoLevel())) {
+			hp = data.getHp();
+			str = data.getStr();
+			skl = data.getSkl();
+			spd = data.getSpd();
+			def = data.getDef();
+			res = data.getRes();
+			con = data.getCon();
+			mov = data.getMov();
+		} else {
 			int levelCap = level;
 			level = 1;
 			hp = unitClass.getHp();
@@ -167,15 +173,6 @@ public class Unit {
 			for (int i = level; i <= levelCap - 1; i++) {
 				levelUnit(false);
 			}
-		} else {
-			hp = data.getHp();
-			str = data.getStr();
-			skl = data.getSkl();
-			spd = data.getSpd();
-			def = data.getDef();
-			res = data.getRes();
-			con = data.getCon();
-			mov = data.getMov();
 		}
 		curHp = hp;
 
@@ -212,25 +209,13 @@ public class Unit {
 
 		weapons = new Weapon[5];
 		for (int i = 0; i < weapons.length; i++) {
-			if (data.getWeapons()[i] == -1) {
-				weapons[i] = null;
-			} else {
-				weapons[i] = new Weapon(data.getWeapons()[i]);
-			}
+			weapons[i] = data.getWeapons()[i] == -1 ? null : new Weapon(data.getWeapons()[i]);
 		}
 		items = new Item[5];
 		for (int i = 0; i < items.length; i++) {
-			if (data.getItems()[i] == -1) {
-				items[i] = null;
-			} else {
-				items[i] = new Item(data.getItems()[i]);
-			}
+			items[i] = data.getItems()[i] == -1 ? null : new Item(data.getItems()[i]);
 		}
-		if (data.getArmor() == -1) {
-			armor = null;
-		} else {
-			armor = new Armor(data.getArmor());
-		}
+		armor = data.getArmor() == -1 ? null : new Armor(data.getArmor());
 
 		mapx = data.getMapx();
 		mapy = data.getMapy();
@@ -1238,8 +1223,7 @@ public class Unit {
 		statusMenu.addElement(new MenuElement(clearInfo, back,
 				(new TextGraphic("BACK", Font.BASICFONT)).getSprite(), true, 7,
 				128));
-		statusMenu.addElement(new MenuElement(clearInfo, help ? exitHelpMode
-				: helpMode, (new TextGraphic("HELP", Font.BASICFONT))
+		statusMenu.addElement(new MenuElement(clearInfo, !(help) ? helpMode : exitHelpMode, (new TextGraphic("HELP", Font.BASICFONT))
 				.getSprite(), true, 32, 128));
 
 		statusMenu.addElement(new MenuElement(nil, nil, mapIdle.getSprite(0),
