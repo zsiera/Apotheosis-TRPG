@@ -194,8 +194,6 @@ public class AiPlayer implements Runnable {
 			break;
 		default:
 			break;
-		default:
-			break;
 		}
 		updates++;
 	}
@@ -372,7 +370,7 @@ priority += 10;
 		tasksAssigned = 0;
 	}
 
-	private int determineUnits(final int numUnits) {
+	private int determineUnits(int numUnits) {
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
 			if (!Game.getCurrentMap().getUnit(i).isDead()
 					&& Game.getCurrentMap().getUnit(i).getFaction() == faction) {
@@ -724,7 +722,7 @@ attackableTiles.get(j).getMapX()
 		}
 	}
 
-	private int addTiles(final Unit unit, final ArrayList<Tile> shortestPath, final int tile) {
+	private int addTiles(final Unit unit, final ArrayList<Tile> shortestPath, int tile) {
 		while (Game.getCurrentMap().getUnitTile(
 				shortestPath.get(tile).getMapX()
 						+ shortestPath.get(tile).getMapY()
