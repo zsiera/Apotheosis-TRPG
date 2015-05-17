@@ -4,9 +4,11 @@ import fer.Cursor;
 import fer.Game;
 import fer.Tile;
 import fer.Unit;
+import fer.gameplay.Attack;
 import fer.gameplay.BattleProcessor;
 import fer.gameplay.MapGoal;
 import fer.gameplay.Weapon;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -20,19 +22,20 @@ import java.util.logging.Logger;
  */
 public class AIPlayer implements Runnable {
 
-    private int faction = 1;
-    //A coefficient that corresponds to the probabiliy that units will stay 
-    //together as a group rather than spread out.  Between 0 and 1.
-    private float cohesiveness = 1;
-    //A coefficient corresponding to the tendency for units to attack 
-    //enemies within their range.
-    private float aggressiveness = 1;
     //The chance of death by engagement the player is willing to tolerate before
     //the engaging unit is considered a threat
-    private double tolerableDeathChance = 0.5;
+    private final double tolerableDeathChance = 0.5;
     //The ratio of damage dealt to damage taken the player is willing to tolerate
     //for potential engagements
-    private double tolerableDamageRatio = 1;
+    private final double tolerableDamageRatio = 1;
+    //A coefficient that corresponds to the probabiliy that units will stay 
+    //together as a group rather than spread out.  Between 0 and 1.
+    private final float cohesiveness = 1;
+    //A coefficient corresponding to the tendency for units to attack 
+    //enemies within their range.
+    private final float aggressiveness = 1;
+	
+    private int faction = 1;
     //The number of tasks currently assigned to friendly units
     private int tasksAssigned = 0;
     private boolean takingTurn = false;
@@ -480,7 +483,7 @@ public class AIPlayer implements Runnable {
                 while (System.currentTimeMillis() - time < 1000) {
                 }
             }
-            attackWithWeaponInRange(pf, bp, unit, target);
+            Attack.attackWithWeaponInRange(pf, bp, unit, target);
             unit.setMoved(true);
         } else if (task.getType() == AITask.TaskType.GO_TO_TILE) {
             //TODO: DO
@@ -489,27 +492,6 @@ public class AIPlayer implements Runnable {
 
 	private boolean shortestPathGreater(ArrayList<Tile> shortestPath, int range) {
 		return shortestPath.size() >= range;
-	}
-
-	private void attackWithWeaponInRange(PathFinder pf, BattleProcessor bp,
-			Unit unit, Unit target) {
-		for (int i = 0; i < unit.getWeapons().length; i++) {
-		    //Test each weapon's range
-		    if (unit.getWeapon(i) != null) {
-		        ArrayList<Tile> attackableTiles = pf.getAttackableTiles(unit, unit.
-		                getMapx(), unit.getMapy(), Game.getCurrentMap(), i);
-		        if (attackableTiles.contains(Game.getCurrentMap().
-		                getTile(target.getMapx() + target.getMapy() * Game.
-		                getCurrentMap().getWidth()))) {
-		            //Target is in firing range, attack
-		            if (i != 0) {
-		                equipWeapon(unit, i);
-		            }
-		            bp.startBattle(unit, target);
-		            break;
-		        }
-		    }
-		}
 	}
 
     public int determineAverageX(int faction) {

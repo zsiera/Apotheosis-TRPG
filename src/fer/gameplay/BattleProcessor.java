@@ -22,20 +22,12 @@ import java.util.Random;
  */
 public class BattleProcessor {
 
-    private Unit attacker;
+    private ExpMenus expMenus = new ExpMenus();
+	private DefenderMenus defendMenus = new DefenderMenus();
+	private AttackMenus attackMenus = new AttackMenus();
+	private DamageDealt damageDealt = new DamageDealt();
+	private Unit attacker;
     private Unit defender;
-    private Menu attackerMenu;
-    private Menu attackerWeaponMenu;
-    private Menu attackerStatusMenu;
-    private Menu attackerBattleMenu;
-    private Menu attackerExpMenu;
-    private Menu defenderMenu;
-    private Menu defenderWeaponMenu;
-    private Menu defenderStatusMenu;
-    private Menu defenderBattleMenu;
-    private Menu defenderExpMenu;
-    private boolean attackerExpOpen = false;
-    private boolean defenderExpOpen = false;
     private Random random = new Random();
     private Cursor cursor = Cursor.getCursor();
     private Effect damageEffect;
@@ -53,8 +45,6 @@ public class BattleProcessor {
     private int numAttacksDefender = 0;
     private int attackerDamage = 0;
     private int defenderDamage = 0;
-    private int attackerDamageDealt = 0;
-    private int defenderDamageDealt = 0;
     private int attackerLevelsGained = 0;
     private int defenderLevelsGained = 0;
     private int levelIterations = 0;
@@ -98,7 +88,7 @@ public class BattleProcessor {
         }
 
         //Calculate the number of attacks (Based on FE:PR formula at the moment)
-        if (calculateAttackSpeed(attacker) >= calculateAttackSpeed(defender) + 3) {
+        if (Attack.calculateAttackSpeed(attacker) >= Attack.calculateAttackSpeed(defender) + 3) {
             numAttacksAttacker = 2;
         } else {
             numAttacksAttacker = 1;
@@ -109,7 +99,7 @@ public class BattleProcessor {
         if (defender.getWeapon(0).getRange() >= (Math.abs(defender.getMapx()
                 - attacker.getMapx()) + Math.abs(defender.getMapy() - attacker.
                 getMapy()))) {
-            if (calculateAttackSpeed(defender) >= calculateAttackSpeed(attacker) + 3) {
+            if (Attack.calculateAttackSpeed(defender) >= Attack.calculateAttackSpeed(attacker) + 3) {
                 numAttacksDefender = 2;
             } else {
                 numAttacksDefender = 1;
@@ -124,7 +114,7 @@ public class BattleProcessor {
         //Determine if attacks hit
         missAttacker = new boolean[numAttacksAttacker];
         missDefender = new boolean[numAttacksDefender];
-        accAttacker = calculateAttackHitChance(attacker, defender);
+        accAttacker = Attack.calculateAttackHitChance(attacker, defender);
         for (int i = 0; i < missAttacker.length; i++) {
             float num = random.nextFloat() * 100;
             if (num <= accAttacker) {  //Hit
@@ -133,7 +123,7 @@ public class BattleProcessor {
                 missAttacker[i] = true;
             }
         }
-        accDefender = calculateAttackHitChance(defender, attacker);
+        accDefender = Attack.calculateAttackHitChance(defender, attacker);
         for (int i = 0; i < missDefender.length; i++) {
             float num = random.nextFloat() * 100;
             if (num <= accDefender) {  //Hit
@@ -166,34 +156,20 @@ public class BattleProcessor {
         }
 
         //Calculate attack damage
-        attackerDamage = calculateAttackDamage(attacker, defender);
-        defenderDamage = calculateAttackDamage(defender, attacker);
+        attackerDamage = Attack.calculateAttackDamage(attacker, defender);
+        defenderDamage = Attack.calculateAttackDamage(defender, attacker);
 
-        drawAttackerMenus();
-        drawDefenderMenus();
+        attackMenus.drawMenu(cursor, attacker, attackerDamage, accAttacker, critAttacker);
+        defendMenus.drawMenu(cursor, defender, defenderDamage, accDefender, critDefender);
     }
 
 	private void initializeBattle(Unit iAttacker, Unit iDefender) {
-		initializeCursor();
+		cursor.initializeCursorForBattle();
         inCombat = true;
-        initializeUnits(iAttacker, iDefender);
+        damageDealt.initializeUnits(iAttacker, iDefender, this);
         updates = 0;
         stage = 0;
         currentAttack = 0;
-	}
-
-	private void initializeUnits(Unit iAttacker, Unit iDefender) {
-		attacker = iAttacker;
-        defender = iDefender;
-        attacker.resetAnimation(22);
-        defender.resetAnimation(22);
-        attackerDamageDealt = 0;
-        defenderDamageDealt = 0;
-	}
-
-	private void initializeCursor() {
-		cursor.setActive(false);
-        cursor.setVisible(false);
 	}
 
     public void update() {
@@ -274,10 +250,10 @@ public class BattleProcessor {
                 if (!missAttacker[currentAttack]) {
                     if (criticalAttacker[currentAttack]) {
                         defender.setCurrentHp(Math.max(defender.getCurrentHp() - (attackerDamage * 3), 0));
-                        attackerDamageDealt += attackerDamage * 3;
+                        damageDealt.setAttackerDamageDealt(attackerDamage * 3);
                     } else {
                         defender.setCurrentHp(Math.max(defender.getCurrentHp() - attackerDamage, 0));
-                        attackerDamageDealt += attackerDamage;
+                        damageDealt.setAttackerDamageDealt(attackerDamage);
                     }
                     /*if (directionAttacker == 1) {
                      defender.setActiveMapAnimation(18);
@@ -288,7 +264,7 @@ public class BattleProcessor {
                      } else {
                      defender.setActiveMapAnimation(21);
                      }*/
-                    drawDefenderMenus();  //Update health display    
+                    defendMenus.drawMenu(cursor, defender, defenderDamage, accDefender, critDefender);  //Update health display    
                     if (defender.getCurrentHp() == 0) { //If the defender is dead
                         stage = 10;
                         break;
@@ -377,10 +353,10 @@ public class BattleProcessor {
                 if (!missDefender[currentAttack]) {
                     if (criticalDefender[currentAttack]) {
                         attacker.setCurrentHp(Math.max(attacker.getCurrentHp() - (defenderDamage * 3), 0));
-                        defenderDamageDealt += defenderDamage * 3;
+                        damageDealt.setDefenderDamageDealt(defenderDamage * 3);
                     } else {
                         attacker.setCurrentHp(Math.max(attacker.getCurrentHp() - defenderDamage, 0));
-                        defenderDamageDealt += defenderDamage;
+                        damageDealt.setDefenderDamageDealt(defenderDamage);
                     }
                     /*if (directionDefender == 1) {
                      attacker.setActiveMapAnimation(18);
@@ -391,7 +367,7 @@ public class BattleProcessor {
                      } else {
                      attacker.setActiveMapAnimation(21);
                      }*/
-                    drawAttackerMenus();  //Update health display
+                   	attackMenus.drawMenu(cursor, attacker, attackerDamage, accAttacker, critAttacker);  //Update health display
                     if (attacker.getCurrentHp() == 0) { //If the attacker is dead
                         stage = 10;
                         break;
@@ -422,23 +398,23 @@ public class BattleProcessor {
                 }
                 MenuCursor.getMenuCursor().setActive(true);
                 if (!attacker.isDead()) {
-                    drawAttackerExpMenu(calculateExpGain(attacker, defender, attackerDamageDealt, defender.isDead()));
+                    expMenus.drawAttackerExpMenu(calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead()), attacker);
                 }
                 if (!defender.isDead()) {
-                    drawDefenderExpMenu(calculateExpGain(defender, attacker, defenderDamageDealt, attacker.isDead()));
+                    expMenus.drawDefenderExpMenu(calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead()), defender);
                 }
                 stage++;
                 break;
             case 11:
-                if (!attackerExpOpen && !defenderExpOpen) {
+                if (!expMenus.getAttackerExpOpen() && !expMenus.getDefenderExpOpen()) {
                     stage++;
                 }
                 break;
             case 12:
-                attackerLevelsGained = (int) ((attacker.getExp() + calculateExpGain(attacker, defender, attackerDamageDealt, defender.isDead())) / Unit.EXP_CAP);
-                defenderLevelsGained = (int) ((defender.getExp() + calculateExpGain(defender, attacker, defenderDamageDealt, attacker.isDead())) / Unit.EXP_CAP);
-                attacker.setExp((attacker.getExp() + calculateExpGain(attacker, defender, attackerDamageDealt, defender.isDead())) % Unit.EXP_CAP);
-                defender.setExp((defender.getExp() + calculateExpGain(defender, attacker, defenderDamageDealt, attacker.isDead())) % Unit.EXP_CAP);
+                attackerLevelsGained = (int) ((attacker.getExp() + calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) / Unit.EXP_CAP);
+                defenderLevelsGained = (int) ((defender.getExp() + calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) / Unit.EXP_CAP);
+                attacker.setExp((attacker.getExp() + calculateExpGain(attacker, defender, damageDealt.getAttackerDamageDealt(), defender.isDead())) % Unit.EXP_CAP);
+                defender.setExp((defender.getExp() + calculateExpGain(defender, attacker, damageDealt.getDefenderDamageDealt(), attacker.isDead())) % Unit.EXP_CAP);
                 levelIterations = 0;
                 stage++;
                 break;
@@ -480,14 +456,8 @@ public class BattleProcessor {
     }
 
     public void endBattle() {
-        Game.getMenuList().remove(attackerMenu);
-        Game.getMenuList().remove(attackerStatusMenu);
-        Game.getMenuList().remove(attackerWeaponMenu);
-        Game.getMenuList().remove(attackerBattleMenu);
-        Game.getMenuList().remove(defenderMenu);
-        Game.getMenuList().remove(defenderStatusMenu);
-        Game.getMenuList().remove(defenderWeaponMenu);
-        Game.getMenuList().remove(defenderBattleMenu);
+        attackMenus.clearMenus();
+        defendMenus.clearMenus();
         attacker.resetAnimation(22);
         defender.resetAnimation(22);
         attacker.setMoved(true);
@@ -514,253 +484,11 @@ public class BattleProcessor {
             }
         }
         inCombat = false;
-        setCursorForVictory();
+        cursor.setCursorForVictory();
     }
-
-	private void setCursorForVictory() {
-		cursor.setVisible(true);
-        cursor.setActive(true);
-        cursor.processVictory();
-	}
-
-    public void drawAttackerMenus() {
-        clearAttackerMenus();
-        MenuAction sa = getSAAction();
-        initializeAttackerMenus();
-
-        attackerMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(attacker.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
-        if (attacker.getMapFaceSprite() != null) {
-            attackerMenu.addElement(new MenuElement(sa, sa, attacker.getMapFaceSprite(), false, 7, 13));
-        }
-        if (attacker.getWeapon(0) != null) {
-            addWeaponMenuOptions(attackerStatusMenu, attacker, sa);
-        }
-        if (attacker.getArmor() != null) {
-            addArmorMenuOptions(attackerStatusMenu, attacker, sa);
-        }
-        addDefaultMenuOptions(attackerStatusMenu, attacker, sa);
-        addAttackerBattleMenuOptions(sa);
-    }
-
-	private void initializeAttackerMenus() {
-		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
-            attackerMenu = new Menu(46, 52, 0, 0);
-            attackerWeaponMenu = new Menu(30, 76, 0, 52);
-            attackerStatusMenu = new Menu(131, 16, 46, 0);
-            attackerBattleMenu = new Menu(131, 16, 46, 16);
-        } else {
-            attackerMenu = new Menu(46, 52, 194, 0);
-            attackerWeaponMenu = new Menu(30, 76, 210, 52);
-            attackerStatusMenu = new Menu(131, 16, 63, 0);
-            attackerBattleMenu = new Menu(131, 16, 63, 16);
-        }
-	}
-
-	private void clearAttackerMenus() {
-		if (attackerMenu != null) {  //Clear the menus if they already exist
-            Game.getMenuList().remove(attackerMenu);
-            Game.getMenuList().remove(attackerWeaponMenu);
-            Game.getMenuList().remove(attackerStatusMenu);
-            Game.getMenuList().remove(attackerBattleMenu);
-        }
-	}
-
-	private void addAttackerBattleMenuOptions(MenuAction sa) {
-		attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + attackerDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
-        attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("AC: " + Math.round(accAttacker), Font.BASICFONT)).getSprite(), false, 47, 5));
-        attackerBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("CR: " + Math.round(critAttacker), Font.BASICFONT)).getSprite(), false, 87, 5));
-	}
-
-	private void addDefaultMenuOptions(Menu menu, Unit unit, MenuAction sa) {
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("HP:" + unit.getCurrentHp(), Font.BASICFONT)).getSprite(), false, 7, 5));
-		menu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 12, SpriteSheet.HEALTHBAR)), false, 32, 5));
-		menu.addElement(new MenuElement(sa, sa, (new Sprite((int) ((92 * unit.getCurrentHp()) / unit.getHp()), 5, 1, 18, SpriteSheet.HEALTHBAR)), false, 32, 5));
-		menu.addElement(new MenuElement(sa, sa, (new Sprite(92, 5, 1, 24, SpriteSheet.HEALTHBAR)), false, 32, 5));
-	}
-
-	private void addWeaponMenuOptions(Menu menu, Unit unit, MenuAction sa) {
-		menu.addElement(new MenuElement(sa, sa, unit.getWeapon(0).getIcon(), false, 7, 7));
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("D:" + unit.getWeapon(0).getDamage(), Font.BASICFONT)).getSprite(), false, 5, 24));
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("P:" + unit.getWeapon(0).getPierce(), Font.BASICFONT)).getSprite(), false, 5, 30));
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("A:" + unit.getWeapon(0).getAccuracy(), Font.BASICFONT)).getSprite(), false, 5, 36));
-	}
-
-	private void addArmorMenuOptions(Menu menu, Unit unit, MenuAction sa) {
-		menu.addElement(new MenuElement(sa, sa, unit.getArmor().getIcon(), false, 7, 42));
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("R:" + unit.getArmor().getResilience(), Font.BASICFONT)).getSprite(), false, 5, 58));
-		menu.addElement(new MenuElement(sa, sa, (new TextGraphic("E:" + unit.getArmor().getEncumberance(), Font.BASICFONT)).getSprite(), false, 5, 64));
-	}
-
-    public void drawDefenderMenus() {
-        clearDefenderMenus();
-        MenuAction sa = getSAAction();
-        initializeDefenderMenus();
-
-        defenderMenu.addElement(new MenuElement(sa, sa, (new TextGraphic(defender.getName(), Font.BASICFONT)).getSprite(), false, 7, 7));
-        if (defender.getMapFaceSprite() != null) {
-            defenderMenu.addElement(new MenuElement(sa, sa, defender.getMapFaceSprite(), false, 7, 13));
-        }
-        if (defender.getWeapon(0) != null) {
-           addWeaponMenuOptions(defenderWeaponMenu, defender, sa);
-        }
-        if (defender.getArmor() != null) {
-        	addArmorMenuOptions(defenderStatusMenu, defender, sa);
-        }
-        addDefaultMenuOptions(defenderStatusMenu, defender, sa);
-        addDefenderBattleMenuOptions(sa);
-    }
-
-	private void initializeDefenderMenus() {
-		if (cursor.getMapX() - cursor.getMapScrollx() > Map.MIN_MAP_WIDTH / 2) {
-            defenderMenu = new Menu(46, 52, 194, 108);
-            defenderWeaponMenu = new Menu(30, 76, 210, 32);
-            defenderStatusMenu = new Menu(131, 16, 63, 144);
-            defenderBattleMenu = new Menu(131, 16, 63, 128);
-        } else {
-            defenderMenu = new Menu(46, 52, 0, 108);
-            defenderWeaponMenu = new Menu(30, 76, 0, 32);
-            defenderStatusMenu = new Menu(131, 16, 46, 144);
-            defenderBattleMenu = new Menu(131, 16, 46, 128);
-        }
-	}
-
-	private void clearDefenderMenus() {
-		if (defenderMenu != null) {  //Clear the menus if they already exist
-            Game.getMenuList().remove(defenderMenu);
-            Game.getMenuList().remove(defenderWeaponMenu);
-            Game.getMenuList().remove(defenderStatusMenu);
-            Game.getMenuList().remove(defenderBattleMenu);
-        }
-	}
-
-	private void addDefenderBattleMenuOptions(MenuAction sa) {
-		defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("MT: " + defenderDamage, Font.BASICFONT)).getSprite(), false, 7, 5));
-        defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("AC: " + Math.round(accDefender), Font.BASICFONT)).getSprite(), false, 47, 5));
-        defenderBattleMenu.addElement(new MenuElement(sa, sa, (new TextGraphic("CR: " + Math.round(critDefender), Font.BASICFONT)).getSprite(), false, 87, 5));
-	}
-
-    public void drawAttackerExpMenu(int gain) {
-        attackerExpOpen = true;
-        if (attackerExpMenu != null) {
-            attackerExpMenu.removeMenu();
-        }
-        createAttackerMenu(gain);
-
-        MenuCursor.getMenuCursor().setElementIndex(0);
-        MenuCursor.setActiveMenu(attackerExpMenu);
-    }
-
-	private void createAttackerMenu(int gain) {
-		attackerExpMenu = new Menu(114, 50, 63, 30);
-
-        MenuAction sa = getSAAction();
-
-        MenuAction close = getCloseAction();
-
-        attackerExpMenu.setEscapeAction(close);
-
-        int newExp = (attacker.getExp() + gain) % Unit.EXP_CAP;
-        int levelGain = (int) (attacker.getExp() + gain) / Unit.EXP_CAP;
-
-        addElementsToAttackerMenu(gain, sa, close, newExp, levelGain);
-	}
-
-	private void addElementsToAttackerMenu(int gain, MenuAction sa,
-			MenuAction close, int newExp, int levelGain) {
-		attackerExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(attacker.getName(), Font.BASICFONT).getSprite(), true, 7, 7));
-        attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("OLD EXP: " + attacker.getExp(), Font.BASICFONT).getSprite(), false, 7, 13));
-        attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("        +" + gain, Font.BASICFONT).getSprite(), false, 7, 19));
-        attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
-        attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + attacker.getLevel() + " -> " + (attacker.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));
-        attackerExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false, 7, 37));
-	}
-
-	private MenuAction getCloseAction() {
-		MenuAction close = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-            	if (attackerExpMenu != null) {
-            		attackerExpMenu.removeMenu();
-            	}
-                if (defenderExpMenu != null) {
-                    defenderExpMenu.removeMenu();
-                }
-                attackerExpOpen = false;
-                defenderExpOpen = false;
-            }
-        };
-		return close;
-	}
-
-    public void drawDefenderExpMenu(int gain) {
-        defenderExpOpen = true;
-        if (defenderExpMenu != null) {
-            defenderExpMenu.removeMenu();
-        }
-        getDefenderMenu(gain);
-
-        MenuCursor.getMenuCursor().setElementIndex(0);
-        MenuCursor.setActiveMenu(defenderExpMenu);
-    }
-
-	private void getDefenderMenu(int gain) {
-		defenderExpMenu = new Menu(114, 50, 63, 80);
-
-        MenuAction sa = getSAAction();
-       
-        MenuAction close = getCloseAction();
-
-        defenderExpMenu.setEscapeAction(close);
-
-        int newExp = (defender.getExp() + gain) % Unit.EXP_CAP;
-        int levelGain = (int) (defender.getExp() + gain) / Unit.EXP_CAP;
-
-        defenderExpMenu.addElement(new MenuElement(sa, close, new TextGraphic(defender.getName(), Font.BASICFONT).getSprite(), true, 7, 7));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("OLD EXP: " + defender.getExp(), Font.BASICFONT).getSprite(), false, 7, 13));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("        +" + gain, Font.BASICFONT).getSprite(), false, 7, 19));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("NEW EXP: " + newExp, Font.BASICFONT).getSprite(), false, 7, 25));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("LVL: " + defender.getLevel() + " -> " + (defender.getLevel() + levelGain), Font.BASICFONT).getSprite(), false, 7, 31));
-        defenderExpMenu.addElement(new MenuElement(sa, sa, new TextGraphic("TO NEXT: " + (Unit.EXP_CAP - newExp), Font.BASICFONT).getSprite(), false, 7, 37));
-	}
-
-	private MenuAction getSAAction() {
-		MenuAction sa = new MenuAction() {
-            @Override
-            public void execute(MenuElement caller) {
-                //Do nothing.
-            }
-        };
-		return sa;
-	}
 
     public int calculateAttackDamage(Unit attacker, Unit defender) {
-        int wepatk;
-        wepatk = attacker.getWeapon(0).getDamage() + attacker.getStr();
-        /*if (attacker.getWeapon(0).isMelee()) {  //Melee weapon damage is calaculated differently than firearm
-         wepatk = attacker.getWeapon(0).getDamage() * (1 + (attacker.getStr() / 10));
-         } else {
-         wepatk = attacker.getWeapon(0).getDamage() * (1 + (attacker.getSkl() / 100));
-         }*/
-        int wepdam;
-        if (defender.getArmor() != null) {
-            wepdam = wepatk - (defender.getDef() + Game.getCurrentMap().getTile(defender.getMapx() + defender.getMapy()).getDef()
-                    + (defender.getArmor().getResilience() - attacker.getWeapon(0)
-                    .getPierce()));
-        } else {
-            wepdam = wepatk - (defender.getDef() + Game.getCurrentMap().
-                    getTile(defender.getMapx() + defender.getMapy()).getDef());
-        }
-        return Math.max(0, wepdam);
-    }
-
-    public float calculateAttackHitChance(Unit attacker, Unit defender) {
-        float hitRate = ((attacker.getWeapon(0).getAccuracy()) + (attacker.getSkl() * 2));
-        float evade = (calculateAttackSpeed(defender) * 2) + Game.
-                getCurrentMap().getTile(defender.getMapx() + defender.getMapy()
-                * Game.getCurrentMap().getWidth()).getAvo();
-        return Math.min(Math.max(hitRate - evade, 0), 100);
-        /*float wepacc = (attacker.getWeapon(0).getAccuracy() + attacker.getSkl()) / 2;
-         return wepacc * (1 - (defender.getSpd() / 100));*/
+        return Attack.calculateAttackDamage(attacker, defender);
     }
 
     public float calculateCriticalChance(Unit attacker, Unit defender) {
@@ -768,83 +496,11 @@ public class BattleProcessor {
                 - defender.getRes();
     }
 
-    public int calculateAttackSpeed(Unit unit) {
-        int speed = unit.getSpd();
-        if (unit.getWeapon(0).getWeight() > unit.getCon()) {
-            speed -= (unit.getWeapon(0).getWeight() - unit.getCon());
-        }
-        if (unit.getArmor().getEncumberance() > unit.getCon()) {
-            speed -= (unit.getArmor().getEncumberance() - unit.getCon());
-        }
-        return speed;
-    }
-
     public double calculateDeathChance(Unit unit, Unit opponent, boolean unitAttacking) {
-        if ((2 * calculateAttackDamage(opponent, unit)) < unit.getCurrentHp()) {
-            return 0;
-        } else {
-            int numAttacksUnit = getNumberOfAttacks(unit, opponent);
-            double opponentSurvival = 1;
-            if (calculateAttackDamage(opponent, unit) >= unit.getCurrentHp()) {
-                //One hit will kill
-                if (unitAttacking && (calculateAttackDamage(unit, opponent)
-                        >= opponent.getCurrentHp()) && numAttacksUnit >= 1) {
-                    //If the unit can strike the opponent first and kill,
-                    //survival is the probability they miss
-                    opponentSurvival = 1 - (calculateAttackHitChance(unit, opponent) / 100);
-                }
-                return (calculateAttackHitChance(opponent, unit) / 100)
-                        * opponentSurvival;//Unit misses and opponent hits;
-            } else {
-                //Two hits will kill
-                if (!unitAttacking && (calculateAttackDamage(unit, opponent)
-                        >= opponent.getCurrentHp()) && numAttacksUnit >= 1) {
-                    //If the unit can strike the opponent after its first attack and 
-                    //kill, survival is the probability they miss
-                    opponentSurvival = 1 - (calculateAttackHitChance(unit, opponent) / 100);
-                } else if (unitAttacking && ((2 * calculateAttackDamage(unit,
-                        opponent)) >= opponent.getCurrentHp()) && numAttacksUnit >= 2) {
-                    //If the unit strikes first twice and will kill if they hit both
-                    //times, survival is the probability they do not
-                    opponentSurvival = 1 - Math.pow((calculateAttackHitChance(unit, opponent) / 100), 2);
-                }
-            }
-            return Math.pow((calculateAttackHitChance(opponent, unit) / 100), 2)
-                    * opponentSurvival;//Unit does not hit twice, opponent does
-        }
+        return Attack.calculateDeathChance(unit, opponent, unitAttacking);
     }
 
-	private int getNumberOfAttacks(Unit unit, Unit opponent) {
-		int numAttacksUnit, numAttacksOpponent;
-		if (unit.getWeapon(0).getRange() >= (Math.abs(unit.getMapx() - opponent.
-		        getMapx()) + Math.abs(unit.getMapy() - opponent.getMapy()))) {
-		    numAttacksUnit = getAttackUnits(unit, opponent);
-		} else {
-		    numAttacksUnit = 0;
-		}
-		if (opponent.getWeapon(0).getRange() >= (Math.abs(opponent.getMapx() - unit.
-		        getMapx()) + Math.abs(opponent.getMapy() - unit.getMapy()))) {
-		    numAttacksOpponent = getAttackUnits(opponent, unit);
-		} else {
-		    numAttacksOpponent = 0;
-		}
-		return numAttacksUnit;
-	}
-
-	private int getAttackUnits(Unit unit, Unit opponent) {
-		int numAttacksUnit;
-		if (calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3) {
-		    numAttacksUnit = 2;
-		} else {
-		    numAttacksUnit = 1;
-		}
-		if (numAttacksUnit > unit.getWeapon(0).getUses()) {
-		    numAttacksUnit = unit.getWeapon(0).getUses();
-		}
-		return numAttacksUnit;
-	}
-
-    public int calculateExpGain(Unit attacker, Unit defender, int damageDealt, boolean defeated) {
+	public int calculateExpGain(Unit attacker, Unit defender, int damageDealt, boolean defeated) {
         double expCoeff = defender.getLevel() == attacker.getLevel() ? 1 : (Math
                 .min(4, Math.max(0, defender.getLevel() > attacker.getLevel()
                 ? 1 + (((double)((double)defender.getLevel() / (double)attacker.getLevel())) / 10) : 1 - (((double)((double)attacker.
@@ -857,4 +513,20 @@ public class BattleProcessor {
     public boolean isInCombat() {
         return inCombat;
     }
+
+	public void setAttacker(Unit attacker) {
+		this.attacker = attacker;
+	}
+
+	public void setDefender(Unit defender) {
+		this.defender = defender;
+	}
+
+	public Unit getAttacker() {
+		return attacker;
+	}
+
+	public Unit getDefender() {
+		return defender;
+	}
 }

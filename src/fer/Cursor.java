@@ -70,6 +70,17 @@ public class Cursor {
         }
         return instance;
     }
+    
+	public void initializeCursorForBattle() {
+		setActive(false);
+        setVisible(false);
+	}
+	
+	public void setCursorForVictory() {
+		setVisible(true);
+        setActive(true);
+        processVictory();
+	}
 
     public void update(Map currentMap, int xQueue, int yQueue, boolean enter,
             boolean escape, boolean tab) {

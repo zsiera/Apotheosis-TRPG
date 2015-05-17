@@ -21,10 +21,8 @@ import java.util.TreeSet;
  */
 public class PathFinder {
     
-    private boolean unitCollision = true;
-    private int excludeX = -1;
-    private int excludeY = -1;
-    
+    private Exclusions exclusions = new Exclusions();
+	private boolean unitCollision = true;
     private class TreeNode {
         
         private TreeNode parent;
@@ -77,9 +75,9 @@ public class PathFinder {
                     public int compare(Object o1, Object o2) {
                         Tile t1 = ((TreeNode)o1).getTile();
                         Tile t2 = ((TreeNode)o2).getTile();
-                        if (getCost(fUnit, t1, fTarget) < getCost(fUnit, t2, fTarget)) {
+                        if (exclusions.getCost(fUnit, t1, fTarget, PathFinder.this) < exclusions.getCost(fUnit, t2, fTarget, PathFinder.this)) {
                             return -1;
-                        } else if (getCost(fUnit, t1, fTarget) == getCost(fUnit, t2, fTarget)) {
+                        } else if (exclusions.getCost(fUnit, t1, fTarget, PathFinder.this) == exclusions.getCost(fUnit, t2, fTarget, PathFinder.this)) {
                             return 0; 
                         } else {
                             return 1;
@@ -326,16 +324,11 @@ public class PathFinder {
             if (Game.getCurrentMap().getUnitTile(target.getMapX() + target.
                     getMapY() * Game.getCurrentMap().getWidth()).getFaction() 
                     != unit.getFaction() && unitCollision && (target.getMapX() 
-                    != excludeX || target.getMapY() != excludeY)) {
+                    != exclusions.getExcludeX() || target.getMapY() != exclusions.getExcludeY())) {
                 return Tile.IMPASSIBLE;
             }
         }
         return unit.getUnitClass().getMoveCost(target.getTerrain());
-    }
-    
-    public int getCost(Unit unit, Tile location, Tile target) {
-        return getManhattanHeuristic(location, target) + 
-               getMovementCost(unit, location);
     }
     
     public void setUnitCollision(boolean unitCollision) {
@@ -343,7 +336,6 @@ public class PathFinder {
     }
     
     public void setExcludeCollision(int x, int y) {
-        excludeX = x;
-        excludeY = y;
+        exclusions.setExcludeCollision(x, y);
     }
 }
