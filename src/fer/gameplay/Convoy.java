@@ -11,9 +11,9 @@ public class Convoy {
 	public static final int STORAGE_LIMIT = 100;
 	public static final int FUNDS_LIMIT = 999999;
 
-	private Item[] items;
-	private Weapon[] weapons;
-	private Armor[] armors;
+	private Item[] items=new Item[0];
+	private Weapon[] weapons=new Weapon[0];
+	private Armor[] armors=new Armor[0];
 	private int funds;
 
 	public final Item getItem(final int index) {
