@@ -419,8 +419,8 @@ priority += 10;
 	}
 
 	public final int determineAverageX(final int faction) {
-		int xSum = 0;
-		int numUnits = 0;
+		float xSum = 0;
+		float numUnits = 0;
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
 			if (Game.getCurrentMap().getUnit(i).getFaction() == faction) {
 				xSum += Game.getCurrentMap().getUnit(i).getMapx();
@@ -431,8 +431,8 @@ priority += 10;
 	}
 
 	public final int determineAverageY(final int faction) {
-		int ySum = 0;
-		int numUnits = 0;
+		float ySum = 0;
+		float numUnits = 0;
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
 			if (Game.getCurrentMap().getUnit(i).getFaction() == faction) {
 				ySum += Game.getCurrentMap().getUnit(i).getMapx();
