@@ -1,9 +1,15 @@
+/*
+ * 
+ */
 package fer.gameplay;
 
 import fer.Map;
 import fer.util.GoalData;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class MapGoal.
+ *
  * @author Evan Stewart
  */
 public class MapGoal {
@@ -14,15 +20,34 @@ public class MapGoal {
 	 * from XML.
 	 */
 	public enum GoalType {
-		ELIMINATE_TARGETS("KILL TARGET"), ROUTE_ENEMY("ROUTE ENEMY"), DEFEND_TARGETS(
-				"DEFEND TARGET"), REACH_TILE("REACH TILE");
+		
+		/** The eliminate targets. */
+		ELIMINATE_TARGETS("KILL TARGET"), 
+ /** The route enemy. */
+ ROUTE_ENEMY("ROUTE ENEMY"), 
+ /** The defend targets. */
+ DEFEND_TARGETS(
+				"DEFEND TARGET"), 
+ /** The reach tile. */
+ REACH_TILE("REACH TILE");
 
+		/** The name. */
 		private String name;
 
+		/**
+		 * Instantiates a new goal type.
+		 *
+		 * @param name the name
+		 */
 		GoalType(final String name) {
 			this.name = name;
 		}
 
+		/**
+		 * Gets the name.
+		 *
+		 * @return the name
+		 */
 		public String getName() {
 			return name;
 		}
@@ -47,11 +72,22 @@ public class MapGoal {
 	/** The y-coordinate of the tile to be reached. */
 	private int tileY;
 
+	/**
+	 * Instantiates a new map goal.
+	 *
+	 * @param type the type
+	 * @param faction the faction
+	 */
 	public MapGoal(final GoalType type, final int faction) {
 		this.type = type;
 		this.faction = faction;
 	}
 
+	/**
+	 * Instantiates a new map goal.
+	 *
+	 * @param data the data
+	 */
 	public MapGoal(final GoalData data) {
 		switch (data.getType()) {
 		case "REACH TILE":
@@ -75,6 +111,12 @@ public class MapGoal {
 		faction = data.getIndex();
 	}
 
+	/**
+	 * Checks if is met.
+	 *
+	 * @param map the map
+	 * @return true, if is met
+	 */
 	public final boolean isMet(final Map map) { // TODO: Update to check turns
 		boolean completed = true;
 		if (type == GoalType.ELIMINATE_TARGETS) {
@@ -100,50 +142,110 @@ public class MapGoal {
 		return completed;
 	}
 
+	/**
+	 * Gets the faction.
+	 *
+	 * @return the faction
+	 */
 	public final int getFaction() {
 		return faction;
 	}
 
+	/**
+	 * Sets the faction.
+	 *
+	 * @param faction the new faction
+	 */
 	public final void setFaction(final int faction) {
 		this.faction = faction;
 	}
 
+	/**
+	 * Gets the targets.
+	 *
+	 * @return the targets
+	 */
 	public final int[] getTargets() {
 		return targets;
 	}
 
+	/**
+	 * Sets the targets.
+	 *
+	 * @param targets the new targets
+	 */
 	public final void setTargets(final int[] targets) {
 		this.targets = targets;
 	}
 
+	/**
+	 * Gets the turns.
+	 *
+	 * @return the turns
+	 */
 	public final int getTurns() {
 		return turns;
 	}
 
+	/**
+	 * Sets the turns.
+	 *
+	 * @param turns the new turns
+	 */
 	public final void setTurns(final int turns) {
 		this.turns = turns;
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public final GoalType getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
 	public final void setType(final GoalType type) {
 		this.type = type;
 	}
 
+	/**
+	 * Gets the tile x.
+	 *
+	 * @return the tile x
+	 */
 	public final int getTileX() {
 		return tileX;
 	}
 
+	/**
+	 * Sets the tile x.
+	 *
+	 * @param tileX the new tile x
+	 */
 	public final void setTileX(final int tileX) {
 		this.tileX = tileX;
 	}
 
+	/**
+	 * Gets the tile y.
+	 *
+	 * @return the tile y
+	 */
 	public final int getTileY() {
 		return tileY;
 	}
 
+	/**
+	 * Sets the tile y.
+	 *
+	 * @param tileY the new tile y
+	 */
 	public final void setTileY(final int tileY) {
 		this.tileY = tileY;
 	}

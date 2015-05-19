@@ -1,20 +1,43 @@
+/*
+ * 
+ */
 package fer.ui;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class MenuCursor.
+ *
  * @author Evan Stewart
  */
 public class MenuCursor {
 
+	/** The Constant CURSOR_COLOR. */
 	public static final int CURSOR_COLOR = 0xFFFF00;
+	
+	/** The instance. */
 	private static MenuCursor instance;
+	
+	/** The active menu. */
 	private static Menu activeMenu;
+	
+	/** The element index. */
 	private int elementIndex;
+	
+	/** The active. */
 	private boolean active;
 
+	/**
+	 * Instantiates a new menu cursor.
+	 */
 	public MenuCursor() {
 		active = true;
 	}
 
+	/**
+	 * Gets the menu cursor.
+	 *
+	 * @return the menu cursor
+	 */
 	public static MenuCursor getMenuCursor() {
 		if (instance == null) {
 			instance = new MenuCursor();
@@ -23,6 +46,14 @@ public class MenuCursor {
 		return instance;
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param xScrollQueue the x scroll queue
+	 * @param yScrollQueue the y scroll queue
+	 * @param enter the enter
+	 * @param escape the escape
+	 */
 	public void update(int xScrollQueue, int yScrollQueue, boolean enter,
 			boolean escape) {
 		// Update the active element based upon the scroll queue
@@ -59,26 +90,56 @@ public class MenuCursor {
 		}
 	}
 
+	/**
+	 * Gets the active menu.
+	 *
+	 * @return the active menu
+	 */
 	public static Menu getActiveMenu() {
 		return activeMenu;
 	}
 
+	/**
+	 * Sets the active menu.
+	 *
+	 * @param activeMenu the new active menu
+	 */
 	public static void setActiveMenu(Menu activeMenu) {
 		MenuCursor.activeMenu = activeMenu;
 	}
 
+	/**
+	 * Gets the element index.
+	 *
+	 * @return the element index
+	 */
 	public int getElementIndex() {
 		return elementIndex;
 	}
 
+	/**
+	 * Sets the element index.
+	 *
+	 * @param elementIndex the new element index
+	 */
 	public void setElementIndex(int elementIndex) {
 		this.elementIndex = elementIndex;
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Sets the active.
+	 *
+	 * @param iActive the new active
+	 */
 	public void setActive(boolean iActive) {
 		active = iActive;
 	}

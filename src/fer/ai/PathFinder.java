@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.ai;
 
 import fer.Map;
@@ -7,7 +10,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class PathFinder.
+ *
  * @author Evan Stewart
  * 
  *         A utility class that contains various methods which return sets of
@@ -18,51 +24,113 @@ import java.util.PriorityQueue;
  */
 public class PathFinder {
 
+	/** The exclusions. */
 	private Exclusions exclusions = new Exclusions();
+	
+	/** The unit collision. */
 	private boolean unitCollision = true;
 
+	/**
+	 * The Class TreeNode.
+	 */
 	private class TreeNode {
 
+		/** The parent. */
 		private TreeNode parent;
+		
+		/** The tile. */
 		private Tile tile;
+		
+		/** The children. */
 		private ArrayList<TreeNode> children;
 
+		/**
+		 * Instantiates a new tree node.
+		 *
+		 * @param tile the tile
+		 */
 		public TreeNode(final Tile tile) {
 			this.tile = tile;
 			children = new ArrayList<>();
 			parent = null;
 		}
 
+		/**
+		 * Instantiates a new tree node.
+		 *
+		 * @param tile the tile
+		 * @param parent the parent
+		 */
 		public TreeNode(final Tile tile, final TreeNode parent) {
 			this(tile);
 			this.parent = parent;
 		}
 
+		/**
+		 * Gets the parent.
+		 *
+		 * @return the parent
+		 */
 		public TreeNode getParent() {
 			return parent;
 		}
 
+		/**
+		 * Gets the tile.
+		 *
+		 * @return the tile
+		 */
 		public Tile getTile() {
 			return tile;
 		}
 
+		/**
+		 * Gets the children.
+		 *
+		 * @return the children
+		 */
 		public ArrayList<TreeNode> getChildren() {
 			return children;
 		}
 
+		/**
+		 * Gets the child.
+		 *
+		 * @param index the index
+		 * @return the child
+		 */
 		public TreeNode getChild(final int index) {
 			return children.get(index);
 		}
 
+		/**
+		 * Adds the child.
+		 *
+		 * @param child the child
+		 */
 		public void addChild(final TreeNode child) {
 			children.add(child);
 		}
 
+		/**
+		 * Sets the parent.
+		 *
+		 * @param parent the new parent
+		 */
 		public void setParent(final TreeNode parent) {
 			this.parent = parent;
 		}
 	}
 
+	/**
+	 * Gets the shortest path a star.
+	 *
+	 * @param map the map
+	 * @param unit the unit
+	 * @param start the start
+	 * @param target the target
+	 * @return the shortest path a star
+	 */
 	public final ArrayList<Tile> getShortestPathAStar(final Map map, final Unit unit, final Tile start,
 			final Tile target) {
 		final Unit fUnit = unit;
@@ -121,6 +189,14 @@ public class PathFinder {
 		return shortestPath;
 	}
 
+	/**
+	 * Adds the frontier.
+	 *
+	 * @param map the map
+	 * @param exploredTiles the explored tiles
+	 * @param frontier the frontier
+	 * @param nextClosest the next closest
+	 */
 	private void addFrontier(final Map map, final ArrayList<Tile> exploredTiles,
 			final PriorityQueue<TreeNode> frontier, final TreeNode nextClosest) {
 		if (nextClosest.getTile().getMapX() + 1 < map.getWidth()
@@ -165,6 +241,13 @@ public class PathFinder {
 		}
 	}
 
+	/**
+	 * Gets the movable tiles.
+	 *
+	 * @param unit the unit
+	 * @param map the map
+	 * @return the movable tiles
+	 */
 	public final ArrayList<Tile> getMovableTiles(final Unit unit, final Map map) {
 		final Unit fUnit = unit;
 		PriorityQueue<TreeNode> frontier = getMovableTilesFrontier(map);
@@ -203,6 +286,14 @@ public class PathFinder {
 		return moveableTiles;
 	}
 
+	/**
+	 * Adds the frontier.
+	 *
+	 * @param map the map
+	 * @param frontier the frontier
+	 * @param node the node
+	 * @param nextClosest the next closest
+	 */
 	private void addFrontier(final Map map, final PriorityQueue<TreeNode> frontier,
 			final TreeNode node, final Tile nextClosest) {
 		if (nextClosest.getMapX() + 1 < map.getWidth() /*
@@ -253,6 +344,12 @@ public class PathFinder {
 		}
 	}
 
+	/**
+	 * Gets the movable tiles frontier.
+	 *
+	 * @param map the map
+	 * @return the movable tiles frontier
+	 */
 	private PriorityQueue<TreeNode> getMovableTilesFrontier(final Map map) {
 		Comparator cComp = new Comparator() {
 
@@ -272,6 +369,13 @@ public class PathFinder {
 				cComp);
 	}
 
+	/**
+	 * Gets the path cost.
+	 *
+	 * @param unit the unit
+	 * @param node the node
+	 * @return the path cost
+	 */
 	private int getPathCost(final Unit unit, final TreeNode node) {
 		int pathCost = 0;
 		TreeNode currentNode = node;
@@ -283,6 +387,16 @@ public class PathFinder {
 		return pathCost;
 	}
 
+	/**
+	 * Gets the attackable tiles.
+	 *
+	 * @param unit the unit
+	 * @param x the x
+	 * @param y the y
+	 * @param map the map
+	 * @param weapon the weapon
+	 * @return the attackable tiles
+	 */
 	public final ArrayList<Tile> getAttackableTiles(final Unit unit, final int x, final int y, final Map map,
 			final int weapon) {
 		PriorityQueue<TreeNode> frontier = getAttackableTilesFrontier(unit, map);
@@ -325,6 +439,13 @@ public class PathFinder {
 		return attackableTiles;
 	}
 
+	/**
+	 * Gets the attackable tiles frontier.
+	 *
+	 * @param unit the unit
+	 * @param map the map
+	 * @return the attackable tiles frontier
+	 */
 	private PriorityQueue<TreeNode> getAttackableTilesFrontier(final Unit unit,
 			final Map map) {
 		final Unit fUnit = unit;
@@ -347,10 +468,21 @@ public class PathFinder {
 		return new PriorityQueue(map.getNumTiles(), cComp);
 	}
 
+	/**
+	 * Sets the unit collision.
+	 *
+	 * @param unitCollision the new unit collision
+	 */
 	public final void setUnitCollision(final boolean unitCollision) {
 		this.unitCollision = unitCollision;
 	}
 
+	/**
+	 * Sets the exclude collision.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 */
 	public final void setExcludeCollision(final int x, final int y) {
 		exclusions.setExcludeCollision(x, y);
 	}

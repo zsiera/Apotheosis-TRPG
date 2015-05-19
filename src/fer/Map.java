@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer;
 
 import fer.ai.AiPlayer;
@@ -12,9 +15,12 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Evan
+ * The Class Map.
  *
+ * @author Evan
+ * 
  *         Stores the array of tiles that make up a map, along with properties
  *         and methods related to interfacing said map. Maps cannot be smaller
  *         than the amount of tiles required to fill the screen (15 by 10
@@ -22,16 +28,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Map {
 
+	/** The Constant MIN_MAP_WIDTH. */
 	public static final int MIN_MAP_WIDTH = 15;
+	
+	/** The Constant MIN_MAP_HEIGHT. */
 	public static final int MIN_MAP_HEIGHT = 10;
+	
+	/** The Constant FACTION_COLORS. */
 	public static final int[] FACTION_COLORS = new int[] { 0xff0000, 0x0000ff,
 			0x00ff00, 0xffff00, 0x00ffff, 0xff00ff, 0xffffff, 0x000000 };
+	
+	/** The Constant FACTION_SHADOW. */
 	public static final Sprite FACTION_SHADOW = new Sprite(16, 16, 1, 1,
 			SpriteSheet.FACTIONSHADOW);
+	
+	/** The cursor. */
 	private Cursor cursor;
+	
+	/** The height. */
 	private int width, height;
+	
+	/** The tiles. */
 	private Tile[] tiles;
+	
+	/** The units. */
 	private Unit[] units;
+	
+	/** The display compare. */
 	private Comparator displayCompare = new Comparator() {
 		@Override
 		public int compare(Object o1, Object o2) {
@@ -49,14 +72,38 @@ public class Map {
 			}
 		}
 	};
+	
+	/** The display units queue. */
 	private PriorityQueue displayUnitsQueue;
+	
+	/** The display units. */
 	private CopyOnWriteArrayList<Unit> displayUnits;
+	
+	/** The num factions. */
 	private int numFactions;
+	
+	/** The faction goals. */
 	private MapGoal[] factionGoals;
+	
+	/** The players. */
 	private AiPlayer[] players;
+	
+	/** The name. */
 	private String name;
+	
+	/** The current turn. */
 	private int currentTurn = 0;
 
+	/**
+	 * Instantiates a new map.
+	 *
+	 * @param mapWidth the map width
+	 * @param mapHeight the map height
+	 * @param mapName the map name
+	 * @param tileTypes the tile types
+	 * @param units the units
+	 * @param goals the goals
+	 */
 	public Map(int mapWidth, int mapHeight, String mapName, int[] tileTypes,
 			Unit[] units, MapGoal[] goals) {
 		cursor = Cursor.getCursor();
@@ -93,6 +140,11 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Instantiates a new map.
+	 *
+	 * @param data the data
+	 */
 	public Map(MapData data) {
 		cursor = Cursor.getCursor();
 		name = data.getName();
@@ -149,7 +201,7 @@ public class Map {
 	}
 
 	/**
-	 * Sets all units on the map to a moveable state
+	 * Sets all units on the map to a moveable state.
 	 */
 	public void resetUnitMovement() {
 		for (int i = 0; i < units.length; i++) {
@@ -157,30 +209,68 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Gets the tile.
+	 *
+	 * @param index the index
+	 * @return the tile
+	 */
 	public Tile getTile(int index) {
 		return tiles[index];
 	}
 
+	/**
+	 * Gets the selected tile.
+	 *
+	 * @return the selected tile
+	 */
 	public Tile getSelectedTile() {
 		return tiles[cursor.getMapX() + cursor.getMapY() * width];
 	}
 
+	/**
+	 * Gets the num tiles.
+	 *
+	 * @return the num tiles
+	 */
 	public int getNumTiles() {
 		return tiles.length;
 	}
 
+	/**
+	 * Gets the width.
+	 *
+	 * @return the width
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Gets the height.
+	 *
+	 * @return the height
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Gets the unit.
+	 *
+	 * @param index the index
+	 * @return the unit
+	 */
 	public Unit getUnit(int index) {
 		return units[index];
 	}
 
+	/**
+	 * Gets the unit tile.
+	 *
+	 * @param tileIndex the tile index
+	 * @return the unit tile
+	 */
 	public Unit getUnitTile(int tileIndex) {
 		int x = tileIndex % width;
 		int y = tileIndex / width;
@@ -196,24 +286,49 @@ public class Map {
 		return null;
 	}
 
+	/**
+	 * Gets the selected unit.
+	 *
+	 * @return the selected unit
+	 */
 	public Unit getSelectedUnit() {
 		return getUnitTile(cursor.getMapX() + cursor.getMapY() * width);
 	}
 
+	/**
+	 * Gets the num units.
+	 *
+	 * @return the num units
+	 */
 	public int getNumUnits() {
 		return units.length;
 	}
 
+	/**
+	 * Gets the units.
+	 *
+	 * @return the units
+	 */
 	public Unit[] getUnits() {
 		return units;
 	}
 
+	/**
+	 * Update unit animations.
+	 */
 	public void updateUnitAnimations() {
 		for (int i = 0; i < units.length; i++) {
 			units[i].updateAnimation();
 		}
 	}
 
+	/**
+	 * Gets the map sprite.
+	 *
+	 * @param width the width
+	 * @param height the height
+	 * @return the map sprite
+	 */
 	public Sprite getMapSprite(int width, int height) {
 		Sprite mapSprite = new Sprite(width, height, 0, 0);
 		int tilePixelsX = (int) Math.floor(width / this.width);
@@ -240,14 +355,29 @@ public class Map {
 		return mapSprite;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the tile types.
+	 *
+	 * @return the tile types
+	 */
 	public int[] getTileTypes() {
 		int[] tileTypes = new int[tiles.length];
 		for (int i = 0; i < tileTypes.length; i++) {
@@ -256,38 +386,83 @@ public class Map {
 		return tileTypes;
 	}
 
+	/**
+	 * Gets the current turn.
+	 *
+	 * @return the current turn
+	 */
 	public int getCurrentTurn() {
 		return currentTurn;
 	}
 
+	/**
+	 * Sets the current turn.
+	 *
+	 * @param currentTurn the new current turn
+	 */
 	public void setCurrentTurn(int currentTurn) {
 		this.currentTurn = currentTurn;
 	}
 
+	/**
+	 * Gets the num factions.
+	 *
+	 * @return the num factions
+	 */
 	public int getNumFactions() {
 		return numFactions;
 	}
 
+	/**
+	 * Sets the num factions.
+	 *
+	 * @param numFactions the new num factions
+	 */
 	public void setNumFactions(int numFactions) {
 		this.numFactions = numFactions;
 	}
 
+	/**
+	 * Gets the faction goals.
+	 *
+	 * @return the faction goals
+	 */
 	public MapGoal[] getFactionGoals() {
 		return factionGoals;
 	}
 
+	/**
+	 * Sets the faction goals.
+	 *
+	 * @param factionGoals the new faction goals
+	 */
 	public void setFactionGoals(MapGoal[] factionGoals) {
 		this.factionGoals = factionGoals;
 	}
 
+	/**
+	 * Gets the player.
+	 *
+	 * @param index the index
+	 * @return the player
+	 */
 	public AiPlayer getPlayer(int index) {
 		return players[index];
 	}
 
+	/**
+	 * Sets the player.
+	 *
+	 * @param index the index
+	 * @param player the player
+	 */
 	public void setPlayer(int index, AiPlayer player) {
 		players[index] = player;
 	}
 
+	/**
+	 * Update unit display.
+	 */
 	public void updateUnitDisplay() {
 		displayUnitsQueue = new PriorityQueue(units.length, displayCompare);
 		for (int i = 0; i < units.length; i++) {
@@ -302,6 +477,11 @@ public class Map {
 		System.out.println(displayUnits.size());
 	}
 
+	/**
+	 * Gets the unit display.
+	 *
+	 * @return the unit display
+	 */
 	public CopyOnWriteArrayList<Unit> getUnitDisplay() {
 		return displayUnits;
 	}

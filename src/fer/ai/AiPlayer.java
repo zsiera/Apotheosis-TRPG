@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.ai;
 
 import fer.Cursor;
@@ -13,7 +16,10 @@ import java.util.PriorityQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class AiPlayer.
+ *
  * @author Evan Stewart A class containing a set of methods that act upon a map
  *         in order to process computer player movement. Each player contains a
  *         set of parameters that determine how it will act based on certain
@@ -43,28 +49,65 @@ public class AiPlayer implements Runnable {
 	 */
 	private final float aggressiveness = 1;
 
+	/** The faction. */
 	private int faction = 1;
 	/** The number of tasks currently assigned to friendly units. */
 	private int tasksAssigned;
+	
+	/** The taking turn. */
 	private boolean takingTurn;
+	
+	/** The tasks ready. */
 	private boolean tasksReady;
+	
+	/** The stage. */
 	private int stage;
+	
+	/** The updates. */
 	private int updates;
+	
+	/** The current task index. */
 	private int currentTaskIndex;
+	
+	/** The tasks. */
 	private ArrayList<AiTask> tasks;
+	
+	/** The ai thread. */
 	private Thread aiThread;
+	
+	/** The destination. */
 	private Tile destination;
+	
+	/** The arrow path. */
 	private ArrayList<Tile> arrowPath;
+	
+	/** The current task. */
 	private AiTask currentTask;
+	
+	/** The cursor. */
 	private Cursor cursor;
+	
+	/** The determined attack. */
 	private boolean determinedAttack;
+	
+	/** The can attack. */
 	private boolean canAttack;
+	
+	/** The attack target. */
 	private Unit attackTarget;
 
+	/**
+	 * Instantiates a new ai player.
+	 *
+	 * @param faction the faction
+	 */
 	public AiPlayer(final int faction) {
 		this.faction = faction;
 	}
 
+	/**
+	 * Start turn.
+	 */
 	public final void startTurn() {
 		cursor = Cursor.getCursor();
 		cursor.setVisible(false);
@@ -81,6 +124,9 @@ public class AiPlayer implements Runnable {
 		aiThread.start();
 	}
 
+	/**
+	 * Update.
+	 */
 	public final void update() {
 		switch (stage) {
 		case 0: // Wait for the thread to finish task generation
@@ -198,12 +244,20 @@ public class AiPlayer implements Runnable {
 		updates++;
 	}
 
+	/**
+	 * End turn.
+	 */
 	public final void endTurn() {
 		takingTurn = false;
 		cursor.setVisible(true);
 		cursor.endTurn();
 	}
 
+	/**
+	 * Generate ai tasks.
+	 *
+	 * @return the array list
+	 */
 	public final ArrayList<AiTask> generateAITasks() {
 		ArrayList<AiTask> tasks = new ArrayList<>();
 		// Generate attack unit tasks for every enemy unit on the map
@@ -224,6 +278,11 @@ public class AiPlayer implements Runnable {
 		return tasks;
 	}
 
+	/**
+	 * Prioritize ai tasks.
+	 *
+	 * @param tasks the tasks
+	 */
 	public final void prioritizeAITasks(final ArrayList<AiTask> tasks) {
 		BattleProcessor bp = Game.getBattleProcessor();
 		for (int i = 0; i < tasks.size(); i++) {
@@ -232,6 +291,14 @@ public class AiPlayer implements Runnable {
 		}
 	}
 
+	/**
+	 * Adds the priority.
+	 *
+	 * @param tasks the tasks
+	 * @param bp the bp
+	 * @param i the i
+	 * @return the int
+	 */
 	private int addPriority(final ArrayList<AiTask> tasks, final BattleProcessor bp, final int i) {
 		int priority = 1;
 		if (tasks.get(i).getType() == AiTask.TaskType.ATTACK_UNIT) {
@@ -305,6 +372,11 @@ priority += 10;
 		return priority;
 	}
 
+	/**
+	 * Assign tasks.
+	 *
+	 * @param tasks the tasks
+	 */
 	public final void assignTasks(final ArrayList<AiTask> tasks) {
 		// Cycle through each task and find the most suitable unit. End when
 		// all units have been assigned a task or when tasks have been exhausted
@@ -367,6 +439,12 @@ priority += 10;
 		tasksAssigned = 0;
 	}
 
+	/**
+	 * Determine units.
+	 *
+	 * @param numUnits the num units
+	 * @return the int
+	 */
 	private int determineUnits(int numUnits) {
 		for (int i = 0; i < Game.getCurrentMap().getNumUnits(); i++) {
 			if (!Game.getCurrentMap().getUnit(i).isDead()
@@ -377,6 +455,9 @@ priority += 10;
 		return numUnits;
 	}
 
+	/**
+	 * Take turn.
+	 */
 	public final void takeTurn() {
 		System.out.println("Beginning turn");
 		ArrayList<AiTask> tasks = generateAITasks();
@@ -414,10 +495,23 @@ priority += 10;
 		}
 	}
 
+	/**
+	 * Shortest path greater.
+	 *
+	 * @param shortestPath the shortest path
+	 * @param range the range
+	 * @return true, if successful
+	 */
 	public final boolean shortestPathGreater(final ArrayList<Tile> shortestPath, final int range) {
 		return shortestPath.size() >= range;
 	}
 
+	/**
+	 * Determine average x.
+	 *
+	 * @param faction the faction
+	 * @return the int
+	 */
 	public final int determineAverageX(final int faction) {
 		float xSum = 0;
 		float numUnits = 0;
@@ -430,6 +524,12 @@ priority += 10;
 		return Math.round(xSum / numUnits);
 	}
 
+	/**
+	 * Determine average y.
+	 *
+	 * @param faction the faction
+	 * @return the int
+	 */
 	public final int determineAverageY(final int faction) {
 		float ySum = 0;
 		float numUnits = 0;
@@ -442,10 +542,24 @@ priority += 10;
 		return Math.round(ySum / numUnits);
 	}
 
+	/**
+	 * Can attack.
+	 *
+	 * @param attacker the attacker
+	 * @param defender the defender
+	 * @return true, if successful
+	 */
 	public final boolean canAttack(final Unit attacker, final Unit defender) {
 		return attacker.canAttack(defender, this);
 	}
 
+	/**
+	 * Attacker can traverse.
+	 *
+	 * @param attacker the attacker
+	 * @param path the path
+	 * @return the int
+	 */
 	public final int attackerCanTraverse(final Unit attacker, final ArrayList<Tile> path) {
 		int pathCost = 0;
 		for (int i = path.size() - 1; i >= 0; i--) {
@@ -455,6 +569,12 @@ priority += 10;
 		return pathCost;
 	}
 
+	/**
+	 * Find longest range.
+	 *
+	 * @param attacker the attacker
+	 * @return the int
+	 */
 	public final int findLongestRange(final Unit attacker) {
 		return attacker.findLongestRange();
 	}
@@ -519,10 +639,18 @@ attackableTiles.get(j).getMapX()
 		return attackableUnits;
 	}
 
+	/**
+	 * Checks if is taking turn.
+	 *
+	 * @return true, if is taking turn
+	 */
 	public final boolean isTakingTurn() {
 		return takingTurn;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public final void run() {
 		if (stage == 0) {
@@ -709,6 +837,14 @@ attackableTiles.get(j).getMapX()
 		}
 	}
 
+	/**
+	 * Adds the tiles.
+	 *
+	 * @param unit the unit
+	 * @param shortestPath the shortest path
+	 * @param tile the tile
+	 * @return the int
+	 */
 	private int addTiles(final Unit unit, final ArrayList<Tile> shortestPath, int tile) {
 		while (Game.getCurrentMap().getUnitTile(
 				shortestPath.get(tile).getMapX()

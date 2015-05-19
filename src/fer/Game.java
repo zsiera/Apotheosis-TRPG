@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer;
 
 import fer.ai.AiPlayer;
@@ -31,77 +34,193 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Evan Stewart
+ * The Class Game.
  *
+ * @author Evan Stewart
+ * 
  *         The main class for the game sequence. Contains the window and
  *         functions as the canvas upon which to draw graphics. Also handles the
  *         threading, looping, and running, of the game sequence, orchestrating
  *         tasks such as rendering game graphics and updating game logic.
- *
  */
 public class Game extends Canvas implements Runnable {
 
+	/** The instance. */
 	private static Game instance;
+	
+	/** The Constant GAME_WIDTH. */
 	public static final int GAME_WIDTH = 240;
+	
+	/** The Constant GAME_HEIGHT. */
 	public static final int GAME_HEIGHT = 160;
+	
+	/** The game scale. */
 	public static int GAME_SCALE;
+	
+	/** The Constant GAME_UPS. */
 	public static final int GAME_UPS = 60;
+	
+	/** The game res. */
 	public static Dimension GAME_RES;
+	
+	/** The Constant GAME_TITLE. */
 	public static final String GAME_TITLE = "Apotheosis";
+	
+	/** The weapons. */
 	private static WeaponData[] weapons;
+	
+	/** The items. */
 	private static ItemData[] items;
+	
+	/** The armor. */
 	private static ArmorData[] armor;
+	
+	/** The tiles. */
 	private static TileData[] tiles;
+	
+	/** The unit classes. */
 	private static UnitClassData[] unitClasses;
+	
+	/** The freeplay map data. */
 	private static MapData[] freeplayMapData;
+	
+	/** The sprite sheets. */
 	private static SpriteSheet[] spriteSheets;
+	
+	/** The current map. */
 	private static Map currentMap;
+	
+	/** The menu list. */
 	private static CopyOnWriteArrayList<Menu> menuList;
+	
+	/** The effect list. */
 	private static CopyOnWriteArrayList<Effect> effectList;
+	
+	/** The battle processor. */
 	private static BattleProcessor battleProcessor;
+	
+	/** The title menu. */
 	private static Menu titleMenu;
+	
+	/** The main menu. */
 	private static Menu mainMenu;
+	
+	/** The free play menu. */
 	private static Menu freePlayMenu;
+	
+	/** The map select menu. */
 	private static Menu mapSelectMenu;
+	
+	/** The map info menu. */
 	private static Menu mapInfoMenu;
+	
+	/** The player num menu. */
 	private static Menu playerNumMenu;
+	
+	/** The player faction menu. */
 	private static Menu playerFactionMenu;
+	
+	/** The settings menu. */
 	private static Menu settingsMenu;
+	
+	/** The notice menu. */
 	private static Menu noticeMenu;
+	
+	/** The current player. */
 	private static int currentPlayer;
+	
+	/** The current faction. */
 	private static int currentFaction;
+	
+	/** The num players. */
 	private static int numPlayers;
+	
+	/** The hotseat. */
 	private static boolean hotseat = false;
+	
+	/** The selected factions. */
 	private static boolean[] selectedFactions;
+	
+	/** The player factions. */
 	private static int[] playerFactions;
+	
+	/** The main menu overlay. */
 	private static Effect mainMenuOverlay;
+	
+	/** The title background. */
 	private static Sprite titleBackground;
+	
+	/** The main menu background. */
 	private static Sprite mainMenuBackground;
+	
+	/** The on title. */
 	private static boolean onTitle = true;
+	
+	/** The on main menu. */
 	private static boolean onMainMenu = false;
+	
+	/** The map select position. */
 	private static int mapSelectPosition = 0;
+	
+	/** The game running. */
 	private boolean gameRunning = false;
+	
+	/** The updates. */
 	private int updates = 0;
+	
+	/** The logic thread. */
 	private Thread logicThread;
+	
+	/** The graphics thread. */
 	private Thread graphicsThread;
+	
+	/** The control thread. */
 	private Thread controlThread;
+	
+	/** The last enter. */
 	private boolean lastEnter = false;
+	
+	/** The last escape. */
 	private boolean lastEscape = false;
+	
+	/** The renderer. */
 	private Renderer renderer;
+	
+	/** The game window. */
 	private JFrame gameWindow;
+	
+	/** The keyboard. */
 	private Keyboard keyboard;
+	
+	/** The cursor. */
 	private static Cursor cursor;
+	
+	/** The menu cursor. */
 	private static MenuCursor menuCursor;
+	
+	/** The free play maps. */
 	private static Map[] freePlayMaps;
 	// Global game settings
+	/** The game scale. */
 	private static int gameScale;
+	
+	/** The draw faction shadow. */
 	private static boolean drawFactionShadow;
+	
+	/** The grid opacity. */
 	private static int gridOpacity;
 	// Setting defaults
+	/** The Constant DRAWFACTIONSHADOWDEFAULT. */
 	private static final boolean DRAWFACTIONSHADOWDEFAULT = true;
+	
+	/** The Constant GRIDOPACITYDEFAULT. */
 	private static final int GRIDOPACITYDEFAULT = 26;
 
+	/**
+	 * Instantiates a new game.
+	 */
 	public Game() {
 		loadSettings();
 		GAME_SCALE = gameScale;
@@ -126,8 +245,9 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	/**
-	 * @param args
-	 *            the command line arguments
+	 * The main method.
+	 *
+	 * @param args            the command line arguments
 	 */
 	public static void main(final String[] args) {
 		createInstance();
@@ -135,6 +255,9 @@ public class Game extends Canvas implements Runnable {
 		instance.startSequence();
 	}
 
+	/**
+	 * Creates the instance.
+	 */
 	private static void createInstance() {
 		instance = new Game();
 
@@ -146,6 +269,11 @@ public class Game extends Canvas implements Runnable {
 		instance.gameWindow.setVisible(true);
 	}
 
+	/**
+	 * Gets the game.
+	 *
+	 * @return the game
+	 */
 	public static Game getGame() {
 		if (instance == null) {
 			createInstance();
@@ -153,22 +281,45 @@ public class Game extends Canvas implements Runnable {
 		return instance;
 	}
 
+	/**
+	 * Gets the game running.
+	 *
+	 * @return the game running
+	 */
 	public final boolean getGameRunning() {
 		return gameRunning;
 	}
 
+	/**
+	 * Sets the game running.
+	 *
+	 * @param running the new game running
+	 */
 	public final void setGameRunning(final boolean running) {
 		gameRunning = running;
 	}
 
+	/**
+	 * Gets the game window title.
+	 *
+	 * @return the game window title
+	 */
 	public final String getGameWindowTitle() {
 		return gameWindow.getTitle();
 	}
 
+	/**
+	 * Sets the game window title.
+	 *
+	 * @param title the new game window title
+	 */
 	public final void setGameWindowTitle(final String title) {
 		gameWindow.setTitle(title);
 	}
 
+	/**
+	 * Load data.
+	 */
 	public final void loadData() {
 		// Read all data messenger objects from XML
 		XMLReader reader = new XMLReader();
@@ -241,6 +392,9 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * Load settings.
+	 */
 	public final void loadSettings() {
 		XMLReader reader = new XMLReader();
 		SettingsData data = reader.serializeSettingsData();
@@ -249,6 +403,9 @@ public class Game extends Canvas implements Runnable {
 		gridOpacity = data.getGridOpacity();
 	}
 
+	/**
+	 * Start sequence.
+	 */
 	public final synchronized void startSequence() {
 		// loadData();
 		gameRunning = true;
@@ -264,6 +421,9 @@ public class Game extends Canvas implements Runnable {
 		controlThread.start();
 	}
 
+	/**
+	 * Stop sequence.
+	 */
 	public final synchronized void stopSequence() {
 		gameRunning = false;
 		try {
@@ -275,6 +435,9 @@ public class Game extends Canvas implements Runnable {
 		gameWindow.dispose();
 	}
 
+	/**
+	 * Update.
+	 */
 	public final void update() {
 		int xQueue = 0, yQueue = 0;
 		boolean enter, escape;
@@ -316,6 +479,9 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public final void run() {
 		long previousTime = System.nanoTime();
 		long currentTime;
@@ -347,6 +513,9 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * Prepare freeplay.
+	 */
 	public static void prepareFreeplay() {
 		freePlayMaps = new Map[freeplayMapData.length];
 		for (int i = 0; i < freePlayMaps.length; i++) {
@@ -354,6 +523,13 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * Prepare map.
+	 *
+	 * @param map the map
+	 * @param index the index
+	 * @param selectedFactions the selected factions
+	 */
 	public static void prepareMap(final Map map, final int index, final boolean[] selectedFactions) {
 		// Read corresponding map XML data
 		XMLReader reader = new XMLReader();
@@ -375,74 +551,168 @@ public class Game extends Canvas implements Runnable {
 		currentMap = map;
 	}
 
+	/**
+	 * Gets the current map.
+	 *
+	 * @return the current map
+	 */
 	public static Map getCurrentMap() {
 		return currentMap;
 	}
 
+	/**
+	 * Sets the current map.
+	 *
+	 * @param newMap the new current map
+	 */
 	public static void setCurrentMap(final Map newMap) {
 		currentMap = newMap;
 	}
 
+	/**
+	 * Gets the menu list.
+	 *
+	 * @return the menu list
+	 */
 	public static CopyOnWriteArrayList<Menu> getMenuList() {
 		return menuList;
 	}
 
+	/**
+	 * Gets the effect list.
+	 *
+	 * @return the effect list
+	 */
 	public static CopyOnWriteArrayList<Effect> getEffectList() {
 		return effectList;
 	}
 
+	/**
+	 * Gets the weapon data.
+	 *
+	 * @param index the index
+	 * @return the weapon data
+	 */
 	public static WeaponData getWeaponData(final int index) {
 		return weapons[index];
 	}
 
+	/**
+	 * Gets the item data.
+	 *
+	 * @param index the index
+	 * @return the item data
+	 */
 	public static ItemData getItemData(final int index) {
 		return items[index];
 	}
 
+	/**
+	 * Gets the armor data.
+	 *
+	 * @param index the index
+	 * @return the armor data
+	 */
 	public static ArmorData getArmorData(final int index) {
 		return armor[index];
 	}
 
+	/**
+	 * Gets the tile data.
+	 *
+	 * @param index the index
+	 * @return the tile data
+	 */
 	public static TileData getTileData(final int index) {
 		return tiles[index];
 	}
 
+	/**
+	 * Gets the unit class data.
+	 *
+	 * @param index the index
+	 * @return the unit class data
+	 */
 	public static UnitClassData getUnitClassData(final int index) {
 		return unitClasses[index];
 	}
 
+	/**
+	 * Gets the sprite sheet.
+	 *
+	 * @param index the index
+	 * @return the sprite sheet
+	 */
 	public static SpriteSheet getSpriteSheet(final int index) {
 		return spriteSheets[index];
 	}
 
+	/**
+	 * Gets the battle processor.
+	 *
+	 * @return the battle processor
+	 */
 	public static BattleProcessor getBattleProcessor() {
 		return battleProcessor;
 	}
 
+	/**
+	 * Checks if is on title.
+	 *
+	 * @return true, if is on title
+	 */
 	public static boolean isOnTitle() {
 		return onTitle;
 	}
 
+	/**
+	 * Sets the on title.
+	 *
+	 * @param iOnTitle the new on title
+	 */
 	public static void setOnTitle(final boolean iOnTitle) {
 		onTitle = iOnTitle;
 	}
 
+	/**
+	 * Checks if is on main menu.
+	 *
+	 * @return true, if is on main menu
+	 */
 	public static boolean isOnMainMenu() {
 		return onMainMenu;
 	}
 
+	/**
+	 * Sets the on main menu.
+	 *
+	 * @param iOnMainMenu the new on main menu
+	 */
 	public static void setOnMainMenu(final boolean iOnMainMenu) {
 		onMainMenu = iOnMainMenu;
 	}
 
+	/**
+	 * Gets the title background.
+	 *
+	 * @return the title background
+	 */
 	public static Sprite getTitleBackground() {
 		return titleBackground;
 	}
 
+	/**
+	 * Gets the main menu background.
+	 *
+	 * @return the main menu background
+	 */
 	public static Sprite getMainMenuBackground() {
 		return mainMenuBackground;
 	}
 
+	/**
+	 * Draw title menu.
+	 */
 	public static void drawTitleMenu() {
 		titleMenu = new Menu(69, 31, 85, 100);
 
@@ -468,6 +738,9 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(titleMenu);
 	}
 
+	/**
+	 * Draw main menu.
+	 */
 	public static void drawMainMenu() {
 		mainMenu = new Menu(110, 140, 120, 10);
 
@@ -535,6 +808,9 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(mainMenu);
 	}
 
+	/**
+	 * Draw free play menu.
+	 */
 	public static void drawFreePlayMenu() {
 		freePlayMenu = new Menu(100, 70, 10, 10);
 
@@ -594,6 +870,9 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(freePlayMenu);
 	}
 
+	/**
+	 * Draw map select menu.
+	 */
 	public static void drawMapSelectMenu() {
 		mapSelectMenu = new Menu(110, 140, 10, 10);
 
@@ -716,6 +995,11 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(mapSelectMenu);
 	}
 
+	/**
+	 * Draw map info menu.
+	 *
+	 * @param map the map
+	 */
 	public static void drawMapInfoMenu(final Map map) {
 		mapInfoMenu = new Menu(110, 140, 120, 10);
 
@@ -742,6 +1026,12 @@ public class Game extends Canvas implements Runnable {
 				false, 7, 93));
 	}
 
+	/**
+	 * Draw player num menu.
+	 *
+	 * @param map the map
+	 * @param mapIndex the map index
+	 */
 	public static void drawPlayerNumMenu(final Map map, final int mapIndex) {
 		playerNumMenu = new Menu(64, 20, 88, 70);
 
@@ -824,6 +1114,13 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(playerNumMenu);
 	}
 
+	/**
+	 * Draw player faction menu.
+	 *
+	 * @param map the map
+	 * @param mapIndex the map index
+	 * @param message the message
+	 */
 	public static void drawPlayerFactionMenu(final Map map, final int mapIndex,
 			final boolean message) {
 		playerFactionMenu = new Menu(114, 26, 68, 67);
@@ -943,6 +1240,13 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(playerFactionMenu);
 	}
 
+	/**
+	 * Draw settings menu.
+	 *
+	 * @param lastMenu the last menu
+	 * @param lastIndex the last index
+	 * @param message the message
+	 */
 	public static void drawSettingsMenu(final Menu lastMenu, final int lastIndex,
 			final String message) {
 		if (settingsMenu != null) {
@@ -1080,6 +1384,13 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(settingsMenu);
 	}
 
+	/**
+	 * Draw notice menu.
+	 *
+	 * @param message the message
+	 * @param lastMenu the last menu
+	 * @param lastIndex the last index
+	 */
 	public static void drawNoticeMenu(final String message, final Menu lastMenu,
 			final int lastIndex) {
 		if (noticeMenu != null) {
@@ -1129,18 +1440,38 @@ public class Game extends Canvas implements Runnable {
 		MenuCursor.setActiveMenu(noticeMenu);
 	}
 
+	/**
+	 * Gets the renderer.
+	 *
+	 * @return the renderer
+	 */
 	public final Renderer getRenderer() {
 		return renderer;
 	}
 
+	/**
+	 * Gets the game scale.
+	 *
+	 * @return the game scale
+	 */
 	public static int getGameScale() {
 		return gameScale;
 	}
 
+	/**
+	 * Checks if is draw faction shadow.
+	 *
+	 * @return true, if is draw faction shadow
+	 */
 	public static boolean isDrawFactionShadow() {
 		return drawFactionShadow;
 	}
 
+	/**
+	 * Gets the grid opacity.
+	 *
+	 * @return the grid opacity
+	 */
 	public static int getGridOpacity() {
 		return gridOpacity;
 	}

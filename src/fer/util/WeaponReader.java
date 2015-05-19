@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.util;
 
 import com.thoughtworks.xstream.XStream;
@@ -11,11 +14,19 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class WeaponReader.
+ *
  * @author Evan Stewart
  */
 public class WeaponReader {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		WeaponData weapon = null;
 		Builder builder = new Builder();

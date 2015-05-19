@@ -6,12 +6,19 @@ package fer.util;
 
 import com.thoughtworks.xstream.XStream;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class UnitSerializer.
  *
  * @author Evan
  */
 public class UnitSerializer {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		WeaponData weapon = new WeaponData();
 		weapon.setAccuracy(90);

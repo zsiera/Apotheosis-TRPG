@@ -1,6 +1,12 @@
+/*
+ * 
+ */
 package fer.graphics;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Animation.
+ *
  * @author Evan Stewart
  * 
  *         A class containing a set of frames for an animation along with each
@@ -10,13 +16,29 @@ package fer.graphics;
  */
 public class Animation {
 
+	/** The num frames. */
 	private int numFrames;
+	
+	/** The frame durations. */
 	private int[] frameDurations;
+	
+	/** The sprites. */
 	private Sprite[] sprites;
+	
+	/** The current frame. */
 	private int currentFrame = 0;
+	
+	/** The current frame updates. */
 	private int currentFrameUpdates = 0;
+	
+	/** The key frame. */
 	private int keyFrame = 0;
 
+	/**
+	 * Instantiates a new animation.
+	 *
+	 * @param iNumFrames the i num frames
+	 */
 	public Animation(int iNumFrames) {
 		this.numFrames = iNumFrames;
 		sprites = new Sprite[numFrames];
@@ -28,6 +50,12 @@ public class Animation {
 		}
 	}
 
+	/**
+	 * Instantiates a new animation.
+	 *
+	 * @param iNumFrames the i num frames
+	 * @param spritesIn the sprites in
+	 */
 	public Animation(int iNumFrames, Sprite[] spritesIn) {
 		this(iNumFrames);
 		if (spritesIn.length < numFrames) {
@@ -42,6 +70,12 @@ public class Animation {
 		}
 	}
 
+	/**
+	 * Instantiates a new animation.
+	 *
+	 * @param iNumFrames the i num frames
+	 * @param frameDurationsIn the frame durations in
+	 */
 	public Animation(int iNumFrames, int[] frameDurationsIn) {
 		this(iNumFrames);
 		if (!(frameDurationsIn.length < numFrames)) {
@@ -59,6 +93,13 @@ public class Animation {
 		}
 	}
 
+	/**
+	 * Instantiates a new animation.
+	 *
+	 * @param iNumFrames the i num frames
+	 * @param spritesIn the sprites in
+	 * @param frameDurationsIn the frame durations in
+	 */
 	public Animation(int iNumFrames, Sprite[] spritesIn, int[] frameDurationsIn) {
 		this(iNumFrames, spritesIn);
 		if (!(frameDurationsIn.length < numFrames)) {
@@ -87,26 +128,58 @@ public class Animation {
 		return sprites[frame];
 	}
 
+	/**
+	 * Sets the sprite.
+	 *
+	 * @param frame the frame
+	 * @param sprite the sprite
+	 */
 	public void setSprite(int frame, Sprite sprite) {
 		sprites[frame] = sprite;
 	}
 
+	/**
+	 * Sets the frame duration.
+	 *
+	 * @param frame the frame
+	 * @param duration the duration
+	 */
 	public void setFrameDuration(int frame, int duration) {
 		frameDurations[frame] = duration;
 	}
 
+	/**
+	 * Gets the current frame.
+	 *
+	 * @return the current frame
+	 */
 	public int getCurrentFrame() {
 		return currentFrame;
 	}
 
+	/**
+	 * Sets the current frame.
+	 *
+	 * @param frame the new current frame
+	 */
 	public void setCurrentFrame(int frame) {
 		currentFrame = frame;
 	}
 
+	/**
+	 * Gets the current frame updates.
+	 *
+	 * @return the current frame updates
+	 */
 	public int getCurrentFrameUpdates() {
 		return currentFrameUpdates;
 	}
 
+	/**
+	 * Sets the current frame updates.
+	 *
+	 * @param updates the new current frame updates
+	 */
 	public void setCurrentFrameUpdates(int updates) {
 		currentFrameUpdates = updates;
 	}
@@ -127,6 +200,9 @@ public class Animation {
 		}
 	}
 
+	/**
+	 * Reset animation.
+	 */
 	public void resetAnimation() {
 		currentFrame = 0;
 		currentFrameUpdates = 0;
@@ -141,10 +217,21 @@ public class Animation {
 		return sprites[currentFrame];
 	}
 
+	/**
+	 * Gets the frames.
+	 *
+	 * @return the frames
+	 */
 	public int getFrames() {
 		return sprites.length;
 	}
 
+	/**
+	 * Gets the updates.
+	 *
+	 * @param frameCount the frame count
+	 * @return the updates
+	 */
 	public int getUpdates(int frameCount) {
 		int updates = 0;
 		for (int i = 0; i < frameCount; i++) {
@@ -153,10 +240,20 @@ public class Animation {
 		return updates;
 	}
 
+	/**
+	 * Gets the key frame.
+	 *
+	 * @return the key frame
+	 */
 	public int getKeyFrame() {
 		return keyFrame;
 	}
 
+	/**
+	 * Sets the key frame.
+	 *
+	 * @param keyFrame the new key frame
+	 */
 	public void setKeyFrame(int keyFrame) {
 		this.keyFrame = keyFrame;
 	}

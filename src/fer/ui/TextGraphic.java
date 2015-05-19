@@ -1,8 +1,14 @@
+/*
+ * 
+ */
 package fer.ui;
 
 import fer.graphics.Sprite;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class TextGraphic.
+ *
  * @author Evan Stewart
  * 
  *         A class that takes a string of ASCII characters and a font as an
@@ -16,8 +22,15 @@ import fer.graphics.Sprite;
  */
 public class TextGraphic {
 
+	/** The graphic. */
 	private Sprite graphic;
 
+	/**
+	 * Instantiates a new text graphic.
+	 *
+	 * @param text the text
+	 * @param font the font
+	 */
 	public TextGraphic(String text, Font font) {
 		char[] characters = text.toCharArray();
 		Sprite[] sprites = new Sprite[characters.length];
@@ -45,6 +58,11 @@ public class TextGraphic {
 		}
 	}
 
+	/**
+	 * Gets the sprite.
+	 *
+	 * @return the sprite
+	 */
 	public Sprite getSprite() {
 		return graphic;
 	}

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.gameplay;
 
 import java.util.ArrayList;
@@ -7,7 +10,19 @@ import fer.Unit;
 import fer.Game;
 import fer.ai.PathFinder;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Attack.
+ */
 public class Attack {
+	
+	/**
+	 * Calculate attack damage.
+	 *
+	 * @param attacker the attacker
+	 * @param defender the defender
+	 * @return the int
+	 */
 	public static int calculateAttackDamage(final Unit attacker, final Unit defender) {
 		int wepatk;
 		wepatk = attacker.getWeapon(0).getDamage() + attacker.getStr();
@@ -27,6 +42,13 @@ public class Attack {
 		return Math.max(0, wepdam);
 	}
 
+	/**
+	 * Calculate attack hit chance.
+	 *
+	 * @param attacker the attacker
+	 * @param defender the defender
+	 * @return the float
+	 */
 	public static float calculateAttackHitChance(final Unit attacker, final Unit defender) {
 		float hitRate = attacker.getWeapon(0).getAccuracy() + attacker
 				.getSkl() * 2;
@@ -39,6 +61,13 @@ public class Attack {
 		return Math.min(Math.max(hitRate - evade, 0), 100);
 	}
 
+	/**
+	 * Gets the number of attacks.
+	 *
+	 * @param unit the unit
+	 * @param opponent the opponent
+	 * @return the number of attacks
+	 */
 	public static int getNumberOfAttacks(final Unit unit, final Unit opponent) {
 		int numAttacksUnit, numAttacksOpponent;
 		numAttacksUnit = !(unit.getWeapon(0).getRange() >= Math.abs(unit.getMapx()
@@ -50,6 +79,13 @@ public class Attack {
 		return numAttacksUnit;
 	}
 
+	/**
+	 * Gets the attack units.
+	 *
+	 * @param unit the unit
+	 * @param opponent the opponent
+	 * @return the attack units
+	 */
 	public static int getAttackUnits(final Unit unit, final Unit opponent) {
 		int numAttacksUnit;
 		numAttacksUnit = calculateAttackSpeed(unit) >= calculateAttackSpeed(opponent) + 3 ? 2 : 1;
@@ -59,6 +95,12 @@ public class Attack {
 		return numAttacksUnit;
 	}
 
+	/**
+	 * Calculate attack speed.
+	 *
+	 * @param unit the unit
+	 * @return the int
+	 */
 	public static int calculateAttackSpeed(final Unit unit) {
 		int speed = unit.getSpd();
 		if (unit.getWeapon(0).getWeight() > unit.getCon()) {
@@ -70,6 +112,14 @@ public class Attack {
 		return speed;
 	}
 
+	/**
+	 * Calculate death chance.
+	 *
+	 * @param unit the unit
+	 * @param opponent the opponent
+	 * @param unitAttacking the unit attacking
+	 * @return the double
+	 */
 	public static double calculateDeathChance(final Unit unit, final Unit opponent,
 			final boolean unitAttacking) {
 		if (2 * calculateAttackDamage(opponent, unit) < unit.getCurrentHp()) {
@@ -114,6 +164,14 @@ public class Attack {
 		}
 	}
 
+	/**
+	 * Attack with weapon in range.
+	 *
+	 * @param pf the pf
+	 * @param bp the bp
+	 * @param unit the unit
+	 * @param target the target
+	 */
 	public static void attackWithWeaponInRange(final PathFinder pf,
 			final BattleProcessor bp, final Unit unit, final Unit target) {
 		for (int i = 0; i < unit.getWeapons().length; i++) {
@@ -136,6 +194,12 @@ public class Attack {
 		}
 	}
 
+	/**
+	 * Equip weapon.
+	 *
+	 * @param testUnit the test unit
+	 * @param longest the longest
+	 */
 	private static void equipWeapon(final Unit testUnit, final int longest) {
 		Weapon temp = testUnit.getWeapon(0);
 		testUnit.setWeapon(0, testUnit.getWeapon(longest));

@@ -1,8 +1,14 @@
+/*
+ * 
+ */
 package fer.graphics;
 
 import fer.Tile;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Sprite.
+ *
  * @author Evan
  * 
  *         Stores the pixels of a sprite pulled from a spritesheet object based
@@ -10,12 +16,30 @@ import fer.Tile;
  */
 public class Sprite {
 
+	/** The height. */
 	private final int WIDTH, HEIGHT;
+	
+	/** The y. */
 	private int x, y;
+	
+	/** The pixels. */
 	private int[] pixels;
+	
+	/** The transparent color. */
 	private int transparentColor;
+	
+	/** The spritesheet. */
 	private SpriteSheet spritesheet;
 
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param iWidth the i width
+	 * @param iHeight the i height
+	 * @param ix the ix
+	 * @param iy the iy
+	 * @param parentSheet the parent sheet
+	 */
 	public Sprite(int iWidth, int iHeight, int ix, int iy,
 			SpriteSheet parentSheet) {
 		this.WIDTH = iWidth;
@@ -27,6 +51,16 @@ public class Sprite {
 		loadSprite();
 	}
 
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param iWidth the i width
+	 * @param iHeight the i height
+	 * @param ix the ix
+	 * @param iy the iy
+	 * @param parentSheet the parent sheet
+	 * @param flippedHorizantal the flipped horizantal
+	 */
 	public Sprite(int iWidth, int iHeight, int ix, int iy,
 			SpriteSheet parentSheet, boolean flippedHorizantal) {
 		this(iWidth, iHeight, ix, iy, parentSheet);
@@ -35,6 +69,17 @@ public class Sprite {
 		}
 	}
 
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param iWidth the i width
+	 * @param iHeight the i height
+	 * @param ix the ix
+	 * @param iy the iy
+	 * @param parentSheet the parent sheet
+	 * @param flippedHorizantal the flipped horizantal
+	 * @param flippedVertical the flipped vertical
+	 */
 	public Sprite(int iWidth, int iHeight, int ix, int iy,
 			SpriteSheet parentSheet, boolean flippedHorizantal,
 			boolean flippedVertical) {
@@ -44,6 +89,14 @@ public class Sprite {
 		}
 	}
 
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param iWidth the i width
+	 * @param iHeight the i height
+	 * @param iColor the i color
+	 * @param iTransparentColor the i transparent color
+	 */
 	public Sprite(int iWidth, int iHeight, int iColor, int iTransparentColor) {
 		WIDTH = iWidth;
 		HEIGHT = iHeight;
@@ -54,6 +107,14 @@ public class Sprite {
 		transparentColor = iTransparentColor;
 	}
 
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param iWidth the i width
+	 * @param iHeight the i height
+	 * @param iPixels the i pixels
+	 * @param iTransparentColor the i transparent color
+	 */
 	public Sprite(int iWidth, int iHeight, int[] iPixels, int iTransparentColor) {
 		WIDTH = iWidth;
 		HEIGHT = iHeight;
@@ -61,6 +122,9 @@ public class Sprite {
 		transparentColor = iTransparentColor;
 	}
 
+	/**
+	 * Load sprite.
+	 */
 	private void loadSprite() {
 		transparentColor = spritesheet.getTransparentColor();
 		for (int xi = 0; xi < WIDTH; xi++) {
@@ -71,6 +135,9 @@ public class Sprite {
 		}
 	}
 
+	/**
+	 * Flip sprite horizantal.
+	 */
 	public void flipSpriteHorizantal() {
 		int bottomIndex = 0;
 		int topIndex = WIDTH - 1;
@@ -88,6 +155,9 @@ public class Sprite {
 		}
 	}
 
+	/**
+	 * Flip sprite vertical.
+	 */
 	public void flipSpriteVertical() {
 		int bottomIndex = 0;
 		int topIndex = HEIGHT - 1;
@@ -106,22 +176,49 @@ public class Sprite {
 		}
 	}
 
+	/**
+	 * Gets the pixel.
+	 *
+	 * @param index the index
+	 * @return the pixel
+	 */
 	public int getPixel(int index) {
 		return pixels[index];
 	}
 
+	/**
+	 * Sets the pixel.
+	 *
+	 * @param index the index
+	 * @param iColor the i color
+	 */
 	public void setPixel(int index, int iColor) {
 		pixels[index] = iColor;
 	}
 
+	/**
+	 * Gets the transparent color.
+	 *
+	 * @return the transparent color
+	 */
 	public int getTransparentColor() {
 		return transparentColor;
 	}
 
+	/**
+	 * Gets the width.
+	 *
+	 * @return the width
+	 */
 	public int getWidth() {
 		return WIDTH;
 	}
 
+	/**
+	 * Gets the height.
+	 *
+	 * @return the height
+	 */
 	public int getHeight() {
 		return HEIGHT;
 	}

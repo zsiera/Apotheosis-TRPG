@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.util;
 
 import com.thoughtworks.xstream.XStream;
@@ -23,19 +26,34 @@ import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class XMLReader.
+ *
  * @author Evan Stewart
  */
 public class XMLReader {
 
+	/** The xstream. */
 	private XStream xstream;
+	
+	/** The builder. */
 	private Builder builder;
 
+	/**
+	 * Instantiates a new XML reader.
+	 */
 	public XMLReader() {
 		xstream = new XStream();
 		builder = new Builder();
 	}
 
+	/**
+	 * Gets the XML document.
+	 *
+	 * @param filepath the filepath
+	 * @return the XML document
+	 */
 	public Document getXMLDocument(String filepath) {
 		String separator = System.getProperty("file.separator");
 		Document xmlDoc = null;
@@ -142,6 +160,12 @@ public class XMLReader {
 	 * } break; } } return xmlDoc; }
 	 */
 
+	/**
+	 * Serialize weapon data.
+	 *
+	 * @param index the index
+	 * @return the weapon data
+	 */
 	public WeaponData serializeWeaponData(int index) {
 		WeaponData weaponData = null;
 		Document doc = getXMLDocument("Weapons.xml");
@@ -162,6 +186,11 @@ public class XMLReader {
 		return weaponData;
 	}
 
+	/**
+	 * Serialize all weapon data.
+	 *
+	 * @return the array list
+	 */
 	public ArrayList<WeaponData> serializeAllWeaponData() {
 		ArrayList<WeaponData> weaponData = new ArrayList<>();
 		Document doc = getXMLDocument("Weapons.xml");
@@ -188,6 +217,12 @@ public class XMLReader {
 		return weaponData;
 	}
 
+	/**
+	 * Serialize item data.
+	 *
+	 * @param index the index
+	 * @return the item data
+	 */
 	public ItemData serializeItemData(int index) {
 		ItemData itemData = null;
 		Document doc = getXMLDocument("Items.xml");
@@ -207,6 +242,11 @@ public class XMLReader {
 		return itemData;
 	}
 
+	/**
+	 * Serialize all item data.
+	 *
+	 * @return the array list
+	 */
 	public ArrayList<ItemData> serializeAllItemData() {
 		ArrayList<ItemData> itemData = new ArrayList<>();
 		Document doc = getXMLDocument("Items.xml");
@@ -232,6 +272,12 @@ public class XMLReader {
 		return itemData;
 	}
 
+	/**
+	 * Serialize armor data.
+	 *
+	 * @param index the index
+	 * @return the armor data
+	 */
 	public ArmorData serializeArmorData(int index) {
 		ArmorData armorData = null;
 		Document doc = getXMLDocument("Armor.xml");
@@ -252,6 +298,11 @@ public class XMLReader {
 		return armorData;
 	}
 
+	/**
+	 * Serialize all armor data.
+	 *
+	 * @return the array list
+	 */
 	public ArrayList<ArmorData> serializeAllArmorData() {
 		ArrayList<ArmorData> armorData = new ArrayList<>();
 		Document doc = getXMLDocument("Armor.xml");
@@ -278,6 +329,12 @@ public class XMLReader {
 		return armorData;
 	}
 
+	/**
+	 * Serialize tile data.
+	 *
+	 * @param index the index
+	 * @return the tile data
+	 */
 	public TileData serializeTileData(int index) {
 		TileData tileData = null;
 		Document doc = getXMLDocument("Tiles.xml");
@@ -297,6 +354,11 @@ public class XMLReader {
 		return tileData;
 	}
 
+	/**
+	 * Serialize all tile data.
+	 *
+	 * @return the array list
+	 */
 	public ArrayList<TileData> serializeAllTileData() {
 		ArrayList<TileData> tileData = new ArrayList<>();
 		Document doc = getXMLDocument("Tiles.xml");
@@ -322,6 +384,12 @@ public class XMLReader {
 		return tileData;
 	}
 
+	/**
+	 * Serialize unit class data.
+	 *
+	 * @param index the index
+	 * @return the unit class data
+	 */
 	public UnitClassData serializeUnitClassData(int index) {
 		UnitClassData ucData = null;
 		Document doc = getXMLDocument("UnitClasses.xml");
@@ -341,6 +409,11 @@ public class XMLReader {
 		return ucData;
 	}
 
+	/**
+	 * Serialize all unit class data.
+	 *
+	 * @return the array list
+	 */
 	public ArrayList<UnitClassData> serializeAllUnitClassData() {
 		ArrayList<UnitClassData> ucData = new ArrayList<>();
 		Document doc = getXMLDocument("UnitClasses.xml");
@@ -367,13 +440,11 @@ public class XMLReader {
 
 	/**
 	 * Returns the MapData messenger class for the specified map index of the
-	 * specified game mode
+	 * specified game mode.
 	 *
-	 * @param gameType
-	 *            The game mode (freeplay, campaign etc.) that contains the
+	 * @param gameType            The game mode (freeplay, campaign etc.) that contains the
 	 *            requested map. Enumeration: 0 = Freeplay
-	 * @param index
-	 *            The index of the requested map. Determines which directory
+	 * @param index            The index of the requested map. Determines which directory
 	 *            will be searched for the Map.xml file
 	 * @return The MapData for the specified map
 	 */
@@ -487,6 +558,11 @@ public class XMLReader {
 		return unitData;
 	}
 
+	/**
+	 * Gets the num freeplay maps.
+	 *
+	 * @return the num freeplay maps
+	 */
 	public int getNumFreeplayMaps() {
 		URL url = SpriteSheet.class.getProtectionDomain().getCodeSource()
 				.getLocation();
@@ -513,6 +589,13 @@ public class XMLReader {
 		return dir.listFiles().length;
 	}
 
+	/**
+	 * Read unit class from index.
+	 *
+	 * @param filename the filename
+	 * @param index the index
+	 * @return the unit class
+	 */
 	public UnitClass readUnitClassFromIndex(String filename, int index) {
 		Document doc;
 		try {
@@ -541,6 +624,11 @@ public class XMLReader {
 		return null;
 	}
 
+	/**
+	 * Serialize settings data.
+	 *
+	 * @return the settings data
+	 */
 	public SettingsData serializeSettingsData() {
 		SettingsData sData = null;
 		Document doc = getXMLDocument("Settings.xml");
@@ -549,6 +637,9 @@ public class XMLReader {
 		return sData;
 	}
 
+	/**
+	 * Write settings.
+	 */
 	public void writeSettings() {
 		URL url = SpriteSheet.class.getProtectionDomain().getCodeSource()
 				.getLocation();

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.gameplay;
 
 import java.util.Random;
@@ -13,43 +16,107 @@ import fer.ui.Font;
 import fer.ui.MenuCursor;
 import fer.ui.TextGraphic;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class BattleProcessor.
+ *
  * @author Evan
  */
 public class BattleProcessor {
 
+	/** The exp menus. */
 	private ExpMenus expMenus = new ExpMenus();
+	
+	/** The defend menus. */
 	private DefenderMenus defendMenus = new DefenderMenus();
+	
+	/** The attack menus. */
 	private AttackMenus attackMenus = new AttackMenus();
+	
+	/** The damage dealt. */
 	private DamageDealt damageDealt = new DamageDealt();
+	
+	/** The attacker. */
 	private Unit attacker;
+	
+	/** The defender. */
 	private Unit defender;
+	
+	/** The random. */
 	private Random random = new Random();
+	
+	/** The cursor. */
 	private Cursor cursor = Cursor.getCursor();
+	
+	/** The damage effect. */
 	private Effect damageEffect;
+	
+	/** The critical effect. */
 	private Effect criticalEffect;
+	
+	/** The in combat. */
 	private boolean inCombat;
+	
+	/** The stage. */
 	private int stage;
+	
+	/** The current attack. */
 	private int currentAttack;
+	
+	/** The updates. */
 	private int updates;
+	
+	/** The miss attacker. */
 	private boolean[] missAttacker;
+	
+	/** The miss defender. */
 	private boolean[] missDefender;
+	
+	/** The critical attacker. */
 	private boolean[] criticalAttacker;
+	
+	/** The critical defender. */
 	private boolean[] criticalDefender;
+	
+	/** The melee. */
 	private boolean melee;
+	
+	/** The num attacks attacker. */
 	private int numAttacksAttacker;
+	
+	/** The num attacks defender. */
 	private int numAttacksDefender;
+	
+	/** The attacker damage. */
 	private int attackerDamage;
+	
+	/** The defender damage. */
 	private int defenderDamage;
+	
+	/** The attacker levels gained. */
 	private int attackerLevelsGained;
+	
+	/** The defender levels gained. */
 	private int defenderLevelsGained;
+	
+	/** The level iterations. */
 	private int levelIterations;
+	
+	/** The acc attacker. */
 	private float accAttacker;
+	
+	/** The acc defender. */
 	private float accDefender;
+	
+	/** The crit attacker. */
 	private float critAttacker;
+	
+	/** The crit defender. */
 	private float critDefender;
 	/** Multipurpose boolean variables to mark when animations are completed. */
 	private boolean attackerComplete;
+	
+	/** The defender complete. */
 	private boolean defenderComplete;
 	/**
 	 * Integer corresponding to the directional relationship of the defender to
@@ -62,6 +129,12 @@ public class BattleProcessor {
 	 */
 	private int directionDefender;
 
+	/**
+	 * Start battle.
+	 *
+	 * @param iAttacker the i attacker
+	 * @param iDefender the i defender
+	 */
 	public final void startBattle(final Unit iAttacker, final Unit iDefender) {
 		initializeBattle(iAttacker, iDefender);
 
@@ -143,6 +216,12 @@ public class BattleProcessor {
 				critDefender);
 	}
 
+	/**
+	 * Initialize battle.
+	 *
+	 * @param iAttacker the i attacker
+	 * @param iDefender the i defender
+	 */
 	private void initializeBattle(final Unit iAttacker, final Unit iDefender) {
 		cursor.initializeCursorForBattle();
 		inCombat = true;
@@ -152,6 +231,9 @@ public class BattleProcessor {
 		currentAttack = 0;
 	}
 
+	/**
+	 * Update.
+	 */
 	public final void update() {
 		switch (stage) {
 		case 0:
@@ -502,6 +584,9 @@ public class BattleProcessor {
 		updates++;
 	}
 
+	/**
+	 * End battle.
+	 */
 	public final void endBattle() {
 		attackMenus.clearMenus();
 		defendMenus.clearMenus();
@@ -536,31 +621,71 @@ public class BattleProcessor {
 		cursor.setCursorForVictory();
 	}
 
+	/**
+	 * Calculate attack damage.
+	 *
+	 * @param attacker the attacker
+	 * @param defender the defender
+	 * @return the int
+	 */
 	public final int calculateAttackDamage(final Unit attacker, final Unit defender) {
 		return Attack.calculateAttackDamage(attacker, defender);
 	}
 
+	/**
+	 * Calculate death chance.
+	 *
+	 * @param unit the unit
+	 * @param opponent the opponent
+	 * @param unitAttacking the unit attacking
+	 * @return the double
+	 */
 	public final double calculateDeathChance(final Unit unit, final Unit opponent,
 			final boolean unitAttacking) {
 		return Attack.calculateDeathChance(unit, opponent, unitAttacking);
 	}
 
+	/**
+	 * Checks if is in combat.
+	 *
+	 * @return true, if is in combat
+	 */
 	public final boolean isInCombat() {
 		return inCombat;
 	}
 
+	/**
+	 * Sets the attacker.
+	 *
+	 * @param attacker the new attacker
+	 */
 	public final void setAttacker(final Unit attacker) {
 		this.attacker = attacker;
 	}
 
+	/**
+	 * Sets the defender.
+	 *
+	 * @param defender the new defender
+	 */
 	public final void setDefender(final Unit defender) {
 		this.defender = defender;
 	}
 
+	/**
+	 * Gets the attacker.
+	 *
+	 * @return the attacker
+	 */
 	public final Unit getAttacker() {
 		return attacker;
 	}
 
+	/**
+	 * Gets the defender.
+	 *
+	 * @return the defender
+	 */
 	public final Unit getDefender() {
 		return defender;
 	}

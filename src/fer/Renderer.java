@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer;
 
 import fer.graphics.Effect;
@@ -15,9 +18,12 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Evan
+ * The Class Renderer.
  *
+ * @author Evan
+ * 
  *         Designed to do much of the graphical heavy lifting, the renderer
  *         class is given the task of sequentially drawing all of the necessary
  *         pixels onto the screen.
@@ -25,20 +31,39 @@ import java.util.logging.Logger;
 public class Renderer implements Runnable {
 
 	// Singleton References
+	/** The game. */
 	private Game game;
+	
+	/** The cursor. */
 	private Cursor cursor;
+	
+	/** The menu cursor. */
 	private MenuCursor menuCursor;
 	// Static constants
+	/** The Constant NUM_BUFFERS. */
 	public static final int NUM_BUFFERS = 3;
 	// Runtime objects
+	/** The buffer strat. */
 	private BufferStrategy bufferStrat;
+	
+	/** The buf image. */
 	private BufferedImage bufImage;
+	
+	/** The random. */
 	private Random random = new Random();
 	// Runtime values
+	/** The pixels. */
 	private int[] pixels;
+	
+	/** The drawing map. */
 	private boolean drawingMap = false;
+	
+	/** The drawing menus. */
 	private boolean drawingMenus = false;
 
+	/**
+	 * Instantiates a new renderer.
+	 */
 	public Renderer() {
 		game = Game.getGame();
 		cursor = Cursor.getCursor();
@@ -63,6 +88,9 @@ public class Renderer implements Runnable {
 		 */
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 		int frames = 0;
 		long timer = System.currentTimeMillis();
@@ -85,6 +113,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Render.
+	 */
 	public void render() {
 		clearPixels();
 		if (Game.isOnTitle()) {
@@ -136,6 +167,9 @@ public class Renderer implements Runnable {
 		bufferStrat.show();
 	}
 
+	/**
+	 * Draw title background.
+	 */
 	public void drawTitleBackground() {
 		if (Game.getTitleBackground() != null) {
 			for (int x = 0; x < Game.GAME_WIDTH; x++) {
@@ -147,6 +181,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw main menu background.
+	 */
 	public void drawMainMenuBackground() {
 		if (Game.getMainMenuBackground() != null) {
 			for (int x = 0; x < Game.GAME_WIDTH; x++) {
@@ -159,6 +196,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw tiles.
+	 */
 	public void drawTiles() {
 		for (int x = 0; x < Game.GAME_WIDTH; x++) {
 			for (int y = 0; y < Game.GAME_HEIGHT; y++) {
@@ -189,6 +229,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw units.
+	 */
 	public void drawUnits() {
 		for (Unit unit : Game.getCurrentMap().getUnitDisplay()) {
 			if (!unit.isDead()) {
@@ -318,6 +361,9 @@ public class Renderer implements Runnable {
 
 	}
 
+	/**
+	 * Draw move tile overlay.
+	 */
 	public void drawMoveTileOverlay() {
 		for (int x = 0; x < Game.GAME_WIDTH; x++) {
 			for (int y = 0; y < Game.GAME_HEIGHT; y++) {
@@ -359,6 +405,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw attack tile overlay.
+	 */
 	public void drawAttackTileOverlay() {
 		for (int x = 0; x < Game.GAME_WIDTH; x++) {
 			for (int y = 0; y < Game.GAME_HEIGHT; y++) {
@@ -403,6 +452,9 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw move arrow.
+	 */
 	public void drawMoveArrow() {
 		ArrayList<Tile> tiles = cursor.getArrowPath();
 		for (int i = 0; i < tiles.size(); i++) {
@@ -444,6 +496,11 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw menu.
+	 *
+	 * @param menu the menu
+	 */
 	public void drawMenu(Menu menu) {
 		// Draw background filler
 		for (int x = menu.getX(); x < menu.getX() + menu.getWidth(); x++) {
@@ -759,6 +816,11 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw effect.
+	 *
+	 * @param effect the effect
+	 */
 	public void drawEffect(Effect effect) {
 		for (int x = effect.getX(); x < effect.getX()
 				+ effect.getSprite().getWidth(); x++) {
@@ -793,9 +855,15 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Draw cursor.
+	 */
 	public void drawCursor() {
 	}
 
+	/**
+	 * Clear pixels.
+	 */
 	public void clearPixels() {
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = 0;
@@ -864,14 +932,12 @@ public class Renderer implements Runnable {
 	 * null, or if the given tiles are not adjacent, or if any of the tiles are
 	 * the same, the returned segment will likely not be the desired result.
 	 *
-	 * @param lastTile
-	 *            : The tile before the currentTile in the sequence. May be
+	 * @param lastTile            : The tile before the currentTile in the sequence. May be
 	 *            null.
-	 * @param currentTile
-	 *            : The current tile in the sequence. May not be null.
-	 * @param nextTile
-	 *            : The tile after the current tile in the sequence. May be
+	 * @param currentTile            : The current tile in the sequence. May not be null.
+	 * @param nextTile            : The tile after the current tile in the sequence. May be
 	 *            null.
+	 * @return the arrow segment
 	 * @return: The sprite for the arrow segment corresponding to the current or
 	 *          central tile in the sequence.
 	 */
@@ -980,10 +1046,20 @@ public class Renderer implements Runnable {
 		}
 	}
 
+	/**
+	 * Checks if is drawing map.
+	 *
+	 * @return true, if is drawing map
+	 */
 	public boolean isDrawingMap() {
 		return drawingMap;
 	}
 
+	/**
+	 * Checks if is drawing menus.
+	 *
+	 * @return true, if is drawing menus
+	 */
 	public boolean isDrawingMenus() {
 		return drawingMenus;
 	}

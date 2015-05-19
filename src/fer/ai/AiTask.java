@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.ai;
 
 import fer.Cursor;
@@ -8,19 +11,34 @@ import fer.gameplay.Attack;
 import fer.gameplay.BattleProcessor;
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class AiTask.
+ *
  * @author Evan Stewart A struct class that stores the parameters surrounding a
  *         potential action for and AI player to take, the the unit to which it
  *         is assigned, and its priority, which is evaluated based on its type.
  */
 public class AiTask {
 
+	/**
+	 * The Enum TaskType.
+	 */
 	public enum TaskType {
-		ATTACK_UNIT, GO_TO_TILE
+		
+		/** The attack unit. */
+		ATTACK_UNIT, 
+ /** The go to tile. */
+ GO_TO_TILE
 	}
 
+	/** The type. */
 	private TaskType type;
+	
+	/** The priority. */
 	private int priority;
+	
+	/** The target index. */
 	private int mapx, mapy, assignedIndex = -1, targetIndex = -1;
 
 	/**
@@ -48,54 +66,124 @@ public class AiTask {
 		this.targetIndex = targetIndex;
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public final TaskType getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
 	public final void setType(final TaskType type) {
 		this.type = type;
 	}
 
+	/**
+	 * Gets the priority.
+	 *
+	 * @return the priority
+	 */
 	public final int getPriority() {
 		return priority;
 	}
 
+	/**
+	 * Sets the priority.
+	 *
+	 * @param priority the new priority
+	 */
 	public final void setPriority(final int priority) {
 		this.priority = priority;
 	}
 
+	/**
+	 * Gets the mapx.
+	 *
+	 * @return the mapx
+	 */
 	public final int getMapx() {
 		return mapx;
 	}
 
+	/**
+	 * Sets the mapx.
+	 *
+	 * @param mapx the new mapx
+	 */
 	public final void setMapx(final int mapx) {
 		this.mapx = mapx;
 	}
 
+	/**
+	 * Gets the mapy.
+	 *
+	 * @return the mapy
+	 */
 	public final int getMapy() {
 		return mapy;
 	}
 
+	/**
+	 * Sets the mapy.
+	 *
+	 * @param mapy the new mapy
+	 */
 	public final void setMapy(final int mapy) {
 		this.mapy = mapy;
 	}
 
+	/**
+	 * Gets the assigned index.
+	 *
+	 * @return the assigned index
+	 */
 	public final int getAssignedIndex() {
 		return assignedIndex;
 	}
 
+	/**
+	 * Sets the assigned index.
+	 *
+	 * @param assignedIndex the new assigned index
+	 */
 	public final void setAssignedIndex(final int assignedIndex) {
 		this.assignedIndex = assignedIndex;
 	}
 
+	/**
+	 * Gets the target index.
+	 *
+	 * @return the target index
+	 */
 	public final int getTargetIndex() {
 		return targetIndex;
 	}
 
+	/**
+	 * Sets the target index.
+	 *
+	 * @param targetIndex the new target index
+	 */
 	public final void setTargetIndex(final int targetIndex) {
 		this.targetIndex = targetIndex;
 	}
 
+	/**
+	 * Determine unit suitability.
+	 *
+	 * @param unit the unit
+	 * @param secondRun the second run
+	 * @param tolerableDamageRatio the tolerable damage ratio
+	 * @param tolerableDeathChance the tolerable death chance
+	 * @param aIPlayer the a i player
+	 * @return the int
+	 */
 	public final int determineUnitSuitability(final Unit unit, final boolean secondRun,
 			final double tolerableDamageRatio, final double tolerableDeathChance,
 			final AiPlayer aIPlayer) {
@@ -157,6 +245,11 @@ public class AiTask {
 		return suitability;
 	}
 
+	/**
+	 * Move unit.
+	 *
+	 * @param aIPlayer the a i player
+	 */
 	public final void moveUnit(final AiPlayer aIPlayer) {
 		System.out.println("Moving unit");
 		PathFinder pf = new PathFinder();

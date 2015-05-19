@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer.gameplay;
 
 import fer.Cursor;
@@ -11,19 +14,42 @@ import fer.ui.MenuElement;
 import fer.ui.TextGraphic;
 import fer.util.ItemData;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Item.
+ *
  * @author Evan
  */
 public class Item {
 
+	/** The icon. */
 	private Sprite icon;
+	
+	/** The type. */
 	private String name, description, type;
+	
+	/** The used. */
 	private MenuAction used;
+	
+	/** The cursor. */
 	private Cursor cursor = Cursor.getCursor();
+	
+	/** The magnitude. */
 	private int uses, maxUses, magnitude;
+	
+	/** The consumable. */
 	private boolean consumable;
+	
+	/** The info menu. */
 	private Menu infoMenu;
 
+	/**
+	 * Instantiates a new item.
+	 *
+	 * @param iName the i name
+	 * @param iIcon the i icon
+	 * @param iAction the i action
+	 */
 	public Item(final String iName, final Sprite iIcon, final MenuAction iAction) {
 		icon = iIcon;
 		name = iName;
@@ -42,7 +68,12 @@ public class Item {
 //	 * cursor.getSelectedUnit().setCurrentHp(0); } } }; maxUses = 1; uses =
 //	 * maxUses; consumable = true; } }
 //	 */
-	public Item(final int typeindex) {
+	/**
+ * Instantiates a new item.
+ *
+ * @param typeindex the typeindex
+ */
+public Item(final int typeindex) {
 		ItemData data = Game.getItemData(typeindex);
 		name = data.getName();
 		description = data.getDescription();
@@ -79,62 +110,140 @@ public class Item {
 						.getSheetIndex()));
 	}
 
+	/**
+	 * Gets the icon.
+	 *
+	 * @return the icon
+	 */
 	public final Sprite getIcon() {
 		return icon;
 	}
 
+	/**
+	 * Sets the icon.
+	 *
+	 * @param icon the new icon
+	 */
 	public final void setIcon(final Sprite icon) {
 		this.icon = icon;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public final String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public final void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the description.
+	 *
+	 * @return the description
+	 */
 	public final String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param description the new description
+	 */
 	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Gets the uses.
+	 *
+	 * @return the uses
+	 */
 	public final int getUses() {
 		return uses;
 	}
 
+	/**
+	 * Sets the uses.
+	 *
+	 * @param uses the new uses
+	 */
 	public final void setUses(final int uses) {
 		this.uses = uses;
 	}
 
+	/**
+	 * Gets the max uses.
+	 *
+	 * @return the max uses
+	 */
 	public final int getMaxUses() {
 		return maxUses;
 	}
 
+	/**
+	 * Sets the max uses.
+	 *
+	 * @param maxUses the new max uses
+	 */
 	public final void setMaxUses(final int maxUses) {
 		this.maxUses = maxUses;
 	}
 
+	/**
+	 * Gets the used action.
+	 *
+	 * @return the used action
+	 */
 	public final MenuAction getUsedAction() {
 		return used;
 	}
 
+	/**
+	 * Sets the used action.
+	 *
+	 * @param used the new used action
+	 */
 	public final void setUsedAction(final MenuAction used) {
 		this.used = used;
 	}
 
+	/**
+	 * Checks if is consumable.
+	 *
+	 * @return true, if is consumable
+	 */
 	public final boolean isConsumable() {
 		return consumable;
 	}
 
+	/**
+	 * Sets the consumable.
+	 *
+	 * @param consumable the new consumable
+	 */
 	public final void setConsumable(final boolean consumable) {
 		this.consumable = consumable;
 	}
 
+	/**
+	 * Draw info menu.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param callingMenu the calling menu
+	 * @param active the active
+	 */
 	public final void drawInfoMenu(final int x, final int y, final Menu callingMenu, final boolean active) {
 		infoMenu = new Menu(200, 50, x, y);
 
@@ -157,6 +266,11 @@ public class Item {
 		}
 	}
 
+	/**
+	 * Gets the nil menu.
+	 *
+	 * @return the nil menu
+	 */
 	private MenuAction getNilMenu() {
 		return new MenuAction() {
 			@Override
@@ -165,10 +279,18 @@ public class Item {
 		};
 	}
 
+	/**
+	 * Info menu drawn.
+	 *
+	 * @return true, if successful
+	 */
 	public final boolean infoMenuDrawn() {
 		return infoMenu != null;
 	}
 
+	/**
+	 * Clear info menu.
+	 */
 	public final void clearInfoMenu() {
 		infoMenu.removeMenu();
 		infoMenu = null;

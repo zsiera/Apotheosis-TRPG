@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package fer;
 
 import fer.ai.PathFinder;
@@ -13,9 +16,12 @@ import fer.ui.MenuElement;
 import fer.ui.TextGraphic;
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Evan Stewart
+ * The Class Cursor.
  *
+ * @author Evan Stewart
+ * 
  *         A singleton class that stores the cursor location on maps and menus,
  *         as well as other properties, resources, and methods related to the
  *         cursor.
@@ -26,33 +32,87 @@ public class Cursor {
 	 * Number of tiles away from the edge that the cursor will scroll the map
 	 * at.
 	 */
+	/** The Constant SCROLL_AREA. */
 	public static final int SCROLL_AREA = 3;
+	
+	/** The Constant CURSOR_COLOR. */
 	public static final int CURSOR_COLOR = 0xFFFF00;
+	
+	/** The instance. */
 	private static Cursor instance;
+	
+	/** The menu cursor. */
 	private MenuCursor menuCursor;
+	
+	/** The cursor sprite. */
 	private Sprite cursorSprite;
+	
+	/** The move overlay sprite. */
 	private Sprite moveOverlaySprite;
+	
+	/** The attack overlay sprite. */
 	private Sprite attackOverlaySprite;
+	
+	/** The selected unit. */
 	private Unit selectedUnit;
+	
+	/** The unit menu. */
 	private Menu unitMenu;
+	
+	/** The terrain menu. */
 	private Menu terrainMenu;
+	
+	/** The turn menu. */
 	private Menu turnMenu;
+	
+	/** The mapx. */
 	private int mapx = 0;
+	
+	/** The mapy. */
 	private int mapy = 0;
+	
+	/** The map scrollx. */
 	private int mapScrollx = 0;
+	
+	/** The map scrolly. */
 	private int mapScrolly = 0;
+	
+	/** The moving unit. */
 	private boolean movingUnit;
+	
+	/** The attacking. */
 	private boolean attacking;
+	
+	/** The showing move arrow. */
 	private boolean showingMoveArrow = false;
+	
+	/** The path finder. */
 	private PathFinder pathFinder;
+	
+	/** The moveable tiles. */
 	private ArrayList<Tile> moveableTiles;
+	
+	/** The attackable tiles. */
 	private ArrayList<Tile> attackableTiles;
+	
+	/** The arrow path. */
 	private ArrayList<Tile> arrowPath;
+	
+	/** The active. */
 	private boolean active;
+	
+	/** The visible. */
 	private boolean visible;
+	
+	/** The current faction turn. */
 	private int currentFactionTurn;
+	
+	/** The goal menu faction. */
 	private int goalMenuFaction = 0;
 
+	/**
+	 * Instantiates a new cursor.
+	 */
 	public Cursor() {
 		cursorSprite = new Sprite(Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0, 0,
 				SpriteSheet.CURSOR);
@@ -66,6 +126,11 @@ public class Cursor {
 		visible = true;
 	}
 
+	/**
+	 * Gets the cursor.
+	 *
+	 * @return the cursor
+	 */
 	public static Cursor getCursor() {
 		if (instance == null) {
 			instance = new Cursor();
@@ -73,17 +138,33 @@ public class Cursor {
 		return instance;
 	}
 
+	/**
+	 * Initialize cursor for battle.
+	 */
 	public final void initializeCursorForBattle() {
 		setActive(false);
 		setVisible(false);
 	}
 
+	/**
+	 * Sets the cursor for victory.
+	 */
 	public final void setCursorForVictory() {
 		setVisible(true);
 		setActive(true);
 		processVictory();
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param currentMap the current map
+	 * @param xQueue the x queue
+	 * @param yQueue the y queue
+	 * @param enter the enter
+	 * @param escape the escape
+	 * @param tab the tab
+	 */
 	public final void update(final Map currentMap, final int xQueue, final int yQueue, final boolean enter,
 			final boolean escape, final boolean tab) {
 		if (Game.getCurrentMap().getPlayer(currentFactionTurn) == null) {
@@ -259,6 +340,9 @@ public class Cursor {
 		}
 	}
 
+	/**
+	 * Center cursor.
+	 */
 	public final void centerCursor() {
 		int xdif = (mapx - mapScrollx) - 8;
 		int ydif = (mapy - mapScrolly) - 5;
@@ -308,44 +392,94 @@ public class Cursor {
 		}
 	}
 
+	/**
+	 * Gets the map x.
+	 *
+	 * @return the map x
+	 */
 	public final int getMapX() {
 		return mapx;
 	}
 
+	/**
+	 * Gets the map y.
+	 *
+	 * @return the map y
+	 */
 	public final int getMapY() {
 		return mapy;
 	}
 
+	/**
+	 * Sets the map location.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 */
 	public final void setMapLocation(final int x, final int y) {
 		mapx = x;
 		mapy = y;
 	}
 
+	/**
+	 * Gets the map scrollx.
+	 *
+	 * @return the map scrollx
+	 */
 	public final int getMapScrollx() {
 		return mapScrollx;
 	}
 
+	/**
+	 * Gets the map scrolly.
+	 *
+	 * @return the map scrolly
+	 */
 	public final int getMapScrolly() {
 		return mapScrolly;
 	}
 
+	/**
+	 * Sets the map scroll.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 */
 	public final void setMapScroll(final int x, final int y) {
 		mapScrollx = x;
 		mapScrolly = y;
 	}
 
+	/**
+	 * Gets the cursor sprite.
+	 *
+	 * @return the cursor sprite
+	 */
 	public final Sprite getCursorSprite() {
 		return cursorSprite;
 	}
 
+	/**
+	 * Gets the move overlay sprite.
+	 *
+	 * @return the move overlay sprite
+	 */
 	public final Sprite getMoveOverlaySprite() {
 		return moveOverlaySprite;
 	}
 
+	/**
+	 * Gets the attack overlay sprite.
+	 *
+	 * @return the attack overlay sprite
+	 */
 	public final Sprite getAttackOverlaySprite() {
 		return attackOverlaySprite;
 	}
 
+	/**
+	 * Reset cursor.
+	 */
 	public final void resetCursor() {
 		mapx = 0;
 		mapy = 0;
@@ -354,58 +488,126 @@ public class Cursor {
 		currentFactionTurn = 0;
 	}
 
+	/**
+	 * Gets the selected unit.
+	 *
+	 * @return the selected unit
+	 */
 	public final Unit getSelectedUnit() {
 		return selectedUnit;
 	}
 
+	/**
+	 * Moving unit.
+	 *
+	 * @return true, if successful
+	 */
 	public final boolean movingUnit() {
 		return movingUnit;
 	}
 
+	/**
+	 * Checks if is attacking.
+	 *
+	 * @return true, if is attacking
+	 */
 	public final boolean isAttacking() {
 		return attacking;
 	}
 
+	/**
+	 * Gets the moveable tiles.
+	 *
+	 * @return the moveable tiles
+	 */
 	public final ArrayList<Tile> getMoveableTiles() {
 		return moveableTiles;
 	}
 
+	/**
+	 * Gets the attackable tiles.
+	 *
+	 * @return the attackable tiles
+	 */
 	public final ArrayList<Tile> getAttackableTiles() {
 		return attackableTiles;
 	}
 
+	/**
+	 * Showing move arrow.
+	 *
+	 * @return true, if successful
+	 */
 	public final boolean showingMoveArrow() {
 		return showingMoveArrow;
 	}
 
+	/**
+	 * Sets the showing move arrow.
+	 *
+	 * @param showing the new showing move arrow
+	 */
 	public final void setShowingMoveArrow(final boolean showing) {
 		showingMoveArrow = showing;
 	}
 
+	/**
+	 * Sets the arrow path.
+	 *
+	 * @param arrowPath the new arrow path
+	 */
 	public final void setArrowPath(final ArrayList<Tile> arrowPath) {
 		this.arrowPath = arrowPath;
 	}
 
+	/**
+	 * Gets the arrow path.
+	 *
+	 * @return the arrow path
+	 */
 	public final ArrayList<Tile> getArrowPath() {
 		return arrowPath;
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	public final boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Sets the active.
+	 *
+	 * @param iActive the new active
+	 */
 	public final void setActive(final boolean iActive) {
 		active = iActive;
 	}
 
+	/**
+	 * Checks if is visible.
+	 *
+	 * @return true, if is visible
+	 */
 	public final boolean isVisible() {
 		return visible;
 	}
 
+	/**
+	 * Sets the visible.
+	 *
+	 * @param visible the new visible
+	 */
 	public final void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 
+	/**
+	 * Draw movement menu.
+	 */
 	public final void drawMovementMenu() {
 		Menu movementMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 4) {
@@ -462,6 +664,12 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
+	/**
+	 * Draw action menu.
+	 *
+	 * @param oldx the oldx
+	 * @param oldy the oldy
+	 */
 	public final void drawActionMenu(final int oldx, final int oldy) {
 		Menu actionMenu;
 		final int fOldx = oldx;
@@ -546,6 +754,9 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
+	/**
+	 * Draw map menu.
+	 */
 	public final void drawMapMenu() {
 		Menu mapMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 5) {
@@ -613,6 +824,9 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
+	/**
+	 * Draw options menu.
+	 */
 	public final void drawOptionsMenu() {
 		final Menu optionsMenu;
 		if (mapy < 2 && mapx > Game.getCurrentMap().getWidth() - 5) {
@@ -686,6 +900,11 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
+	/**
+	 * Draw unit menu.
+	 *
+	 * @param unit the unit
+	 */
 	public final void drawUnitMenu(final Unit unit) {
 		if (mapx - mapScrollx > Map.MIN_MAP_WIDTH / 2) {
 			unitMenu = new Menu(74, 46, 0, 0);
@@ -720,6 +939,11 @@ public class Cursor {
 		}
 	}
 
+	/**
+	 * Draw terrain menu.
+	 *
+	 * @param tile the tile
+	 */
 	public final void drawTerrainMenu(final Tile tile) {
 		if (mapx - mapScrollx > Map.MIN_MAP_WIDTH / 2) {
 			terrainMenu = new Menu(62, 42, 0, 118);
@@ -750,6 +974,9 @@ public class Cursor {
 						Font.BASICFONT)).getSprite(), false, 6, 25));
 	}
 
+	/**
+	 * Draw turn menu.
+	 */
 	public final void drawTurnMenu() {
 		if (mapy - mapScrolly > Map.MIN_MAP_HEIGHT / 2) {
 			turnMenu = new Menu(80, 26, 80, 0);
@@ -774,6 +1001,12 @@ public class Cursor {
 				13));
 	}
 
+	/**
+	 * Draw items menu.
+	 *
+	 * @param oldx the oldx
+	 * @param oldy the oldy
+	 */
 	public final void drawItemsMenu(final int oldx, final int oldy) {
 		Menu itemsMenu = new Menu(183, 100, 28, 30);
 		final int fOldx = oldx;
@@ -947,6 +1180,9 @@ public class Cursor {
 		menuCursor.setElementIndex(1);
 	}
 
+	/**
+	 * Draw status window stats.
+	 */
 	public final void drawStatusWindowStats() {
 		Menu statusMenuStats = new Menu(220, 140, 10, 10);
 
@@ -967,9 +1203,15 @@ public class Cursor {
 		MenuCursor.setActiveMenu(statusMenuStats);
 	}
 
+	/**
+	 * Draw status window inventory.
+	 */
 	public void drawStatusWindowInventory() {
 	}
 
+	/**
+	 * Draw goal menu.
+	 */
 	public final void drawGoalMenu() {
 		Menu goalMenu = new Menu(100, 100, 70, 30);
 
@@ -1132,6 +1374,11 @@ public class Cursor {
 		menuCursor.setElementIndex(0);
 	}
 
+	/**
+	 * Draw victory screen.
+	 *
+	 * @param faction the faction
+	 */
 	public final void drawVictoryScreen(final int faction) {
 		Menu victoryMenu = new Menu(220, 140, 10, 10);
 
